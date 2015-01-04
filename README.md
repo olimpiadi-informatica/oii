@@ -26,16 +26,15 @@ Il formato utilizzato, al momento, è il cosiddetto *Italian format*.
     * `gen/`
         * `GEN`: file usato per descrivere gli input. Le parti della
           riga dopo un `#` vengono ignorate. Le righe non banali (ovvero
-          contenenti qualcosa oltre a whitespace prima del primo #)
+          contenenti qualcosa oltre a whitespace prima del primo `#`)
           vengono passate al generatore e generano un input ciascuna.
-          Se una riga inizia con "#ST:" (senza le virgolette) viene
-          usata per delimitare un subtask. "#ST:" va seguito con il
-          punteggio assegnato a quel subtask. Se sono presenti i
-          subtask, è necessario che la somma dei punti di ogni subtask
-          sia 100. Se una riga inizia con "#COPY:" (senza le virgolette)
-          allora ciò che segue viene interpretato come un percorso
-          relativo a `<nome>/` dal quale andare a copiare un input
-          esistente.
+          Se una riga inizia con `#ST:` viene usata per delimitare un
+          subtask. `#ST:` va seguito con il punteggio assegnato a quel
+          subtask. Se sono presenti i subtask, è necessario che la somma
+          dei punti di ogni subtask sia 100. Se una riga inizia con
+          `#COPY:` allora ciò che segue viene interpretato come un
+          percorso relativo a `<nome>/` dal quale andare a copiare un
+          input esistente.
         * `generatore.*`: programma che per una certa lista di argomenti
           produce (su *stdout*) un certo input valido.
     * `sol/`
