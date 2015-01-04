@@ -1,0 +1,5 @@
+name: collatz
+title: La congettura di Collatz
+time_limit: 1.0
+memory_limit: 256
+token_mode: infinite

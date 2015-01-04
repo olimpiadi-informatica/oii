@@ -1,0 +1,62 @@
+\renewcommand{\nomebreve}{collatz}
+\renewcommand{\titolo}{La Congettura di Collatz}
+\renewcommand{\difficolta}{\normalsize \textsc{[Difficoltà D=1]}}
+
+\introduzione{}
+
+Consideriamo il seguente algoritmo, che prende in ingresso un intero
+positivo $N$:
+
+\begin{enumerate}[noitemsep]
+  \item Se $N$ vale $1$, l’algoritmo termina.
+  \item Se $N$ è pari, dividi $N$ per $2$, altrimenti (se $N$ è
+    dispari) moltiplicalo per $3$ e aggiungi $1$.
+\end{enumerate}
+
+\noindent
+Per esempio, applicato al valore $N=6$, l’algoritmo produce la
+seguente sequenza (di lunghezza $9$, contando anche il valore iniziale
+$N=6$ e il valore finale $1$):
+
+$$6, 3, 10, 5, 16, 8, 4, 2, 1.$$
+
+La congettura di Collatz, chiamata anche congettura $3N+1$, afferma
+che l’algoritmo qui sopra termini sempre per qualsiasi valore $N$; in
+altri termini, se prendo un qualsiasi numero intero maggiore di $1$
+applicare la regola numero 2 conduce sempre al numero $1$.
+È riferendosi a questa celebre congettura che il famoso matematico
+Erdős ha commentato sul come questioni semplici ma elusive mettono in
+evidenza quanto poco noi si possa accedere ai misteri del ``grande
+Libro''.
+
+Giovanni sta cercando di dimostrare la congettura, ed è interessato
+alla lunghezza della sequenza. Il vostro compito è quello di aiutare
+Giovanni scrivendo un programma che, ricevuto in ingresso un numero
+$N$, calcoli la lunghezza della sequenza che si ottiene a partire da
+$N$.
+
+\sezionetesto{Dati di input}
+Il file \verb'input.txt' è composto da una riga contenente $N$, un
+intero positivo.
+
+\sezionetesto{Dati di output}
+Il file \verb'output.txt' è composto da una sola riga contenente un
+intero positivo $L$: la lunghezza della sequenza a partire da $N$.
+
+% Assunzioni
+\sezionetesto{Assunzioni e note}
+\begin{itemize}[nolistsep, noitemsep]
+  \item $2 \le N \le 1\,000 $.
+  \item È noto che, per qualsiasi $N$ minore di $1000$, la lunghezza
+    $L$ della sequenza è minore di $200$.
+\end{itemize}
+
+% Esempi
+\sezionetesto{Esempio di input/output}
+\esempio{
+6
+}{9}
+
+\esempio{
+24
+}{11}
