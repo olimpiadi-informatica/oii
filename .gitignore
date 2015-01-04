@@ -1,0 +1,16 @@
+*~
+\#*#
+__pycache__
+.itime
+.import_error
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.pdf
+*.pyg
+*.pyc
+*.o
+*.ppu
+*.plist
+*DWARF*
