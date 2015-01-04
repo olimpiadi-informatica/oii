@@ -1,0 +1,86 @@
+\renewcommand{\nomebreve}{sommelier}
+\renewcommand{\titolo}{Corso per Sommelier}
+\renewcommand{\difficolta}{\normalsize \textsc{[Difficoltà D=2]}}
+
+\introduzione{}
+
+Paolo, per festeggiare il suo quarantesimo compleanno, si è iscritto a
+un corso per sommelier, dove impara a distinguere ed apprezzare le
+diverse tipologie di vini. Si è accorto però che, nonostante prenda
+solo un assaggio di ogni tipo di vino, per lui vale la regola
+fondamentale delle bevande alcoliche: quando le bevi, mai scendere di
+gradazione. Infatti, se per esempio Paolo assaggia un vino da 9 gradi
+e poi uno da 7, il giorno dopo si sveglierà con un grosso mal di testa
+indipendentemente dalle quantità.
+
+\begin{wrapfigure}{r}{4cm}
+  \begin{center}
+    \includegraphics[width=3cm]{image01.jpg}
+  \end{center}
+\end{wrapfigure}
+
+Per fortuna, in ogni serata del corso è disponibile l’elenco dei vini
+che verranno portati uno dopo l’altro, e di ogni vino viene riportata
+la gradazione alcolica. Non è ammesso mettere da parte un vino per
+berlo in seguito: ogni volta che gli viene passato un vino Paolo può
+decidere se assaggiarlo o meno, versandone un poco nel suo Tastevin.
+
+Inoltre, dal momento che dopo aver assaggiato un vino Paolo deve
+pulire accuratamente il suo Tastevin con un panno, questa operazione
+in pratica gli impedisce di assaggiare due vini consecutivi
+(nell’immagine qui a fianco potete vedere il Tastevin). Paolo desidera
+assaggiare il maggior numero di vini possibile.
+
+\vspace{0.3cm}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+\hline Cilento & Barolo & Lambrusco & Picolit & Verdicchio & Cannonau & Chianti & Pigato & Donzelle \\ 
+\hline 11 & 13 & 10 & 16 & 12 & 12 & 13 & 11 & 13\\
+\hline
+\end{tabular}
+\vspace{0.3cm}
+
+Ad esempio, se in una serata serviranno i vini mostrati nella tabella
+qui sopra, nell’ordine in cui compaiono nella tabella, il numero
+massimo di vini che Paolo può riuscire ad assaggiare, rispettando la
+regola, è quattro: può iniziare, indifferentemente, con il Cilento o
+con il Lambrusco, e poi assaggiare Verdicchio, Chianti e Donzelle. In
+questa maniera, la sequenza delle gradazioni alcoliche non scende mai:
+11 (oppure 10), 12, 13, 13. Ovviamente, come si vede nell’esempio, è
+possibile bere due o più vini con la stessa gradazione alcolica.
+
+\sezionetesto{Dati di input}
+Il file \verb'input.txt' è composto da 2 righe. La prima riga contiene
+$N$, un intero positivo: il numero di vini che saranno serviti nella
+serata. La seconda riga contiene $N$ interi positivi: le gradazioni
+alcoliche dei vini che saranno serviti, nell’ordine in cui saranno
+serviti.
+
+\sezionetesto{Dati di output}
+Il file \verb'output.txt' è composto da una sola riga contenente un
+solo intero positivo: il numero massimo di vini che Paolo può
+assaggiare nella serata, rispettando la regola di non diminuire la
+gradazione alcolica nella sequenza e, contemporaneamente, il vincolo
+di dover pulire il Tastevin, che gli impedisce di assaggiare due vini
+consecutivi.
+
+% Assunzioni
+\sezionetesto{Assunzioni}
+\begin{itemize}[nolistsep, noitemsep]
+\item $2 \le N \le 99$.
+\item I vini hanno una gradazione alcolica compresa tra 1 e 99.
+\end{itemize}
+
+% Esempi
+\sezionetesto{Esempio di input/output}
+\esempio{
+9
+
+11 13 10 16 12 12 13 11 13
+}{4}
+
+\esempio{
+12
+
+11 13 11 10 11 12 16 12 12 11 10 14
+}{5}

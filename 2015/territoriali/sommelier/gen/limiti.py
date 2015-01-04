@@ -1,0 +1,4 @@
+MINN = 2
+MAXN = 99
+MING = 1
+MAXG = 99
