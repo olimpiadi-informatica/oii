@@ -1,0 +1,103 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{lmodern}
+\renewcommand*\familydefault{\sfdefault}
+\usepackage{sfmath}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{wrapfig}
+\usepackage{enumitem}
+\usepackage[left=2cm, right=2cm, bottom=3cm]{geometry}
+\usepackage{textcomp}
+\usepackage{xstring}
+\IfFileExists{siunitx.sty}{
+ \usepackage[group-separator={\,}]{siunitx}
+}{
+ \newcommand{\num}[1]{#1}
+}
+\frenchspacing
+
+% Macro varie...
+\input{glyphtounicode}
+\pdfglyphtounicode{visiblespace}{3000}
+\pdfglyphtounicode{blank}{3000}
+\pdfglyphtounicode{visualspace}{3000}
+\pdfglyphtounicode{uni2423}{3000}
+\pdfgentounicode=1
+
+\newcommand{\formatline}[1]{
+ \IfBeginWith{#1}{ }{
+  \StrGobbleLeft{#1}{1}[\tmp]
+  \formatline{\tmp}
+ }{
+  \IfEndWith{#1}{ }{
+   \StrGobbleRight{#1}{1}[\tmp]
+   \formatline{\tmp}
+  }{
+   \StrSubstitute{#1}{ }{\textcolor{white}{\char32}}
+  }
+ }
+}
+
+\newcommand{\formatlines}[1]{
+ \IfSubStr{#1}{\par}{
+  \StrCut{#1}{\par}{\first}{\rest}
+  \formatline{\first}
+  \par
+  \formatlines{\rest}
+ }{
+  \formatline{#1}
+ }
+}
+
+\newcommand{\formatfile}[1]{
+ \tt \small \formatlines{#1}
+}
+
+\newcommand{\file}[1]{\texttt{#1}}
+\renewcommand{\arraystretch}{1.3}
+\newcommand{\esempio}[2]{
+\noindent\begin{minipage}{\textwidth}
+\begin{tabular}{|p{11cm}|p{5cm}|}
+	\hline
+	\textbf{File \file{input.txt}} & \textbf{File \file{output.txt}}\\
+	\hline
+	\formatfile{#1} &
+	\formatfile{#2} \\
+	\hline
+\end{tabular}
+\end{minipage}
+}
+
+\newcommand{\sezionetesto}[1]{
+    \section*{#1}
+}
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+\newcommand{\gara}{Olimpiadi Italiane di Informatica - Selezioni Territoriali 2014}
+
+%%%%% I seguenti campi verranno sovrascritti dall'\include{nomebreve} %%%%%
+\newcommand{\nomebreve}{}
+\newcommand{\titolo}{}
+\newcommand{\difficolta}{}
+
+% Modificare a proprio piacimento:
+\newcommand{\introduzione}{
+    \noindent{\Large \gara{}}
+
+    \vspace{0.5cm}
+    \noindent{\Huge \textbf \titolo{}~(\texttt{\nomebreve{}})}
+    \vspace{0.2cm}\\
+    \noindent{\difficolta{}}\\
+}
+
+\begin{document}
+
+\include{mojito}
+
+\end{document}
