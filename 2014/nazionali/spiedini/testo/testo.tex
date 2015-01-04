@@ -1,0 +1,155 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{lmodern}
+\renewcommand*\familydefault{\sfdefault}
+\usepackage{sfmath}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+%\usepackage[group-separator={\,}]{siunitx}
+\usepackage[left=2cm, right=2cm, bottom=3cm]{geometry}
+\frenchspacing
+
+\newcommand{\num}[1]{#1}
+
+% Macro varie...
+\newcommand{\file}[1]{\texttt{#1}}
+\renewcommand{\arraystretch}{1.3}
+\newcommand{\esempio}[2]{
+\noindent\begin{minipage}{\textwidth}
+\begin{tabular}{|p{11cm}|p{5cm}|}
+    \hline
+    \textbf{File \file{input.txt}} & \textbf{File \file{output.txt}}\\
+    \hline
+    \tt \small #1 &
+    \tt \small #2 \\
+    \hline
+\end{tabular}
+\end{minipage}
+}
+
+% Dati del task
+\newcommand{\gara}{Olimpiadi Italiane di Informatica -- Salerno 2013}
+\newcommand{\nome}{Spiedini di frutta}
+\newcommand{\nomebreve}{spiedini}
+
+\begin{document}
+% Intestazione
+\noindent{\Large \gara}
+\vspace{0.5cm}
+
+\noindent{\Huge \textbf \nome~(\texttt{\nomebreve})}
+
+% Descrizione del task
+\section*{Descrizione del problema}
+Ad Elisa piace molto la frutta, ma è anche molto esigente: il suo
+frutto preferito è la fragola, di cui non si stancherebbe mai; al
+contrario, riesce a mangiare solo un certo numero di altri frutti.
+
+In particolare, a ogni frutto Elisa assegna un valore che
+indica quanto quel frutto non le piace: $0$ per le fragole,
+altrimenti un numero intero compreso tra $1$ (sopportabile) e $9$ (lo
+detesta). In un pasto, Elisa può mangiare dei frutti solo se la somma
+dei loro valori non supera $K$.
+
+A una cena, Elisa ordina uno spiedino di $N$ frutti; sapendo
+che è possibile estrarre i frutti solo dagli estremi, e che
+Elisa deve mangiare ogni frutto che estrae dallo spiedino,
+aiutate Elisa a scegliere la strategia migliore per mangiare quante
+più fragole possibile.
+
+Per esempio, consideriamo il seguente spiedino con 11 frutti,
+dove la prima riga indica le posizioni dei frutti nello spiedino,
+numerate da $0$ a $10$, mentre la seconda riga contiene il valore del
+frutto (ricorda che il valore $0$ corrisponde sempre a una fragola):
+\begin{center}
+\setlength{\tabcolsep}{18pt}
+    \begin{tabular}{| c | c | c | c | c | c | c | c | c | c | c |}
+    \hline
+    0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+    1 & 0 & 2 & 8 & 0 & 5 & 1 & 6 & 0 & 0 & 3 \\
+    \hline
+    \end{tabular}
+\end{center}
+Questa tabella descrive, per esempio, il seguente spiedino:
+\begin{center}
+\noindent \includegraphics[width=0.97\textwidth]{spiedino.png}
+\end{center}
+
+Supponiamo che $K$ sia uguale a 9. La strategia
+migliore per Elisa è quella di mangiare i frutti fino alla posizione 1
+da sinistra, e fino alla posizione 8 da destra. In questa maniera mangia
+3 fragole (nelle posizioni 1, 8 e 9), mentre la somma dei valori dei
+frutti che non le piacciono è 4 (1 in posizione 0 e 3
+in posizione 10). Per riuscire a mangiare anche l'ultima fragola
+sarebbe necessario $K \ge 14$.
+
+Per risolvere il problema dovete scrivere una funzione
+$\texttt{solve} (N, K, S)$ che restituisca un singolo numero intero:
+il massimo numero di fragole che Elisa può mangiare, sapendo che lo
+spiedino è composto da $N$ frutti aventi valori $S_0, S_1, \dots,
+S_{N-1}$, e sapendo che Elisa tollera al massimo un valore di $K$.
+
+% Assunzioni
+\section*{Assunzioni}
+Per tutti i subtask vale l'assunzione $0 \le K \le 1\,000\,000\,000$.
+
+% Subtask
+\section*{Subtask}
+\begin{itemize}
+\item \textbf{Subtask 0 \phantom{1}[5 punti]:} caso di esempio.
+\item \textbf{Subtask 1 [10 punti]:} $1 \le N \le 500$.
+\item \textbf{Subtask 2 [27 punti]:} $1 \le N \le 5\,000$.
+\item \textbf{Subtask 3 [48 punti]:} $1 \le N \le 1\,000\,000$.
+\item \textbf{Subtask 4 [10 punti]:} $1 \le N \le 20\,000\,000$.
+\end{itemize}
+
+% Implementazione
+
+\section*{Dettagli di implementazione}
+Dovrai sottoporre esattamente un file con estensione: \texttt{.c},
+\texttt{.cpp} o \texttt{.pas}. Questo file deve implementare la
+funzione \texttt{solve} utilizzando uno dei seguenti
+prototipi.
+
+\subsection*{Programma in C o C++}
+\begin{verbatim}
+int solve(int N, int K, int* S);
+\end{verbatim}
+
+\subsection*{Programma in Pascal}
+\begin{verbatim}
+function solve(N: longint; K: longint; var S: array of longint): longint;
+\end{verbatim}
+
+La funzione implementata dovrà comportarsi come sopra
+descritto. Naturalmente sei libero di implementare altre routine
+ausiliarie per uso interno. La tua sottoposizione non deve effettuare
+direttamente operazioni di input o output, via console o via file di
+testo.
+
+\subsection*{Funzionamento del grader di esempio}
+Nella directory relativa a questo problema è presente una versione
+semplificata del grader usato durante la correzione, che potete usare
+per testare le vostre soluzioni in locale. Il grader di esempio legge
+i dati di input dal file \file{input.txt}, chiama la funzione che
+dovete implementare, e scrive il risultato restituito dalla vostra
+funzione sul file \file{output.txt}. Il file \file{input.txt} deve
+essere composto da $2$ righe, in questo formato:
+\begin{itemize}
+\item nella prima riga devono essere presenti $2$ interi: $N$ e $K$;
+\item nella seconda riga devono essere presenti $N$ interi: i valori
+  dei frutti: $S_0$, $S_1$, $\dots$, $S_{N-1}$.
+\end{itemize}
+
+% Esempi
+\section*{Esempio di input/output}
+\setlength{\tabcolsep}{6pt}
+\esempio{
+11 9
+
+1 0 2 8 0 5 1 6 0 0 3
+}{3}
+
+\end{document}

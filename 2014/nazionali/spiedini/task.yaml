@@ -1,0 +1,5 @@
+nome_breve: spiedini
+nome: Spiedini di frutta
+timeout: 1
+memlimit: 256
+token_mode: infinite
