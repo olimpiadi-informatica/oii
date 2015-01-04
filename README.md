@@ -37,6 +37,9 @@ Il formato utilizzato, al momento, è il cosiddetto *Italian format*.
           input esistente.
         * `generatore.*`: programma che per una certa lista di argomenti
           produce (su *stdout*) un certo input valido.
+        * `valida.*`: programma che dato un percorso (e se necessario
+          anche il numero del subtask) come argomento verifica se a quel
+          percorso c'è o no un file di input valido.
     * `sol/`
         * `soluzione.*`: la soluzione ufficiale. Viene usata per
           generare gli output.
@@ -45,3 +48,12 @@ Il formato utilizzato, al momento, è il cosiddetto *Italian format*.
           dal comando cmsMake.
     * `testo/`
         * `testo.tex`: il testo.
+
+## Lista di TODO
+
+* Alcuni task utilizzano `varie.py` per avere un input "hardcoded".
+  Andrebbe risolto il bug che impedisce di includere i file nella
+  sezione input/output di esempio (nel template LaTeX) e andrebbero
+  creati i vari `testo/example0.in`, i quali dovrebbero inoltre essere
+  symlinkati nella cartella `att/` in modo che gli esempi (in + out)
+  siano tutti scaricabili come allegati.
