@@ -1,0 +1,104 @@
+\newpage
+\setcounter{figure}{0}
+\definecolor{backcolor}{gray}{0.95}
+\pagecolor{backcolor}
+\createsection{\Solution}{Soluzione}
+\createsection{\SolDueBfs}{{\small{$\blacksquare$}} \normalsize Secondo approccio}
+\createsection{\SolUnaBfs}{{\small{$\blacksquare$}} \normalsize Primo approccio}
+
+\Solution
+Questo problema ammette diverse soluzioni ``specializzate'', in grado di risolvere solo alcuni dei subtask proposti. Non ci occuperemo di tali soluzioni parziali in questa sede; mostreremo invece due approcci, diversi ma equivalenti dal punto di vista della correttezza, per risolvere completamente il problema. 
+
+\SolUnaBfs
+\begin{wrapfigure}{r}{.35\textwidth}
+  \vspace*{-.8cm}
+  \begin{flushright}
+		\includegraphics[width=.34\textwidth]{asy_bottleneck/sol1.pdf}
+		\caption{Mappa d'esempio.}
+		\label{fig:fig1}
+	\end{flushright}
+	\vspace*{-1cm}
+\end{wrapfigure}
+La prima delle due soluzioni che proponiamo consiste in una versione modificata dell'algoritmo di \emph{visita in ampiezza} (BFS) di un grafo. Intuitivamente, partiamo dal PC di William, e visitiamo tutti i nodi a distanza 1, 2, $\dots$ fino a raggiungere il computer di Luca.
+Mano a mano che ci espandiamo nel grafo, manteniamo per ogni nodo $v$ la minima capacità del percorso tra il computer di William e $v$ stesso.
+
+Illustriamo i dettagli dell'algoritmo attraverso un esempio: supponiamo che la mappa della rete coincida con quella di Figura~\ref{fig:fig1}, dove il nodo blu ancora una volta corrisponde al PC di William (d'ora in poi indicato con $W$) e il nodo rosso a quello di Luca (d'ora in poi indicato con $L$).
+
+\begin{enumerate}[nolistsep, itemsep=2mm, leftmargin=.8cm]
+	\item Come prima cosa, per ogni nodo $v$ memorizziamo due valori: $\texttt{distanza}[v]$ indica la distanza tra il nodo $v$ e il nodo $W$, ovvero il minimo numero di archi necessari per raggiungere $v$ a partire da $W$, mentre $\texttt{velocità}[v]$ indica la minima velocità di trasmissione tra tutti i percorsi di lunghezza minima da $W$ a $v$. Inizialmente segniamo che $\texttt{distanza}[v] = \texttt{velocità}[v] = \infty$ per ogni nodo $v \neq W$. Per quanto riguarda il nodo $W$, invece, segniamo $\texttt{distanza}[W] = 0$ e 
+	$\texttt{velocità}[W] = \infty$. Al termine dell'esecuzione dell'algoritmo tutti i nodi avranno i valori \texttt{distanza} e \texttt{velocità} corretti. La risposta al problema sarà quindi $\texttt{velocità}[L]$.
+	
+	\item Consideriamo i nodi \emph{in ordine di distanza da $W$}, mano a mano che ci espandiamo. Supponiamo di star considerando il nodo $v$. Per ogni vicino $w$ di $v$ sia $c$ la capacità dell'arco $v - w$; se risulta che $\texttt{distanza}[w] > \texttt{distanza}[v]$ eseguiamo il doppio assegnamento $\texttt{distanza}[w] = \texttt{distanza}[v] + 1$, $\texttt{velocità}[w] = \min\{\texttt{velocità}[w], \texttt{velocità}[v], c\}$.
+\end{enumerate}
+\vfill
+\captionsetup[subfigure]{labelformat=empty}
+\begin{figure}[H]
+  \begin{subfigure}[c]{0.20\textwidth}
+  	\includegraphics[width=.99\textwidth]{asy_bottleneck/sol2.pdf}
+  	\caption{(2a)}
+  \end{subfigure}\hfill
+  \begin{subfigure}[c]{0.20\textwidth}
+\includegraphics[width=.99\textwidth]{asy_bottleneck/sol3a.pdf}
+	\caption{(2b)}
+  \end{subfigure}\hfill
+  \begin{subfigure}[c]{0.20\textwidth}
+\includegraphics[width=.99\textwidth]{asy_bottleneck/sol3b.pdf}
+	\caption{(2c)}
+  \end{subfigure}\hfill
+  \begin{subfigure}[c]{0.20\textwidth}
+\includegraphics[width=.99\textwidth]{asy_bottleneck/sol4a.pdf}
+	\caption{(2d)}
+  \end{subfigure}\\[3mm]
+  \begin{subfigure}[c]{0.20\textwidth}
+\includegraphics[width=.99\textwidth]{asy_bottleneck/sol4b.pdf}
+	\caption{(2e)}
+  \end{subfigure}\hfill
+  \begin{subfigure}[c]{0.20\textwidth}
+\includegraphics[width=.99\textwidth]{asy_bottleneck/sol4c.pdf}
+	\caption{(2f)}
+  \end{subfigure}\hfill
+  \begin{subfigure}[c]{0.20\textwidth}
+\includegraphics[width=.99\textwidth]{asy_bottleneck/sol5a.pdf}
+	\caption{(2g)}
+  \end{subfigure}\hfill
+  \begin{subfigure}[c]{0.20\textwidth}
+\includegraphics[width=.99\textwidth]{asy_bottleneck/sol6.pdf}
+	\caption{(2h)}
+  \end{subfigure}
+\end{figure}
+Le figure (2a) -- (2h) mostrano alcuni passi dell'algoritmo (sono state omesse alcune coppie di nodi per cui non valeva la disuguaglianza $\texttt{distanza}[w] > \texttt{distanza}[v]$). Per dimostrare che l'algoritmo è a tutti gli effetti corretto, cominciamo col notare che non appena il valore $\texttt{distanza}$ di un nodo risulta diverso da $\infty$, esso rappresenta effettivamente la distanza, in termini di archi, tra il nodo $W$ e il nodo $v$. Infatti, se immaginiamo di omettere completamente l'informazione $\texttt{velocità}$, l'algoritmo coincide con quello della \emph{visita in ampiezza} di un grafo, la cui correttezza viene qui data per assodata. Notiamo inoltre che dal momento che il grafo è connesso, al termine dell'esecuzione dell'algoritmo ogni nodo è stato processato.
+
+Rimane da dimostrare che al termine dell'algoritmo le informazioni \texttt{velocità} risultano corrette per ogni nodo\footnote{Si assume corretto per $W$ il valore fittizio $\texttt{velocità}[W] = \infty$.}. A tal fine, possiamo procedere per induzione sulla frontiera dei nodi: supponiamo di aver già processato tutti i nodi a distanza $< k$ da $W$, e che l'informazione $\texttt{velocità}$ trovate per tali nodi sia corretta: la tesi vale per la base di induzione $k = 1$, ovvero per il singolo nodo $W$. Vogliamo ora processare tutti i nodi a distanza esattamente $k$, e dimostrare che l'algoritmo attribuisce a tutti questi un valore \texttt{velocità} effettivamente corretto.
+
+Sia $v$ uno qualunque dei nodi a distanza $k$ da $W$: dimostriamo che al termine dell'esecuzione dell'algoritmo $\texttt{velocità}[v]$ contiene effettivamente la minima velocità di trasmissione tra tutti i percorsi composti da $k$ archi tra il nodo $W$ e il nodo $v$. Notiamo che ogni percorso composto da $k$ archi tra i nodi $W$ e $v$ necessariamente prevede come penultimo nodo un nodo $u$ a distanza $k-1$ da $W$. Possiamo allora immaginare di scegliere in tutti i modi possibili l'ultimo arco $u - v$ del percorso, con $u$ nodo a distanza $k-1$ da $W$, e cercare il percorso composto da $k-1$ archi con la velocità di trasmissione minima da $W$ a $u$. Poiché per ipotesi induttiva i valori \texttt{velocità} di tutti i nodi a distanza $k-1$ da $W$ contengono informazioni corrette, possiamo concludere che $$\texttt{velocità}[v] = \min_{u} \{\texttt{velocità}[u], \text{capacità dell'arco } u-v\},$$ dove il minimo va inteso tra tutti i nodi $u$ adiacenti a $v$ e posti a distanza $k-1$ da $W$. In effetti è facile convincersi che questo è esattamente il calcolo eseguito dall'algoritmo.
+
+\SolDueBfs
+La seconda soluzione nasce dall'osservazione che è possibile determinare in tempo costante se un particolare arco appartiene ad un percorso di lunghezza minima (in termini di archi) tra il PC di William e quello di Luca. Per ogni nodo $v$ del grafo memorizziamo due valori
+\begin{wrapfigure}{r}{.26\textwidth}
+  \vspace*{-.5cm}
+  \begin{flushright}
+		\includegraphics[width=.25\textwidth]{asy_bottleneck/sol_2bfs_1.pdf}\\
+		\includegraphics[width=.25\textwidth]{asy_bottleneck/sol_2bfs_2.pdf}\\
+	\end{flushright}
+	\vspace*{-1.2cm}
+\end{wrapfigure}
+\texttt{distanza\_da\_W} e \texttt{distanza\_da\_L}: essi rappresentano rispettivamente la distanza tra il computer $W$ di William e il computer $L$ di Luca, ovvero il minimo numero di archi che separano $v$ dal computer indicato. Possiamo precalcolare questi valori tramite due \emph{visite in ampiezza del grafo} (BFS), una a partire da $W$ e una a partire da $L$.
+
+Indichiamo con $d$ la distanza tra i nodi $W$ e $L$: $d$ coincide col valore $\texttt{distanza\_da\_W}[L]$, ovvero col valore $\texttt{distanza\_da\_L}[W]$. È facile convincersi del fatto che l'arco $u - v$ appartiene ad un percorso di lunghezza minima tra $L$ e $W$ se e solo se vale almeno una delle due condizioni:
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $\texttt{distanza\_da\_L}[u] + \texttt{distanza\_da\_W}[v] + 1 = d$, oppure
+	\item $\texttt{distanza\_da\_L}[v] + \texttt{distanza\_da\_W}[u] + 1 = d$.
+\end{itemize}
+Possiamo dunque iterare su tutti gli archi: la risposta al problema è pari alla capacità minima tra le capacità degli archi che appartengono ad almeno un percorso di lunghezza minima tra i nodi $W$ e $L$.
+
+\newpage
+\createsection{\Cppsol}{Esempio di codice \texttt{C++11}}
+\Cppsol
+Proponiamo qui un'implementazione per entrambe le soluzioni.\\[.2cm]
+\SolUnaBfs
+\colorbox{white}{\makebox[.99\textwidth][l]{\includegraphics[scale=1.2]{code_bottleneck_1.pdf}}}
+\newpage
+\SolDueBfs
+\colorbox{white}{\makebox[.99\textwidth][l]{\includegraphics[trim=3px 0 0 0, clip, scale=1.2]{code_bottleneck_2.pdf}}}
+
+\afterpage{\nopagecolor}

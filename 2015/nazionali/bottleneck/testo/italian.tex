@@ -1,0 +1,187 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+\usepackage{subcaption}
+
+\createsection{\Grader}{Grader di prova}
+
+\makeatletter
+\gdef\this@inputfilename{input.txt}
+\gdef\this@outputfilename{output.txt}
+\makeatother
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+\newcommand{\inputfile}{\texttt{input.txt}}
+\newcommand{\outputfile}{\texttt{output.txt}}
+
+% Collo di bottiglia (bottleneck)
+
+Luca e William stanno valutando una nuova e apparentemente vantaggiosa offerta della Fraudolent, la più diffusa compagnia telefonica dell'arcipelago delle isole NoWhere. Il contratto garantisce ai suoi utilizzatori che ogni comunicazione online tra due computer seguirà sempre il percorso più breve (in termini di nodi intermedi) all'interno della rete internet dell'arcipelago.
+
+Dati i trascorsi della società con la giustizia, tuttavia, i due ragazzi sono sospettosi, e temono che quello della Fraudolent sia solo un torbido tentativo di ingannare gli utenti più incauti: non a caso, infatti, il contratto parla di connessione \emph{più breve}, e mai di più veloce. Per fugare ogni dubbio, Luca e William decidono di valutare, nel caso in cui dovessero sottoscrivere la promozione, la velocità di trasmissione dei dati tra i propri computer.
+
+Per misurare la minima velocità di trasmissione garantita dal contratto, i ragazzi hanno mappato l'intera rete internet dell'arcipelago. Questa è rappresentata da un grafo in cui i vertici costituiscono i vari nodi della rete (tra cui i computer di William e di Luca) e gli archi identificano i collegamenti tra questi. Gli archi riportano anche la propria \emph{capacità}, cioè il massimo numero di megabit che ogni secondo possono fluire attraverso di essi. La \emph{velocità di trasmissione} in un percorso è pari alla minima capacità degli archi che lo compongono.
+
+William e Luca sanno che la Fraudolent, pur essendo vincolata da contratto a garantire una trasmissione che passi per il minimo numero possibile di nodi intermedi, sceglierà sempre, tra tutti, il percorso più lento per collegare due computer, per risparmiare sull'utilizzo della rete. 
+
+Aiuta Luca e William a determinare, data la mappa della rete dell'arcipelago, quale sarebbe la velocità di trasmissione dati tra i propri computer. Per esempio, consideriamo la rete in figura~\ref{fig:esempio}: il computer di William corrisponde al nodo 2, colorato di blu, mentre quello di Luca al nodo 8, colorato di rosso; i numeri sui collegamenti rappresentano la capacità degli archi, in megabit al secondo.
+
+\begin{figure}[h!]
+	\centering\hspace*{2.5cm}\includegraphics[scale = .75]{asy_bottleneck/esempio.pdf}
+	\caption{\label{fig:esempio}La rete dell'arcipelago.}
+\end{figure}
+
+I tre percorsi di lunghezza minima tra i due computer sono mostrati qui sotto. La velocità della connessione in questo caso sarebbe pari a 2 megabit al secondo, corrispondente alla velocità di trasmissione del secondo percorso.
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[c]{0.30\textwidth}
+    \centering\includegraphics[width=.95\textwidth]{asy_bottleneck/esempio_2.pdf}
+    \label{fig:percorso-1}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[c]{0.30\textwidth}
+    \centering\includegraphics[width=.95\textwidth]{asy_bottleneck/esempio_3.pdf}
+    \label{fig:percorso-2}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[c]{0.30\textwidth}
+    \centering\includegraphics[width=.95\textwidth]{asy_bottleneck/esempio_4.pdf}
+    \label{fig:percorso-3}
+  \end{subfigure}
+\end{figure}
+
+\Scoring
+Il tuo programma verrà testato su diversi test case raggruppati in subtask.
+Per ottenere il punteggio relativo ad un subtask, è necessario risolvere
+correttamente tutti i test relativi ad esso.
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+    \item \textbf{\makebox[2cm][l]{Subtask 1} [5 punti]:} Caso d'esempio
+    \item \textbf{\makebox[2cm][l]{Subtask 2} [7 punti]:} I nodi di rete sono collegati in sequenza, come in figura
+	    \begin{figure}[H]
+		    \centering\includegraphics[scale = .77]{asy_bottleneck/linea.pdf}
+	    \end{figure}
+	    È sempre garantito che il primo nodo della sequenza è il nodo 1, e che il nodo $k$ segue sempre il nodo $k-1$, per ogni $k \ge 2$.
+    \item \textbf{\makebox[2cm][l]{Subtask 3} [10 punti]:} I nodi di rete sono collegati ad anello, come in figura
+	    \begin{figure}[H]
+		    \centering\includegraphics[scale = .77]{asy_bottleneck/anello.pdf}
+	    \end{figure}
+	    È sempre garantito che il nodo $N$ è collegato al nodo 1, e che il nodo $k$ segue il nodo $k-1$, per ogni $2 \le k \le N$.
+    \item \textbf{\makebox[2cm][l]{Subtask 4} [11 punti]:} I nodi di rete sono collegati a griglia, come in figura
+	    \begin{figure}[H]
+		    \centering\includegraphics[scale = .77]{asy_bottleneck/griglia.pdf}
+	    \end{figure}
+	    È sempre garantito che i nodi seguiranno una numerazione per righe.
+    \item \textbf{\makebox[2cm][l]{Subtask 5} [17 punti]:} Tra ogni coppia di nodi di rete esiste un unico percorso che li collega, come in figura
+	    \begin{figure}[H]
+		    \centering\includegraphics[scale = .77]{asy_bottleneck/albero.pdf}
+	    \end{figure}
+    \item \textbf{\makebox[2cm][l]{Subtask 6} [22 punti]:} $N, M\leq 1000$.
+    \item \textbf{\makebox[2cm][l]{Subtask 7} [28 punti]:} Nessuna limitazione specifica (vedi la sezione \textbf{Assunzioni}).
+\end{itemize}
+
+\newpage
+\Implementation
+Dovrai sottoporre esattamente un file con estensione \texttt{.c}, \texttt{.cpp} o \texttt{.pas}.
+
+\begin{warning}
+Tra gli allegati a questo task troverai un template (\texttt{bottleneck.c}, \texttt{bottleneck.cpp}, \texttt{bottleneck.pas}) con un esempio di implementazione.
+\end{warning}
+
+Dovrai implementare la seguente funzione:
+
+\begin{center}\begin{tabular}{|c|l|}
+\hline
+C/C++    & \begin{minipage}{.87\textwidth}
+\begin{verbatim}
+int Analizza(int N, int M, int W, int L,
+             int arco_da[], int arco_a[], int capacita[], int R, int C);
+\end{verbatim}
+\end{minipage}\\
+\hline
+Pascal & \begin{minipage}{.87\textwidth}
+\begin{verbatim}
+function Analizza(N, M, W, L: longint;
+                  var arco_da, arco_a, capacita: array of longint;
+                  R, C: longint): longint;
+\end{verbatim}
+\end{minipage}\\
+\hline
+\end{tabular}\end{center}
+dove:
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $N$ rappresenta il numero di nodi di rete.
+	\item $M$ rappresenta il numero di collegamenti.
+	\item $W$ e $L$ sono rispettivamente il computer di William e quello di Luca.
+	\item \texttt{arco\_da} e \texttt{arco\_a} sono due array di dimensione $M$ che rappresentano i collegamenti. L'$i$-esimo collegamento di rete connette (in modo bidirezionale) i nodi \texttt{arco\_da}$[i]$ e \texttt{arco\_a}$[i]$. È garantito che lo stesso collegamento non venga mai ripetuto.
+	\item \texttt{capacita} è un array di dimensione $M$. L'intero \texttt{capacita}$[i]$ rappresenta la capacità dell'$i$-esimo collegamento, in megabit al secondo.
+	\item $R$ e $C$ sono parametri speciali che di norma valgono $-1$. L'unica eccezione è il caso della topologia a griglia (vedi \textbf{Subtask 4}), in cui $R$ e $C$ rappresentano rispettivamente il numero di righe e di colonne della griglia.
+\end{itemize}
+
+\Grader
+Nella directory relativa a questo problema è presente una versione 
+semplificata del grader usato durante la correzione, che potete usare
+per testare le vostre soluzioni in locale. Il grader di esempio legge
+i dati di input dal file \texttt{input.txt}, a quel punto chiama la
+funzione \texttt{Analizza} che dovete implementare. Il grader scrive sul file \outputfile{} la risposta fornita dalla funzione \texttt{Analizza}.
+
+Nel caso vogliate generare un input per un test di valutazione, il file \inputfile{} deve avere questo formato:
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: contiene l'intero \texttt{N}, che rappresenta il numero di nodi di rete, l'intero \texttt{M}, che rappresenta il numero di collegamenti, gli interi $W$ e $L$, che sono i computer di William e di Luca rispettivamente, gli interi $R$ e $C$, che di norma valgono -1 e nel caso della topologia a griglia rappresentano rispettivamente il numero di righe e di colonne della griglia.
+\item Righe $2, \dots, M+1$: l'$i$-esima riga contiene tre interi $x_i$, $y_i$, $z_i$ con $1\le x_i\le N$ e $1\le y_i\le N$, che rappresentano un collegamento tra i nodi $x_i$ e $y_i$ con capacità $z_i$.
+\end{itemize}
+
+Il file \outputfile{} invece ha questo formato:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: contiene il valore restituito dalla funzione \texttt{Analizza}.
+\end{itemize}
+
+\newpage
+\Constraints 
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $2 \le N \le 100\,000$.
+	\item $1 \le M \le 1\,000\,000$.
+	\item Le capacità dei collegamenti sono interi compresi tra $0$ e $1\,000\,000\,000$.
+	\item Quando $R$ e $C$ non valgono entrambi $-1$, vale che $1 \le R,C \le 300$.
+	\item Il grafo della rete è connesso, cioè ogni nodo è raggiungibile da tutti gli altri.
+	\item Nessun collegamento connette un nodo con se stesso.
+	\item Per ogni coppia di nodi c'è al più un collegamento che li connette.
+\end{itemize}
+
+\Examples
+\begin{example}
+\exmp{
+12 17 2 8 3 4
+1 2 1
+2 3 8
+3 4 3
+1 5 3
+2 6 7
+3 7 2
+4 8 9
+5 6 4
+5 9 6
+6 7 5
+7 8 6
+9 10 1
+10 11 2
+11 12 5
+10 6 8
+11 7 5
+8 12 2
+}{%
+2
+}%
+\end{example}
+
+Questo caso di input corrisponde all'esempio spiegato nel testo.
+
+\include{soluzione_bottleneck_ita}
