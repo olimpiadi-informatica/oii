@@ -1,0 +1,171 @@
+% Template per generare
+
+\documentclass[a4paper,11pt]{article}
+\usepackage{lmodern}
+\renewcommand*\familydefault{\sfdefault}
+\usepackage{sfmath}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\usepackage{enumitem}
+% \usepackage[group-separator={\,}]{siunitx}
+\usepackage[left=2cm, right=2cm, bottom=3cm]{geometry}
+\frenchspacing
+
+\newcommand{\num}[1]{#1}
+
+% Macro varie...
+\newcommand{\file}[1]{\texttt{#1}}
+\renewcommand{\arraystretch}{1.3}
+\newcommand{\esempio}[2]{
+\noindent\begin{minipage}{\textwidth}
+\begin{tabular}{|p{11cm}|p{5cm}|}
+	\hline
+	\textbf{File \file{input.txt}} & \textbf{File \file{output.txt}}\\
+	\hline
+	\tt \small #1 &
+	\tt \small #2 \\
+	\hline
+\end{tabular}
+\end{minipage}
+}
+
+% Dati del task
+\newcommand{\gara}{Olimpiadi Italiane di Informatica - Selezioni Territoriali 2013}
+\newcommand{\nome}{Gita a Gardaland}
+\newcommand{\nomebreve}{gardaland}
+
+\begin{document}
+
+
+% Intestazione
+\noindent{\Large \gara}
+\vspace{0.5cm}
+
+\noindent{\Huge \textbf \nome~(\texttt{\nomebreve})}
+\vspace{0.2cm}\\
+\noindent{\large \textsc{Difficoltà D=1}}
+
+% Descrizione del task
+\section*{Descrizione del problema}
+Nel 2012 le Olimpiadi Internazionali di Informatica (IOI) si sono
+svolte, per la prima volta, in Italia, a Sirmione.  Come da
+tradizione, nella giornata tra le due gare i concorrenti sono andati a
+divertirsi in un parco giochi, in questo caso, Gardaland.  La mattina
+di quel giorno decine di pullman hanno prelevato i quattro ragazzi che
+costituiscono la squadra olimpica di ciascuna nazione dal Garda
+Village, dove erano stati alloggiati, e li hanno portati a Gardaland.
+
+Come sempre negli spostamenti, le varie nazioni erano state ripartite
+a blocco unico tra i pullman, ossia tutti gli atleti di una stessa
+nazione trovavano posto su uno stesso pullman.  Per esempio, sul
+pullman dell’Italia viaggiavano anche Giappone, Israele e Irlanda.  Al
+ritorno però, come sempre succede alle IOI, dopo una giornata in un
+parco giochi i ragazzi hanno fatto amicizia tra di loro, e al momento
+di tornare sui pullman sono saliti alla rinfusa.
+
+Grazie al lavoro delle guide, per ogni pullman è stata stilata una
+lista contenente, per ogni nazione, il numero di ragazzi a bordo.  Il
+vostro compito è quello di aiutare Monica, responsabile
+dell’organizzazione, a capire se i pullman possono partire, ovvero se
+tutti i quattro ragazzi di ogni nazione che sono arrivati a Gardaland
+sono saliti sui pullman.  In caso contrario, dovete segnalare a Monica
+in quanti mancano all’appello, divisi per nazioni.
+
+\section*{Dati di input}
+Il file \verb'input.txt' è composto da $1+N+L$ righe.  La prima riga
+contiene due interi positivi separati da uno spazio: il numero $N$
+delle nazioni e il numero $L$ di righe contenenti informazioni su chi
+è attualmente già salito sui pullman.  (Ciascuna nazione verrà qui
+rappresentata con un intero compreso tra $0$ e $N-1$).  Ognuna delle
+successive $N$ righe contiene un intero positivo: nella riga $i+1$
+(con $i \ge 1$) troviamo il numero totale di ragazzi della nazione
+$i-1$.  Ciascuna delle rimanenti $L$ righe contiene due interi
+positivi: un intero compreso tra $0$ e $N-1$ che rappresenta la
+nazione, e un intero positivo che specifica quanti ragazzi di quella
+nazione sono su un certo pullman.  Ovviamente una stessa nazione può
+comparire diverse volte nelle $L$ righe, e più precisamente compare su
+tante righe quanti sono i pullman ospitanti atleti di quella nazione.
+
+\section*{Dati di output}
+Il file \verb'output.txt' è composto da una sola riga contenente
+l'intero $0$ (zero) se non manca alcun ragazzo.  Altrimenti, il file
+contiene $1+C$ righe: la prima riga contiene un intero $C$, ovvero il
+numero di nazioni che hanno ragazzi ancora a Gardaland.  Le restanti
+$C$ righe contengono due interi: l'identificativo della nazione e il
+numero di ragazzi di quella nazione che non sono ancora saliti su
+alcun pullman.  E’ necessario stampare le nazioni nell'ordine in cui
+sono state lette, ovvero in ordine crescente in base
+all'identificativo.
+
+% Assunzioni
+\section*{Assunzioni}
+\begin{itemize}[nolistsep, noitemsep]
+  \item $2 \le N \le 100$
+  \item $N \le L \le 1000$
+  \item Contrariamente alle olimpiadi di informatica reali, dove
+    gareggiano (massimo) $4$ ragazzi per ogni nazione, nei casi di
+    input si assume che ogni nazione abbia al massimo 100 ragazzi, e
+    almeno $1$ ragazzo. Quindi, indicando con $R_i$ il numero di
+    ragazzi della $i$-esima nazione, vale sempre $1 \le R_i \le 100$.
+\end{itemize}
+
+% Esempi
+\section*{Esempio di input/output}
+\esempio{
+3 5
+
+4
+
+4
+
+3
+
+0 2
+
+1 3
+
+0 1
+
+2 2
+
+1 1
+}{
+2
+
+0 1
+
+2 1
+}
+
+\esempio{
+3 6
+
+4
+
+4
+
+4
+
+0 2
+
+1 3
+
+2 1
+
+0 2
+
+2 3
+
+1 1
+}{0}
+
+\section*{Nota}
+Un programma che restituisce sempre lo stesso valore, indipendentemente dai dati in \texttt{input.txt}, non totalizza alcun punteggio.
+
+\end{document}
