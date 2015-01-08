@@ -1,0 +1,160 @@
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage{framed}
+\usepackage[bottom]{footmisc}
+\usepackage{caption}
+\usepackage[colorlinks=true, linkcolor=true, urlcolor=blue]{hyperref}
+
+\createsection{\Grader}{Grader di prova}
+
+\makeatletter
+\gdef\this@inputfilename{input.txt}
+\gdef\this@outputfilename{output.txt}
+\makeatother
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+\newcommand{\inputfile}{\texttt{input.txt}}
+\newcommand{\outputfile}{\texttt{output.txt}}
+
+% Taglialegna (taglialegna)
+
+La Abbatti S.p.A. è una grossa azienda che lavora nel settore del disboscamento. In particolare, nel tempo si è specializzata nel taglio degli \emph{alberi cortecciosi}, una tipologia di alberi estremamente alti, robusti e ostinati. Si tratta di una specie molto ordinata: i boschi formati da questi alberi consistono in una lunghissima fila di tronchi disposti lungo una fila orizzontale a esattamente un decametro l'uno dall'altro. Ogni albero ha una altezza, espressa da un numero (positivo) di decametri.
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[scale=1.1]{asy_taglialegna/intro.pdf}\\
+\end{figure}
+
+Il taglio di un albero corteccioso è un compito delicato e, nonostante l'uso delle più avanzate tecnologie di abbattimento, richiede comunque molto tempo, data la loro cortecciosità. Gli operai sono in grado di segare i tronchi in modo che l'albero cada a destra o a sinistra, secondo la loro scelta.
+
+Quando un albero corteccioso viene tagliato e cade, si abbatte sugli eventuali alberi non ancora tagliati che si trovano nella traiettoria della caduta, ovvero tutti quegli alberi non ancora tagliati che si trovano ad una distanza strettamente minore dell'altezza dell'albero appena segato, nella direzione della caduta. Data la mole degli alberi cortecciosi, gli alberi colpiti dalla caduta vengono a lora volta spezzati alla base, cadendo nella direzione dell'urto, innescando un effetto domino.
+
+Per assicurarsi il primato nel settore, la Abbatti S.p.A. ha deciso di installare un sistema in grado di analizzare il bosco, determinando quali alberi gli operai dovranno segare, nonchè la direzione della loro caduta, affinchè tutti gli alberi cortecciosi risultino abbattuti alla fine del processo. Naturalmente, il numero di alberi da far tagliare agli operai deve essere il minore possibile, per contenere i costi. In quanto consulente informatico della società, sei incaricato di implementare il sistema.
+
+\Scoring
+Il tuo programma verrà testato su diversi test case raggruppati in subtask.
+Per ottenere il punteggio relativo ad un subtask, è necessario risolvere
+correttamente tutti i test relativi ad esso.
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item \textbf{\makebox[2cm][l]{Subtask 1} [5 punti]}: Casi d'esempio.
+\item \textbf{\makebox[2cm][l]{Subtask 2} [9 punti]}: Gli alberi possono essere alti solo 1 o 2 decametri.
+\item \textbf{\makebox[2cm][l]{Subtask 3} [20 punti]}: ${N} \le 50$.
+\item \textbf{\makebox[2cm][l]{Subtask 4} [19 punti]}: ${N} \le 400$.
+\item \textbf{\makebox[2cm][l]{Subtask 5} [22 punti]}: ${N} \le 5000$.
+\item \textbf{\makebox[2cm][l]{Subtask 6} [14 punti]}: ${N} \le 100\,000$.
+\item \textbf{\makebox[2cm][l]{Subtask 7} [11 punti]}: Nessuna limitazione specifica (vedi la sezione \textbf{Assunzioni}).
+\end{itemize}
+
+\Implementation
+
+Dovrai sottoporre esattamente un file con estensione \texttt{.c}, \texttt{.cpp} o \texttt{.pas}.
+
+\begin{warning}
+Tra gli allegati a questo task troverai un template (\texttt{taglialegna.c}, \texttt{taglialegna.cpp}, \texttt{taglialegna.pas}) con un esempio di implementazione.
+\end{warning}
+
+Dovrai implementare la seguente funzione:
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|void Pianifica(int N, int altezza[]);|\\ % cambiato *altezza con altezza[]
+\hline
+Pascal & \verb|procedure Pianifica(N: longint; var altezza: array of longint);|\\
+\hline
+\end{tabularx}\end{center}
+
+
+${N}$ è il numero di alberi cortecciosi nel bosco, mentre \texttt{altezza[i]} contiene, per ogni $0 \le {i} < {N}$, l'altezza, in decametri, dell'${i}$-esimo albero corteccioso a partire da sinistra. La funzione dovrà chiamare la routine già implementata
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|void Abbatti(int indice, int direzione);|\\
+\hline
+Pascal & \verb|procedure Abbatti(indice: longint; direzione: longint);|\\
+\hline
+\end{tabularx}\end{center}
+
+dove \texttt{indice} è l'indice (da 0 a ${N}-1$) dell'albero da abbattere, e \texttt{direzione} è un intero che vale 0 se l'albero deve cadere a sinistra e 1 se invece deve cadere a destra.
+
+\Grader
+Nella directory relativa a questo problema è presente una versione 
+semplificata del grader usato durante la correzione, che potete usare
+per testare le vostre soluzioni in locale. Il grader di esempio legge
+i dati di input dal file \texttt{input.txt}, a quel punto chiama la
+funzione \texttt{Pianifica} che dovete implementare. Il grader scrive sul file \outputfile{} il resoconto delle chiamate ad \texttt{Abbatti}.
+
+Nel caso vogliate generare un input per un test di valutazione, il file \inputfile{} deve avere questo formato:
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: contiene l'intero ${N}$, il numero di alberi cortecciosi nel bosco (consigliamo di non superare il valore 50 data l'inefficienza del grader fornito).
+\item Riga $2$: contiene ${N}$ interi, di cui l'${i}$-esimo rappresenta l'altezza in decametri dell'albero di indice ${i}$.
+\end{itemize}
+
+Il file \outputfile{} invece ha questo formato:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Righe dalla $1$ in poi: La $i$-esima di queste righe contiene i due parametri passati alla funzione \texttt{Abbatti}, cioè l'indice dell'albero tagliato e la direzione della caduta (0 indica sinistra e 1 indica destra), nell'ordine delle chiamate.
+\end{itemize}
+
+\Constraints 
+\begin{itemize}[nolistsep,itemsep=2mm]
+  \item $1 \le {N} \le 2\,000\,000$.
+  \item L'altezza di ogni albero è un numero intero di decametri compreso tra 1 e $1\,000\,000$.
+  \item Un'esecuzione del programma viene considerata errata se:\begin{itemize}
+  	\item Al termine della chiamata a \texttt{Pianifica} tutti gli alberi sono caduti, ma il numero di alberi segati dagli operai non è il minimo possibile.
+  	\item Al termine della chiamata a \texttt{Pianifica} non tutti gli alberi sono caduti.
+  	\item Viene fatta una chiamata ad \texttt{Abbatti} con un indice o una direzione non validi.
+  	\item Viene fatta una chiamata ad \texttt{Abbatti} con l'indice di un albero già caduto, direttamente ad opera degli operai o indirettamente a seguito dell'urto con un altro albero.
+  \end{itemize}
+\end{itemize}
+
+
+\Examples
+\begin{example}
+\exmp{
+7
+2 3 2 1 4 2 1
+}{%
+4 0
+5 1
+}%
+\exmp{
+6
+3 1 4 1 2 1
+}{%
+0 1
+}%
+\end{example}
+
+
+\Explanation
+Nel \textbf{primo caso d'esempio} è possibile abbattere tutti gli alberi segando il quinto albero (alto 4 decametri) facendolo cadere a sinistra, e il sesto albero (alto 2 decametri) facendolo cadere a destra. Il primo albero tagliato innesca un effetto domino che abbatte tutti gli alberi alla sua sinistra, mentre il secondo abbatte l'ultimo albero nella caduta.
+\begin{center}
+	\def\sf{.83}
+	\includegraphics[scale=\sf]{asy_taglialegna/tc1_1.pdf}\hfill
+	\includegraphics[scale=\sf]{asy_taglialegna/tc1_2.pdf}\hfill
+	\includegraphics[scale=\sf]{asy_taglialegna/tc1_3.pdf}\\[4mm]
+	%
+	\includegraphics[scale=\sf]{asy_taglialegna/tc1_4.pdf}\hfill
+	\includegraphics[scale=\sf]{asy_taglialegna/tc1_5.pdf}\hfill
+	\includegraphics[scale=\sf]{asy_taglialegna/tc1_6.pdf}\\
+\end{center}
+\vspace{1cm}
+Nel \textbf{secondo caso d'esempio} tagliando il primo albero in modo che cada verso destra vengono abbattuti anche tutti gli alberi rimanenti.
+\begin{center}
+	\def\sf{.83}
+	\includegraphics[scale=\sf]{asy_taglialegna/tc2_1.pdf}\hfill
+	\includegraphics[scale=\sf]{asy_taglialegna/tc2_2.pdf}\hfill
+	\includegraphics[scale=\sf]{asy_taglialegna/tc2_3.pdf}\hfill
+	\includegraphics[scale=\sf]{asy_taglialegna/tc2_4.pdf}
+\end{center}
+
+\include{soluzione_taglialegna_ita}

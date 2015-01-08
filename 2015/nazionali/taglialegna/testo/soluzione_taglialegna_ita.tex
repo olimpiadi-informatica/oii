@@ -1,0 +1,108 @@
+\newpage
+\setcounter{figure}{0}
+\definecolor{backcolor}{gray}{0.95}
+\pagecolor{backcolor}
+\createsection{\Solution}{Soluzione}
+\createsection{\Intro}{{\small{$\blacksquare$}} \normalsize Introduzione e concetti generali}
+\createsection{\Nquadro}{{\small{$\blacksquare$}} \normalsize Una soluzione $O(N^2)$}
+\createsection{\N}{{\small{$\blacksquare$}} \normalsize Una soluzione $O(N)$}
+\Solution
+
+\Intro
+Risolveremo questo problema mediante la tecnica della \emph{programmazione dinamica}. Presenteremo inizialmente una soluzione quadratica nel numero di alberi, e successivamente mostreremo come rendere la stessa soluzione più efficiente.
+
+Entrambe le soluzioni affondano le proprie radici nella stessa osservazione fondamentale, cioè il fatto che possiamo supporre senza perdita di generalità che il primo taglio effettuato dagli operai abbia come effetto quello di abbattere il primo albero. A tal fine, gli operai hanno due opzioni:
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item tagliare, facendolo cadere a destra, l'albero 1, oppure
+	\item tagliare, facendolo cadere a sinistra, un albero la cui caduta provochi l'abbattimento dell'albero 1.
+\end{itemize}
+In entrambi gli scenari, dopo il primo taglio saranno rimasti intatti solo gli alberi da un certo indice in poi, e ci saremo ridotti a dover abbattere, col minor numero possibile di tagli, un numero minore di alberi rispetto al caso iniziale.
+
+\Nquadro
+Definiamo alcuni concetti che torneranno più volte utili nel corso della spiegazione di entrambe le soluzioni. Chiamiamo \texttt{rep} \emph{dell'albero} $i$, indicato con $\texttt{rep}[i]$, l'indice dell'albero più a destra che viene abbattuto dalla caduta dell'albero $i$, quando questo cade verso destra; analogamente, chiamiamo \texttt{lep} \emph{dell'albero} $i$, indicato con $\texttt{lep}[i]$, l'indice dell'albero più a sinistra che viene abbattuto dalla caduta dell'albero $i$, quando questo cade verso sinistra. Per rendere più chiaro il significato di \texttt{lep} e \texttt{rep} osserviamo l'esempio in figura~\ref{fig:sol1}.
+
+\begin{wrapfigure}{l}{8cm}
+	\vspace*{-.5cm}
+	\centering\includegraphics[width=8cm]{asy_taglialegna/sol_1.pdf}
+	\caption{}
+	\label{fig:sol1}
+    \vspace*{-.6cm}
+\end{wrapfigure}
+
+Nell'esempio il \texttt{rep} dell'albero 7 è 10, perché l'albero 7, una volta tagliato e lasciato cadere a destra, abbatte l'albero 8, che cade a sua volta abbattendo gli alberi 9 e 10; il \texttt{lep} dell'albero 6 invece è 6, perché l'albero in questione è alto 1 decametro e come tale non è in grado di abbattere nessun altro albero.
+
+Calcolare \texttt{rep} e \texttt{lep} di ogni albero è semplice: il \texttt{rep} dell'albero $i$ è pari al maggiore tra i \texttt{rep} degli alberi che $i$ abbatte quando cade verso destra, o, nel caso in cui $i$ non abbatta alcun albero nella caduta, a $i$ stesso. Analogamente, il \texttt{lep} dell'albero $i$ è pari al minore tra i \texttt{lep} degli alberi che $i$ abbatte quando cade verso sinistra, o, nel caso in cui $i$ non abbatta alcun albero nella caduta, a $i$ stesso.
+
+\begin{minipage}{.49\textwidth}
+	\colorbox{white}{\makebox[.99\textwidth][l]{\includegraphics[scale=1.17]{aux/sol_taglialegna_quadratica_rep.pdf}}}
+\end{minipage}
+\hfill
+\begin{minipage}{.49\textwidth}
+	\colorbox{white}{\makebox[.99\textwidth][l]{\includegraphics[scale=1.17]{aux/sol_taglialegna_quadratica_lep.pdf}}}
+\end{minipage}
+
+A questo punto possiamo implementare l'osservazione dell'introduzione, giungendo alla formulazione top-down dell'algoritmo della prossima pagina. Volendo privilegiare la trasparenza nella spiegazione, abbiamo volutamente ignorato la parte di memoizzazione (\emph{memoization}), che non può invece essere trascurata in una implementazione reale.
+
+\colorbox{white}{\makebox[.99\textwidth][l]{\includegraphics[scale=1.17]{aux/sol_taglialegna_quadratica_body.pdf}}}
+
+Sfruttando le informazioni calcolate da \texttt{risolvi}, è facile ricostruire la sequenza completa dei tagli e risolvere il problema. La soluzione del problema coincide con la chiamata \verb|ricostruisci_tagli(0)| nel codice qui sotto.
+
+\colorbox{white}{\makebox[.99\textwidth][l]{\includegraphics[scale=1.17]{aux/sol_taglialegna_quadratica_ricostruisci.pdf}}}
+
+Analizziamo ora la complessità computazionale dell'algoritmo proposto. Il calcolo dei valori \texttt{lep} e \texttt{rep} richiede, per ogni albero, al più $O(N)$ operazioni, dunque il numero di operazioni necessarie per calcolare questi valori per tutti gli $N$ alberi è proporzionale $N^2$. Analogamente, per calcolare $\texttt{risolvi}(i)$ è necessario, al caso peggiore, considerare tutti gli alberi alla destra di $i$, rendendo il calcolo degli $N$ valori di $\texttt{risolvi}(i)$ quadratico nel numero di alberi. Infine, il numero di operazioni svolte per la ricostruzione della sequenza di tagli è proporzionale al numero di alberi tagliati, dunque la complessità di questa ultima fase è pari a $O(N)$. In totale, quindi, l'intero algoritmo ha complessità $O(N^2)$.
+
+\N
+Prima di illustrare la soluzione lineare, introduciamo un altro paio di concetti importanti.
+
+Definiamo \emph{abbattitore di un albero $i$}, indicato con $\texttt{abbattitore}[i]$, l'indice del primo albero a destra di $i$, se esiste, che abbatte $i$ quando cade verso sinistra; nel caso in cui l'abbattitore di $i$ non esista, assegneremo convenzionalmente $\texttt{abbattitore}[i] = \infty$.
+
+Definiamo inoltre \emph{catena di abbattitori dell'albero $i$} la sequenza formata da $i$, dall'abbattitore di $i$, dall'abbattitore dell'abbattitore di $i$, e così via: $$\text{catena di abbattitori di }i = i\rightarrow\texttt{abbattitore}[i]\rightarrow\texttt{abbattitore}[\texttt{abbattitore}[i]]\rightarrow \cdots,$$ dove l'iterazione viene troncata nel momento in cui giungiamo ad un albero che non ammette abbattitore. La catena di abbattitori di $i$ non è mai vuota, perché contiene sempre almeno un elemento, cioè $i$ stesso. Per fissare il concetto, consideriamo la figura 2.
+
+\begin{wrapfigure}{l}{8.5cm}
+	\vspace*{-.5cm}
+	\centering\includegraphics[width=8.5cm]{asy_taglialegna/sol_2.pdf}
+	\caption{}
+	\label{fig:sol2}
+    \vspace*{-.6cm}
+\end{wrapfigure}
+Nel caso in figura, ad esempio, l'abbattitore dell'albero 6 è l'albero 7, perché tra tutti gli alberi che lo abbattono se lasciati cadere a sinistra, 7 è il primo. La catena di abbattitori dell'albero 0 è $0\rightarrow 2\rightarrow 4$; la catena di abbattitori dell'albero 5 invece consiste del solo albero 5.
+
+L'osservazione che permette di rendere la soluzione precedente più efficiente consiste nel notare che la catena di abbattitori dell'albero $i$ è formata da tutti quegli alberi che sono in grado di abbattere $i$ quando vengono lasciati cadere a sinistra. In altre parole, abbiamo appena constatato il fatto che gli alberi che abbattono $i$ cadendo a sinistra sono disposti in maniera molto ordinata, e si raggiungono a partire dall'albero $i$ passando di volta in volta da un albero al suo \texttt{abbattitore}.
+
+Mostriamo ora come è possibile costruire velocemente le informazioni \texttt{lep}, \texttt{rep} e \texttt{abbattitore} per ogni albero:
+
+\begin{minipage}[b][2.7cm][t]{.47\textwidth}
+	\colorbox{white}{\makebox[.99\textwidth][l]{\includegraphics[scale=1.17]{aux/sol_taglialegna_lineare_rep.pdf}}}
+\end{minipage}
+\hfill
+\begin{minipage}[b][2.7cm][t]{.51\textwidth}
+	\colorbox{white}{\makebox[.99\textwidth][l]{\includegraphics[scale=1.17]{aux/sol_taglialegna_lineare_lep.pdf}}}
+\end{minipage}
+
+L'idea alla base del calcolo è, a tutti gli effetti, quella di simulare l'\emph{effetto domino}. Consideriamo ad esempio il calcolo di \texttt{rep} per l'albero $i$:
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item inizialmente viene controllato se $i$, cadendo, abbatte l'albero $i+1$;
+	\item se sì, allora tutti gli alberi da $i+1$ a $\texttt{rep}[i+1]$ sono abbattuti dalla caduta di $i$, e $\texttt{rep}[i]$ viene temporaneamente impostato a $\texttt{rep}[i+1]$;
+	\item successivamente viene controllato se $i$, continuando la caduta, abbatte anche il primo albero non ancora caduto alla destra di $i$, cioè $\texttt{rep}[i+1] + 1$;
+	\item se sì, allora tutti gli alberi da $\texttt{rep}[i+1] + 1$ a $\texttt{rep}[\texttt{rep}[i+1] + 1]$ sono abbattuti dalla caduta di $i$, e $\texttt{rep}[i]$ viene temporaneamente impostato a $\texttt{rep}[\texttt{rep}[i+1] + 1]$;
+	\item ...
+\end{itemize}
+Dimostrare che questo metodo è in effetti capace di calcolare \texttt{lep}, \texttt{rep} e \texttt{abbattitore} di tutti gli alberi in tempo lineare è un semplice esercizio di analisi ammortizzata\footnote{Per un'introduzione all'argomento dell'analisi ammortizzata si consideri ad esempio il documento disponibile al seguente indirizzo: \url{http://goo.gl/70egpB}}, ma non ce ne occuperemo qui per non appesantire la discussione.
+
+Vediamo ora come è possibile velocizzare il calcolo di $\texttt{risolvi}(i)$. L'implementazione che abbiamo visto prima era quadratica a causa del fatto che per ogni albero $i$ è necessario considerare tutti gli alberi alla destra di $i$ in grado di abbatterlo, una quantità di alberi ogni volta potenzialmente dell'ordine di $N$. Vedremo tra un attimo come evitare questa ricerca inutile, usando le informazioni sull'abbattitore di $i$.
+
+Definiamo \emph{migliore albero della catena di abbattitori di $i$}, d'ora in poi indicato con $\texttt{migliore}[i]$, l'albero $j$ appartenente alla catena di abbattitori di $i$ per cui è minima la quantità $\texttt{risolvi}(j + 1).\texttt{numero\_tagli}$. Intuitivamente, $\texttt{migliore}[i]$ rappresenta, tra tutti gli alberi che sono in grado di abbattere $i$ cadendo a sinistra, quello per cui risulta minimo il numero di tagli necessari per abbattere tutti gli alberi da $i$ a $N-1$.
+
+Ammettendo di essere in grado di calcolare velocemente $\texttt{migliore}[i]$ per ogni albero $i$, la funzione $\texttt{risolvi}$ si ridurrebbe semplicemente a:
+
+\colorbox{white}{\makebox[.99\textwidth][l]{\includegraphics[scale=1.17]{aux/sol_taglialegna_lineare_body.pdf}}}
+
+dove la principale differenza con la versione quadratica consiste nell'aver eliminato il ciclo della riga 29.
+
+Rimane solamente da capire come calcolare $\texttt{migliore}[i]$ in modo efficiente. Sicuramente, se $\texttt{abbattitore}[i] = \infty$, si avrà $\texttt{migliore}[i] = i$. Vice versa, supponiamo che esista l'abbattitore di $i$; per la natura della catena di abbattitori, per determinare il valore di $\texttt{migliore}[i]$ è sufficiente confrontare tra di loro gli alberi $i$ e $\texttt{migliore}[\texttt{abbattitore}[i]]$, e scegliere chi tra i due minimizza $\texttt{risolvi}(j + 1).\texttt{numero\_tagli}$. Mostriamo una semplice implementazione in codice di questa idea all'inizio della prossima pagina.
+
+\colorbox{white}{\makebox[.99\textwidth][l]{\includegraphics[scale=1.17]{aux/sol_taglialegna_lineare_calcolo_migliore.pdf}}}
+
+Ora che abbiamo tutti i tasselli del puzzle, non rimane che riutilizzare (inalterata) la funzione \texttt{ricostruisci\_tagli} per risolvere completamente il problema.
+
+\afterpage{\nopagecolor}
