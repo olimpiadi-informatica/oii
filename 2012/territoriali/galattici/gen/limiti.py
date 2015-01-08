@@ -1,0 +1,3 @@
+MAXM = 100
+MAXN = 100
+MAXK = 10

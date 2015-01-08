@@ -1,0 +1,5 @@
+nome_breve: salta
+nome: Salta il coniglietto
+timeout: 1
+memlimit: 512
+token_mode: infinite

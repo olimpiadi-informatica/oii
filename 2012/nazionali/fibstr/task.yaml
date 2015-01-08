@@ -1,0 +1,5 @@
+nome_breve: fibstr
+nome: Stringhe di Fibonacci
+timeout: 1
+memlimit: 512
+token_mode: infinite

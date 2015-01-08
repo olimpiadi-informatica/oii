@@ -1,0 +1,27 @@
+# Parametri:
+# * N (numero di sequenze)
+# * M (lunghezza di ciascuna sequenza)
+# * P (numero di coppie di parentesi tonde)
+# * Q (numero di coppie di parentesi quadrate)
+# * C (numero di classi di equivalenza in media)
+# * S (seed)
+
+ 10 100  3   2   2  1
+ 22 111  3   2   2  2
+ 31 143 18  12   5  3
+ 47 123 23   2  13  4
+ 59 167  3  23  11  5
+123 213  3  12  32  6
+211 313 31  12  12  7
+332 441 25  11 111  8
+415 567 34  44  44  9
+557 628 21  76  76 10
+639 323  4  34 134 11
+752 127  3  17  77 12
+813 201  3  39  99 13
+957 403 45   2 900 14
+999 164  3  22  91 15
+871 237 21  17  45 16
+723 409 32  12 300 17
+195 615 42  12 100 18
+ 87 900 69  20   2 19
