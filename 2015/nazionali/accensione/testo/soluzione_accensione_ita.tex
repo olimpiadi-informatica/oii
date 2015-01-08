@@ -1,0 +1,119 @@
+\newpage
+\setcounter{figure}{0}
+\definecolor{backcolor}{gray}{0.95}
+\pagecolor{backcolor}
+\createsection{\Solution}{Soluzione}
+\createsection{\Nquadro}{{\small{$\blacksquare$}} \normalsize Una soluzione $O(N^2)$}
+\createsection{\NsqrtN}{{\small{$\blacksquare$}} \normalsize Una soluzione $O(N \sqrt{N})$}
+\createsection{\NlogNLenta}{{\small{$\blacksquare$}} \normalsize Una soluzione $O(N \log N)$ poco efficiente nella pratica}
+\createsection{\NlogNVeloce}{{\small{$\blacksquare$}} \normalsize Una soluzione $O(N \log N)$ efficiente}
+\Solution
+
+\begin{wrapfigure}{r}{.35\textwidth}
+  \vspace*{-.9cm}
+  \begin{flushright}
+		\includegraphics[width=.34\textwidth]{asy_accensione/sol1.pdf}\\[2.5mm]
+		\includegraphics[width=.34\textwidth]{asy_accensione/sol2.pdf}\\[2.5mm]
+		\includegraphics[width=.34\textwidth]{asy_accensione/sol3.pdf}\\[2.5mm]
+		\includegraphics[width=.34\textwidth]{asy_accensione/sol4.pdf}\\[2.5mm]
+		\includegraphics[width=.34\textwidth]{asy_accensione/sol5.pdf}\\[2.5mm]
+		\includegraphics[width=.34\textwidth]{asy_accensione/sol6.pdf}\\[2.5mm]
+		\includegraphics[width=.34\textwidth]{asy_accensione/sol7.pdf}\\[2.5mm]
+		\includegraphics[width=.34\textwidth]{asy_accensione/sol8.pdf}\\
+	\end{flushright}
+	\vspace*{-.5cm}
+	\caption{\small Simulazione dell'algoritmo.}
+	\vspace*{-2cm}
+\end{wrapfigure}
+Innanzi tutto notiamo che conta solo \emph{quali} bottoni vengono premuti, e non anche l'ordine in cui questi vengono effettivamente premuti. Forti di questo, l'osservazione centrale per risolvere il problema consiste nell'accorgersi che, conoscendo la configurazione iniziale, la scelta sull'ultimo pulsante è forzata: se il computer $N$ è acceso allora il pulsante $N$ non deve essere premuto (nessun altro pulsante sarebbe in grado poi di riaccendere il computer $N$); se, al contrario, il computer $N$ è spento allora sicuramente è necessario premere il pulsante $N$ (nessun altro pulsante lo accende), cambiando come effetto collaterale lo stato dei computer identificati da un numero divisore di $N$. Dopo aver agito sul bottone $N$, e averlo eventualmente premuto, il computer $N$ sarà acceso, e possiamo dimenticarcene, passando a considerare i primi $N-1$ computer, i cui stati potrebbero essere stati cambiati rispetto alla configurazione iniziale, reiterando il ragionamento.
+
+In altre parole, possiamo accendere i computer uno alla volta partendo dal fondo: per ogni bottone $i$, in ordine da $N$ a 1, valutiamo se il computer $i$ è spento, e in caso premiamo il bottone $i$. Questo semplice metodo è in grado, partendo da una configurazione qualunque, di accendere tutti i computer. Proponiamo una simulazione dell'algoritmo in Figura 1.
+
+\Nquadro
+Il punto più delicato nell'algoritmo proposto è il momento in cui, dopo aver premuto il pulsante $i$, si rende necessario aggiornare lo stato dei computer interessati dal pulsante premuto. Possiamo immaginare di iterare su tutti i computer con indice compreso tra 1 e $i$, controllando di volta in volta se questi sono modificati dal pulsante $i$, e aggiornando lo stato dei computer con un numero divisore di $i$.
+
+Questo approccio conduce ad un algoritmo di complessità quadratica, in grado di risolvere il Subtask 4.
+
+\NsqrtN
+Per rendere più efficiente l'algoritmo quadratico, possiamo accorgerci che i divisori di un numero $n$ sono disposti ``a coppie'': ogni volta che $d$ è un divisore di $n$, infatti, anche $n/d$ è un divisore di $n$. Inoltre, almeno uno tra $d$ e $n/d$ deve essere minore o uguale a $\sqrt{n}$\footnote{Infatti, se sia $d$ che $n/d$ fossero maggiori di $\sqrt{n}$, il loro prodotto sarebbe $n = d \cdot (n/d) > \sqrt{n} \cdot \sqrt{n} = n$, assurdo.}. Per elencare tutti i divisori di $n$ possiamo allora iterare su tutti i numeri da 1 a $\lfloor \sqrt{n}\rfloor$, non più su tutti i numeri da 1 a $n$. L'unico caso particolare è quello per cui $n$ è un quadrato perfetto: in tal caso dobbiamo assicurarci di aggiornare una sola volta lo stato del computer $\sqrt{n}$.
+
+Questo algoritmo, di complessità $O(N \sqrt{N})$, permetteva di risolvere il Subtask 5.
+
+\NlogNLenta
+Le due soluzioni che abbiamo analizzato finora sono simili: prima premiamo un pulsante $k$ e successivamente iteriamo sui computer, per cambiare di stato i computer con numero divisore di $k$. In questa iterazione, tuttavia, consideriamo molti candidati che, non avendo come numero un divisore di $k$, non verranno cambiati di stato.
+Per evitare questo dispendio di tempo, questa volta operiamo in maniera leggermente diversa: prima ancora di cominciare a valutare i pulsanti, precalcoliamo per ogni pulsante la lista di computer che questi andranno a modificare.
+\begin{wrapfigure}{r}{8.6cm}
+\vspace*{-.3cm}
+\mdfdefinestyle{tight}{
+	leftmargin=0cm,rightmargin=0cm,%
+	innerleftmargin=0cm,innerrightmargin=0cm,roundcorner=0pt, %
+	innertopmargin=0cm, innerbottommargin=10px, backgroundcolor=white!90!black
+}
+\begin{minipage}{8.5cm}
+	\FrameSep0pt
+	\begin{mdframed}[style=tight]
+		\begingroup
+		\setlength{\fboxsep}{0pt}%  
+		\colorbox{black!50!white}{\makebox[8.48cm]{\textcolor{white}{\parbox[c][.8cm][c]{\linewidth}{\centering\textsf{APPROFONDIMENTO}}}}}
+		\endgroup
+		\hrule\vspace*{2mm}
+		\hspace{.03\linewidth}\begin{minipage}{.94\linewidth}
+La complessità dell'algoritmo è strettamente legata all'andamento, in funzione di $N$, della somma del numero di divisori tra tutti i numeri da 1 a $N$. Come abbiamo già visto, questa grandezza è in effetti bene approssimata dalla somma $$\frac{N}{1}+\frac{N}{2}+\cdots+\frac{N}{N} = N \left(1 + \frac{1}{2} + \cdots + \frac{1}{N}\right).$$
+Abbiamo già dimostrato che la somma in parentesi è sempre inferiore a $1 + \log_2 N$. Esiste una stima più precisa: è stato dimostrato che $$\gamma = \lim_{n \rightarrow \infty } \left(\,\sum_{k=1}^n \frac{1}{k} - \ln(n) \right),$$
+dove la costante $\gamma \approx 0.577$ è nota come \emph{costante di Eulero--Mascheroni}. Intuitivamente, questo significa che, a mano a mano che $n$ diventa sempre più grande, la somma $1 + 1/2 + \cdots + 1/n$ approssima sempre meglio la funzione $\ln(n) + \gamma$.
+\begin{figure}[H]\centering\includegraphics[width = .9\linewidth]{asy_accensione/euler.pdf}\end{figure}
+		\end{minipage}
+	\end{mdframed}
+\end{minipage}
+\vspace*{-2cm}
+\end{wrapfigure}
+Attribuiamo ad ogni pulsante $i$ la lista $\texttt{divisori}[i]$ di tutti i computer che vengono modificati da questo.
+
+Le liste, inizialmente vuote, sono progressivamente riempite in questo modo:
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item aggiungiamo alle liste di tutti i pulsanti il valore 1;
+	\item aggiungiamo alle liste di tutti i pulsanti pari il valore 2;
+	\item aggiungiamo alle liste di tutti i pulsanti multipli di 3 il valore 3;
+	\item ...
+	\item aggiungiamo alla lista del pulsante $N$ il valore $N$.
+\end{itemize}
+
+In questo modo, quando verrà premuto il pulsante $k$, avremo già a disposizione la lista di tutti i computer da modificare, senza doverla calcolare.
+
+Per determinare la complessità dell'algoritmo, notiamo che il numero di operazioni compiute è proporzionale alla somma delle dimensioni delle varie liste, e quindi bene approssimata dalla formula $$N+\frac{N}{2}+\frac{N}{3} + \cdots+\frac{N}{N}.$$
+Dimostreremo che tale somma è sicuramente inferiore a $N + N \log_2 N$.
+
+Per farlo, raggruppiamo gli addendi in (circa) $1 + \log_2 N$ gruppi, in modo che ogni gruppo cominci con una frazione che ha al denominatore una potenza di 2:
+$$N + \left(\frac{N}{2} + \frac{N}{3}\right) + \left(\frac{N}{4} + \frac{N}{5} + \frac{N}{6} + \frac{N}{7}\right) + \cdots + \left(\cdots + \frac{N}{N}\right)$$
+In ogni gruppo la somma degli addendi è minore di $N$, perciò la somma totale non può che essere inferiore a $N (\log_2 N + 1) = N + N \log_2 N = O(N \log N)$.
+
+Nonostante la complessità computazionale sia inferiore, nella pratica questa soluzione si rivela spesso paragonabile a quella precedente, di complessità $O(N\sqrt{N})$, perché intervengono altri fattori, come il tempo di allocazione della memoria, che incidono sulle prestazioni dell'algoritmo.
+
+Allo stato delle cose\footnote{Questa frase è stata scritta nel settembre del 2014.}, per fare in modo che questa soluzione non ecceda il tempo limite di 1 secondo su un processore di fascia media è necessario implementare con particolare attenzione l'algoritmo, avendo cura di minimizzare qualunque tipo di overhead, soprattutto quello dovuto all'allocazione dinamica della memoria.
+
+\NlogNVeloce
+Pur restando all'interno della stessa classe di complessità, l'algoritmo può essere ulteriormente migliorato. In effetti, possiamo evitare di ricalcolare lo stato dei computer dopo aver premuto un pulsante: è facile ricostruire lo stato del computer $k$ sapendo se i pulsanti $k+1, k+2, \ldots, N$ sono stati premuti. Infatti, gli unici pulsanti che possono aver cambiato lo stato del computer $k$ sono $2k, 3k, 4k, \ldots$. Dunque è sufficiente controllare quanti di questi sono stati premuti per determinare lo stato del computer $k$ e decidere se è necessario premere il pulsante $k$ di conseguenza.
+
+Come prima, la complessità dell'algoritmo è $O(N \log N)$; non dovendo più allocare una grande quantità di memoria per memorizzare la lista dei divisori di ogni numero, tuttavia, l'implementazione in codice di questo algoritmo risulta considerevolmente più veloce della precedente.
+
+\createsection{\Cppsol}{Esempio di codice \texttt{C++11}}
+\Cppsol
+Proponiamo, nelle prossime pagine, un'implementazione funzionante per ognuna delle soluzioni proposte, fatta eccezione per la soluzione più lenta, di complessità $O(N^2)$, che viene lasciata come facile esercizio per i lettori più meticolosi.
+
+\createsection{\CppNsqrtN}{{\small{$\blacksquare$}} \normalsize Soluzione $O(N\sqrt{N})$}
+\CppNsqrtN
+\colorbox{white}{\makebox[.99\textwidth][l]{\includegraphics[scale=1.2]{code_accensione_NsqrtN.pdf}}}
+
+\createsection{\CppNlogNLenta}{{\small{$\blacksquare$}} \normalsize Soluzione $O(N\log{N})$ poco efficiente}
+\CppNlogNLenta
+Proponiamo una versione già ottimizzata della soluzione presentata. Si è optato per una soluzione che privilegiasse la facilità di lettura rispetto all'eleganza del codice.
+
+\colorbox{white}{\makebox[.99\textwidth][l]{\includegraphics[scale=1.17]{code_accensione_NlogN_lenta.pdf}}}
+
+
+\createsection{\CppNlogNVeloce}{{\small{$\blacksquare$}} \normalsize Soluzione $O(N\log{N})$ efficiente}
+\CppNlogNVeloce
+\colorbox{white}{\makebox[.99\textwidth][l]{\includegraphics[scale=1.17]{code_accensione_NlogN_veloce.pdf}}}
+
+
+\afterpage{\nopagecolor}

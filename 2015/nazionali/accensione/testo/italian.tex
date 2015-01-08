@@ -1,0 +1,154 @@
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage{framed}
+\usepackage[bottom]{footmisc}
+
+\createsection{\Grader}{Grader di prova}
+
+\makeatletter
+\gdef\this@inputfilename{input.txt}
+\gdef\this@outputfilename{output.txt}
+\makeatother
+
+\newcommand{\inputfile}{\texttt{input.txt}}
+\newcommand{\outputfile}{\texttt{output.txt}}
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+% Accensione dei PC (accensione)
+Alle OII, gli $N$ computer dei partecipanti sono numerati da $1$ a $N$. Al momento solo alcuni di essi sono accesi, e Gabriele deve accenderli tutti prima dell'inizio della gara!
+
+Sfortunatamente, l'accensione e lo spegnimento dei computer può avvenire solamente attraverso un sofisticato sistema di pulsanti. Nella Sala Controllo vi sono infatti $N$ pulsanti, anch'essi numerati da $1$ a $N$. Il pulsante $K$ ha, come effetto, quello di cambiare lo stato di tutti i computer il cui numero identificativo sia un divisore di $K$. Ad esempio, il pulsante $12$ cambia lo stato dei computer $1$, $2$, $3$, $4$, $6$, $12$.
+
+Ogni pulsante può essere premuto al massimo una volta, ed è necessario premere i pulsanti in ordine crescente (non si può premere il pulsante $K_1$ dopo aver premuto il pulsante $K_2$, se $K_1$ < $K_2$). Un computer può venire acceso e/o spento anche varie volte; l'importante è che alla fine tutti i computer risultino accesi.
+Sapendo quali sono i computer inizialmente accesi, dovete decidere quali pulsanti premere in modo da accenderli tutti.
+
+Ad esempio, supponiamo che i computer siano $N=6$. Ci sono quindi $N=6$ pulsanti, che cambiano lo stato dei computer secondo la tabella seguente.\\[.1cm]
+
+\begin{minipage}{.4\textwidth}
+\centering\begin{tabular}{c|l}
+\textbf{Pulsante} & \hspace*{1.1cm}\textbf{Effetto}\\
+\toprule
+1 & Computer 1\\
+\midrule
+2 & Computer 1 e 2\\
+\midrule
+3 & Computer 1 e 3\\
+\midrule
+4 & Computer 1, 2 e 4\\
+\midrule
+5 & Computer 1 e 5\\
+\midrule
+6 & Computer 1, 2, 3 e 6\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\begin{minipage}{.59\textwidth}
+\begin{figure}[H]
+\centering\includegraphics[width = .9\textwidth]{asy_accensione/esempio0.pdf}
+\caption{\label{fig:esempio}Configurazione iniziale dei computer.}
+\end{figure}
+\end{minipage}
+\\[.1cm]
+
+Supponiamo che i computer siano inizialmente nello stato della Figura 1 (dove \texttt{S} significa spento e \texttt{A} significa acceso). In questo caso, per poterli accendere tutti, Gabriele deve premere in sequenza i seguenti pulsanti:
+
+\begin{center}
+	\begin{tabular}{cc}
+	\hspace*{1cm}Pulsante 2\hspace*{4cm} & \raisebox{-0.5\height}{\includegraphics[width = .45\textwidth]{asy_accensione/esempio1.pdf}}\hspace*{1cm} \\
+	\vspace*{-8px} & \\
+	\midrule
+	\vspace*{-8px} & \\	
+	\hspace*{1cm}Pulsante 5\hspace*{4cm} & \raisebox{-0.5\height}{\includegraphics[width = .45\textwidth]{asy_accensione/esempio2.pdf}}\hspace*{1cm} \\
+	\vspace*{-8px} & \\
+	\midrule
+	\vspace*{-8px} & \\
+	\hspace*{1cm}Pulsante 6\hspace*{4cm} & \raisebox{-0.5\height}{\includegraphics[width = .45\textwidth]{asy_accensione/esempio3.pdf}}\hspace*{1cm} \\
+	%\vspace*{-8px} & \\
+	\end{tabular}
+\end{center}
+Aiuta Gabriele a determinare la sequenza di pulsanti da premere per poter accendere tutti i computer.
+
+\Scoring
+Il tuo programma verrà testato su diversi test case raggruppati in subtask.
+Per ottenere il punteggio relativo ad un subtask, è necessario risolvere
+correttamente tutti i test relativi ad esso.
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+  \item \textbf{\makebox[2cm][l]{Subtask 1} [5 punti]}: Caso d'esempio.
+  \item \textbf{\makebox[2cm][l]{Subtask 2} [10 punti]}: $N \le 10$.
+  \item \textbf{\makebox[2cm][l]{Subtask 3} [8 punti]}: I computer spenti all'inizio sono tutti e soli quelli contrassegnati da un numero primo (2, 3, 5, 7...).
+  \item \textbf{\makebox[2cm][l]{Subtask 4} [26 punti]}: $N \le 1000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 5} [28 punti]}: $N \le 100\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 6} [23 punti]}: Nessuna limitazione specifica (vedi la sezione \textbf{Assunzioni}).
+\end{itemize}
+
+
+\Implementation
+Dovrai sottoporre esattamente un file con estensione \texttt{.c}, \texttt{.cpp} o \texttt{.pas}.
+
+\begin{warning}
+Tra gli allegati a questo task troverai un template (\texttt{accensione.c}, \texttt{accensione.cpp}, \texttt{accensione.pas}) con un esempio di implementazione.
+\end{warning}
+
+Dovrai implementare la seguente funzione:
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|void Accendi(int N, int acceso[], int pulsante[]);|\\
+\hline
+Pascal & \verb|procedure Accendi(N: longint; var acceso, pulsante: array of longint);|\\
+\hline
+\end{tabularx}\end{center}
+dove:
+\begin{itemize}[nolistsep]
+  \item L'intero $N$ rappresenta il numero di computer.
+  \item L'array \texttt{acceso} descrive lo stato iniziale dei computer: se \texttt{acceso}$[i]$ vale 1, all'inizio l'$i$-esimo computer è acceso; se vale 0 è spento.
+  \item La funzione dovrà riempire l'array \texttt{pulsante}, inserendo nella posizione $i$ dell'array il valore 1 se è necessario premere l'$i$-esimo pulsante, 0 altrimenti. È garantito che inizialmente \texttt{pulsante}$[i]$ valga 0 per ogni $i$.
+\end{itemize}
+
+\textbf{Attenzione}: \texttt{acceso}[0] e \texttt{pulsante}[0] non contengono informazioni utili (in quanto i computer e i pulsanti sono numerati da 1 a $N$).
+
+\Grader
+Nella directory relativa a questo problema è presente una versione 
+semplificata del grader usato durante la correzione, che potete usare
+per testare le vostre soluzioni in locale. Il grader di esempio legge
+i dati di input dal file \texttt{input.txt}, a quel punto chiama la
+funzione \texttt{Accendi} che dovete implementare. Il grader scrive sul file \outputfile{} quali pulsanti sono stati premuti dalla vostra funzione.
+
+Nel caso vogliate generare un input per un test di valutazione, il file \inputfile{} deve avere questo formato:
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: contiene l'intero $N$, il numero di computer.
+\item Riga $2$: contiene $N$ valori; l'$i$-esimo di questi vale $1$ se l'$i$-esimo computer è acceso, vale 0 se è spento.
+\end{itemize}
+
+Il file \outputfile{} invece ha questo formato:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: contiene $N$ valori; l'$i$-esimo di questi vale $1$ se l'$i$-esimo pulsante è stato premuto, vale 0 altrimenti.
+\end{itemize}
+
+\Constraints 
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item $1\le N \le 1\,000\,000$.
+\end{itemize}
+
+\Examples
+\begin{example}
+\exmp{
+6
+0 1 0 1 0 0
+}{%
+0 1 0 0 1 1
+}%
+\end{example}
+
+Questo caso di input corrisponde all'esempio spiegato nel testo.
+
+\include{soluzione_accensione_ita}
