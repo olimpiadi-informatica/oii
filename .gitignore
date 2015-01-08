@@ -3,6 +3,8 @@
 __pycache__
 .itime
 .import_error
+input/
+output/
 *.aux
 *.log
 *.out
