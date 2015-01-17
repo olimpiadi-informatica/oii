@@ -1,0 +1,16 @@
+# Parametri:
+# * M (numero di righe)
+# * N (numero di cifre decimali)
+# * P (percentuale di zeri)
+# * S (seed)
+
+## TODO input di esempio
+3 8 50 1
+4 8 40 2
+5 7 30 3
+6 8 60 4
+7 8 50 5
+8 8 40 6
+7 8 30 7
+6 8 40 8
+5 8 30 9

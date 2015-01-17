@@ -1,0 +1,14 @@
+# Parametri:
+# * N (dimensione del campo di battaglia)
+# * S (seed)
+
+## TODO input di esempio
+50    1
+42    2
+131   3
+67    4
+195   5
+79    6
+320   7
+71    8
+452   9
