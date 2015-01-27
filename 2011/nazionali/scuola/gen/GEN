@@ -1,0 +1,24 @@
+# Parametri:
+# * N (numero di eroi)
+# * P (tipo di prova)
+
+# TODO: manca l'input di esempio
+   8  1
+  53  1
+ 153  1
+ 467  1
+ 824  1
+ 291  1
+ 548  1
+ 745  1
+1000  1
+   4  2
+   8  2
+  16  2
+  32  2
+  64  2
+ 128  2
+ 256  2
+ 512  2
+1024  2
+2048  2

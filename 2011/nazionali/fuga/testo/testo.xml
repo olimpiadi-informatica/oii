@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE EXAMPLE [
+<!ENTITY agrave "à">
+<!ENTITY eacute "é">
+<!ENTITY egrave "è">
+<!ENTITY igrave "ì">
+<!ENTITY ograve "ò">
+<!ENTITY ugrave "ù">
+<!ENTITY lt "<">
+<!ENTITY gt ">">
+<!ENTITY le "≤">
+<!ENTITY ge "≥">
+<!ENTITY ne "≠">
+<!ENTITY hellip "…">
+]>
+
+<layout>
+
+<!-- INTESTAZIONE -->
+<gara>Olimpiadi di Informatica: selezioni nazionali 2011</gara>
+<titolo>Fuga dagli inseguitori</titolo>
+<short>fuga</short>
+<!--<diff>?</diff>-->
+<tempo>3</tempo>
+<autore>Roberto Grossi e Alessio Orlandi</autore>
+
+<!-- DESCRIZIONE PROBLEMA -->
+<problema>
+<p>
+L'incredibile Hulk sta fuggendo dai suoi inseguitori che vogliono
+catturarlo per studiare la mutazione genetica che l'ha reso
+cos&igrave; forte, veloce e verde.  Possiede una mappa con le vie di fuga,
+dove gli snodi (cio&egrave; i punti da cui si dipartono zero o pi&ugrave;
+strade) sono numerati da 1 a <var>N</var> e il tratto di strada che
+collega direttamente gli snodi <var>I</var> e <var>J</var> &egrave; indicato con
+<var>(I,J)</var> e pu&ograve; essere percorso in entrambe le
+direzioni. Inoltre, non esistono due o pi&ugrave; tratti di strada che
+colleghino direttamente la stessa coppia di snodi. I tratti occupati
+dagli inseguitori sono indicati in rosso e quelli liberi in verde.
+</p>
+<p>
+Hulk vuole trovare un percorso circolare libero per la sua fuga: in
+altre parole, vuole essere sicuro di poter girare circolarmente, e a
+velocit&agrave; spedita, attraverso gli snodi (non necessariamente
+tutti).  In particolare, ha bisogno di individuare gli
+snodi <var>I<sub>1</sub></var>, <var>I<sub>2</sub></var>,
+<var>I<sub>3</sub></var>, &hellip;,
+<var>I<sub>K</sub></var> (dove <var>K &ge; 3</var>), distinti tra
+loro, che sono collegati da un cammino, ossia da una sequenza di
+tratti tutti in verde
+<var>(I<sub>1</sub></var>,<var>I<sub>2</sub></var><var>)</var>,
+<var>(I<sub>2</sub></var>,<var>I<sub>3</sub></var><var>)</var>,
+&hellip;,
+<var>(I<sub>K-1</sub></var>,<var>I<sub>K</sub></var><var>)</var>,
+<var>(I<sub>K</sub></var>,<var>I<sub>1</sub></var><var>)</var> (notare
+la circolarit&agrave;).
+</p>
+<p>
+Il tuo compito &egrave; di aiutare Hulk a individuare un insieme di
+snodi che dia luogo a circolarit&agrave; secondo quanto definito
+sopra.
+</p>
+</problema>
+
+
+<!-- FORMATO DI INPUT/OUTPUT -->
+<input>
+<p>
+Il file <samp>input.txt</samp> &egrave; composto da <var>M+1</var>
+righe: sulla prima riga si trovano gli interi <var>N</var> e
+<var>M</var> separati da uno spazio, dove <var>N</var> &egrave; il
+numero di snodi e <var>M</var> &egrave; il numero di tratti che
+collegano gli snodi.
+</p>
+<p>
+Ciascuna delle successive <var>M</var> righe contiene tre interi
+<var>I</var>, <var>J</var> e <var>C</var> separati da uno spazio,
+dove <var>1 &le; I, J &le; N</var> e <var>0 &le; C &le; 1</var>,
+per indicare che gli snodi
+<var>I</var> e <var>J</var> sono collegati dal tratto <var>(I,J)</var>
+di colore rosso (<var>C=0</var>) o verde (<var>C=1</var>).
+</p>
+</input>
+
+<output>
+<p>
+Il file <samp>output.txt</samp> &egrave; composto da due righe.  La
+prima riga contiene un intero <var>K</var> che indica quanti snodi
+sono coinvolti nella circolarit&agrave; individuata. La seconda riga
+contiene <var>K</var> interi distinti <var>I<sub>1</sub></var>,
+<var>I<sub>2</sub></var>,<var>I<sub>3</sub></var>,&hellip;,
+<var>I<sub>K</sub></var> separati da uno spazio, ossia quali sono gli
+snodi coinvolti: essi risultano collegati da tratti in verde
+<var>(I<sub>1</sub></var>,<var>I<sub>2</sub></var><var>)</var>,
+<var>(I<sub>2</sub></var>,<var>I<sub>3</sub></var><var>)</var>,
+&hellip;,
+<var>(I<sub>K-1</sub></var>,<var>I<sub>K</sub></var><var>)</var>,
+<var>(I<sub>K</sub></var>,<var>I<sub>1</sub></var><var>)</var> .
+</p>
+</output>
+
+<!-- ULTERIORI ANNOTAZIONI -->
+<assunzioni>
+<li><var>3 &le; N &le; 100 000</var></li>
+<li><var>N &lt; M &le; 200 000</var></li>
+<li><var>3 &le; K &le; N</var></li>
+<li>Viene garantito che esiste sempre almeno una circolarit&agrave;.</li>
+</assunzioni>
+
+<esempio>
+<li>
+<input>
+5 8
+5 4 1
+1 2 1
+1 3 1
+3 2 1
+1 5 0
+1 4 1
+3 4 0
+2 5 1
+</input>
+<output>
+3
+2 3 1
+</output>
+</li>
+</esempio>
+
+<nota>
+<li> Non tutti gli snodi hanno necessariamente una o pi&ugrave; strade che si
+  dipartono da loro (potrebbero esserci snodi completamente isolati).</li>
+<li> Non tutte le coppie di snodi sono necessariamente collegate tra
+  di loro mediante un tratto o una sequenza di tratti.</li>
+<li> Per un dato <samp>input.txt</samp> ci possono essere pi&ugrave;
+  risposte corrette e sono tutte valide ai fini della gara: è necessario
+  specificarne una (e una sola) in <samp>output.txt</samp>.</li>
+</nota>
+
+</layout>
