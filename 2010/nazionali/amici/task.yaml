@@ -1,0 +1,5 @@
+nome_breve: amici
+nome: Tè con gli amici
+timeout: 2
+memlimit: 256
+token_mode: infinite

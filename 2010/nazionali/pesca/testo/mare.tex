@@ -1,0 +1,51 @@
+\documentclass{article}
+
+\usepackage{tikz}
+\usetikzlibrary{patterns}
+
+\begin{document}
+\begin{tikzpicture}
+  \draw [step=1] (0,0) grid (10,10);
+  \fill [pattern color=red,pattern=north east lines] (2,1) -- (2,5) -- (5,5) -- (5,6) -- (7,6) -- (7,7) -- (10,7) -- (10,6) -- (8,6) -- (8,5) -- (6,5) -- (6,4) -- (3,4) -- (3,1) -- cycle;
+  \fill [pattern color=blue,pattern=north west lines] (2,1) -- (7,1) -- (7,2) -- (8,2) -- (8,3) -- (9,3) -- (9,4) -- (10,4) -- (10,7) -- (9,7) -- (9,5) -- (8,5) -- (8,4) -- (7,4) -- (7,3) -- (6,3) -- (6,2) -- (2,2) -- cycle;
+  \foreach \x in {1,2,3,4,5,6,7,8,9,10} \draw (-.5,\x-0.5) node {\Large $\x$};
+  \foreach \x in {1,2,3,4,5,6,7,8,9,10} \draw (\x-0.5,-.5) node {\Large $\x$};
+  
+  \draw (2.5,1.5) node {\Huge \bfseries A};
+  \draw (9.5,6.5) node {\Huge \bfseries B};
+
+  \draw (1.5,6.5) node {\Huge $\star$};
+  \draw (3.5,4.5) node {\Huge $\star$};
+  \draw (4.5,2.5) node {\Huge $\star$};
+  \draw (7.5,4.5) node {\Huge $\star$};
+  \draw (8.5,1.5) node {\Huge $\star$};
+  \draw [very thick] (3.5,4.5) circle (0.35);
+  \draw [very thick] (4.5,2.5) circle (0.35);
+  \draw [very thick] (7.5,4.5) circle (0.35);
+  
+  \path (2.5,1.85) edge  [->,very thick,pos=0.7,bend left=25] (2.5,4.3);
+  \path (2.7,4.5) edge  [->,very thick,pos=0.7,bend left=45] (5.3,4.5);
+  \path (5.5,4.7) edge  [->,very thick,pos=0.7,bend left=25] (5.5,5.3);
+  \path (5.7,5.5) edge  [->,very thick,pos=0.7,bend left=25] (7.3,5.5);
+  \path (7.5,5.7) edge  [->,very thick,pos=0.7,bend left=25] (7.5,6.3);
+  \path (7.7,6.5) edge  [->,very thick,pos=0.7,bend left=25] (9.15,6.5);
+
+  \draw (1.5,3.6) node {\large $+3$};
+  \draw (3.6,5.3) node {\large $-3$};
+  \draw (4.7,5.4) node {\large $+1$};
+  \draw (5.7,6.2) node {\large $-2$};
+  \draw (6.7,6.5) node {\large $+1$};
+  \draw (8.5,7.2) node {\large $-2$};
+
+  \path (2.85,1.5) edge  [->,very thick,pos=0.7,bend right=15] (4.3,1.5);
+  \path (4.7,1.5) edge  [->,very thick,pos=0.7,bend right=15] (6.3,1.5);
+  \path (6.5,1.7) edge  [->,very thick,pos=0.7,bend right=15] (6.5,2.3);
+  \path (6.7,2.5) edge  [->,very thick,pos=0.7,bend right=15] (7.3,2.5);
+  \path (7.5,2.7) edge  [->,very thick,pos=0.7,bend right=15] (7.5,3.3);
+  \path (7.7,3.5) edge  [->,very thick,pos=0.7,bend right=15] (8.3,3.5);
+  \path (8.5,3.7) edge  [->,very thick,pos=0.7,bend right=15] (8.5,4.3);
+  \path (8.7,4.5) edge  [->,very thick,pos=0.7,bend right=15] (9.3,4.5);
+  \path (9.5,4.7) edge  [->,very thick,pos=0.7,bend right=15] (9.5,6.15);
+
+\end{tikzpicture}
+\end{document}
