@@ -1,0 +1,5 @@
+nome_breve: treno
+nome: Treno di container
+timeout: 1
+memlimit: 256
+token_mode: infinite

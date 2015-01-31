@@ -1,0 +1,5 @@
+nome_breve: depura
+nome: Depurazione dell'acqua
+timeout: 1
+memlimit: 256
+token_mode: infinite
