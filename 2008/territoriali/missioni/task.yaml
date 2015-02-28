@@ -1,0 +1,5 @@
+nome_breve: missioni
+nome: Missioni segrete
+timeout: 1
+memlimit: 256
+token_mode: infinite

@@ -1,0 +1,2 @@
+MINN, MAXN = 1, 100
+MAXLEN = 80

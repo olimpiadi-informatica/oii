@@ -1,0 +1,17 @@
+# N = dimension (1 - 100)
+# M = number of paths (1 -)
+# Fill = random fill percentage (1 - 100)
+# Seed = random seed
+
+  1  0   0  0  # TODO: dovrebbe essere l'input di esempio?
+ 10  1   0  1
+ 20  1   0  2
+ 60  1   0  3
+100  6   0  4
+ 30  2  20  5
+ 50  1  20  6
+ 60  2  10  7
+ 90  1  30  8
+100  1  90  9
+
+# TODO: aggiungere altri testcase

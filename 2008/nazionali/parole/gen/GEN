@@ -1,0 +1,33 @@
+# "seed M N" oppure
+# "seed k m N" (k ripetizioni di una parola di m bit (M = k*m))
+
+# Input di esempio
+#COPY: testo/input0.txt
+
+# Facili: M <= 16, N <= 16
+1000 2    5
+5436 10   16
+6544 4    6
+7254 3    16
+8323 4    3    16
+8545 3    2    10
+1646 7    2    15
+
+# Semifacili: M <= 16
+7654 10   150
+1234 3    527
+6548 5    967
+1659 3    4    673
+1648 2    8    155
+
+#Nuovo semifacile
+9483 5    5    25
+
+# Difficili
+#5840 28   209
+7156 37   67
+1956 132  135
+9742 933  999
+4803 874  1000
+2347 100  9    1000
+5555 10   56   888

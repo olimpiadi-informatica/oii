@@ -1,0 +1,5 @@
+nome_breve: mappa
+nome: Mappa antica
+timeout: 1
+memlimit: 256
+token_mode: infinite

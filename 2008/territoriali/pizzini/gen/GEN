@@ -1,0 +1,14 @@
+# N minK maxK minR seed
+
+  4   3   3  1  1234613  # TODO: dovrebbe essere l'input di esempio?
+ 10  19  21  1  1362980
+ 51  12  68  9    16942
+ 21   3   8  2   123719
+  8  50  80  1   123719
+ 69   3  24  2    67406
+ 89   3  24  1    67412
+ 40   1  50  1    67419
+ 72  60  80  1     8723
+100   4   4  1     1247
+
+# TODO: aggiungere altri testcase

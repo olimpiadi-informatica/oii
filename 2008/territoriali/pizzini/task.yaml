@@ -1,0 +1,5 @@
+nome_breve: pizzini
+nome: Codici e pizzini
+timeout: 1
+memlimit: 256
+token_mode: infinite

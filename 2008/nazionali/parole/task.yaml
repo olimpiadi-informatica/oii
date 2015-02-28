@@ -1,0 +1,5 @@
+nome_breve: parole
+nome: Parole saturnine
+timeout: 1
+memlimit: 256
+token_mode: infinite

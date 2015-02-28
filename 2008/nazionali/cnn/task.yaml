@@ -1,0 +1,5 @@
+nome_breve: cnn
+nome: Troupe televisive
+timeout: 2
+memlimit: 256
+token_mode: infinite
