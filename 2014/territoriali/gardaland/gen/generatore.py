@@ -22,6 +22,8 @@ from random import choice, sample, shuffle, seed as rseed
 def run(N, L, S):
 	nseed(S)
 	rseed(S)
+	risolvi = random() > 0.5
+	print "risolvi:", risolvi
 	print N, L
 	out = []
 	#Numero di indicazioni per ogni nazione
@@ -34,7 +36,7 @@ def run(N, L, S):
 		for j in range(indic_nazioni[i]):
 			temp = randint(1, MAXR/indic_nazioni[i]);
 			ragazzi[i] += temp
-			out.append("{0} {1}".format(i, temp))
+			out.append("{0} {1}".format(i, temp if (risolvi or (random() > .85)) else temp-1))
 	shuffle(out)
 	for x in ragazzi:
 		print x
