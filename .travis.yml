@@ -3,7 +3,7 @@ python:
   - "2.7"
 before_install:
   - sudo apt-get install -qq python-pip gettext build-essential fpc
-  - git clone https://github.com/cms-dev/cms.git
+  - git clone --recursive https://github.com/cms-dev/cms.git
   - cd cms
   - pip install sqlalchemy pycrypto pyyaml psutil six gevent
   - python setup.py build
