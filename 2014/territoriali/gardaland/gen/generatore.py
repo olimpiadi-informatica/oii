@@ -23,7 +23,6 @@ def run(N, L, S):
 	nseed(S)
 	rseed(S)
 	risolvi = random() > 0.5
-	print "risolvi:", risolvi
 	print N, L
 	out = []
 	#Numero di indicazioni per ogni nazione

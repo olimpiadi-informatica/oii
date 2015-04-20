@@ -17,14 +17,14 @@ begin
     reset(input);
     rewrite(output);
     (* Leggi N e L *)
-    read(N, L);
+    readln(N, L);
     (* Leggi il numero di studenti di ciascuna squadra *)
     for i:=1 to N do
-        read(squadra[i]);
+        readln(squadra[i]);
     (* Leggi tutte le L informazioni *)
     for i:=1 to L do
     begin
-        read(idSquadra, atletiOk);
+        readln(idSquadra, atletiOk);
         (* Aumenta di uno l'id della squadra, per averlo 1-based *)
         inc(idSquadra);
         (* Sottrai il numero di atleti gia' saliti al totale di quella squadra *)

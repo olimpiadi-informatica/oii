@@ -7,6 +7,8 @@ usage="""Generatore per "trovaparola" scritto da Giulio Carlassare.
 Parametri:
 * R (numero di righe)
 * C (numero di colonne)
+* T (risolvibile = 0/1)
+* S (seed)
 
 Constraint:
 * 2 <= R, C <= %d
@@ -18,11 +20,9 @@ from numpy.random import random, randint, seed as nseed
 from random import choice, sample, shuffle, seed as rseed
 from string import split, join, uppercase
 
-def run(R, C, S):
+def run(R, C, T, S):
     nseed(S)
     rseed(S)
-    #True se la parola e' presente
-    risolvi = random() > 0.5
     #La matrice con le lettere
     matr = []
     for i in xrange(R):
@@ -30,7 +30,7 @@ def run(R, C, S):
         for j in xrange(C):
             temp.append(choice(uppercase))
         matr.append(temp)
-    lung_parola = randint((R+C)/10+2, R+C if risolvi else (R+C)/2)
+    lung_parola = randint((R+C)/10+2, R+C if T == 1 else (R+C)/2)
     parola = ""
     posr, posc = 0, 0
     for i in xrange(lung_parola):
@@ -45,9 +45,11 @@ def run(R, C, S):
                 posc += 1
             else:
                 posr += 1
-    if not risolvi:
+    if T == 0:
         for i in xrange(randint(0, (R+C)/2-2)):
             parola += choice(uppercase)
+
+    print R, C
     print parola
     for i in xrange(R):
         temp = ""
@@ -57,10 +59,11 @@ def run(R, C, S):
 
 
 if __name__ == "__main__":
-    if len(argv) != 4:
+    if len(argv) != 5:
         print usage
         exit(1)
 
-    R, C, S = map(int, argv[1:])
+    R, C, T, S = map(int, argv[1:])
     assert (2 <= R <= MAX and 2 <= C <= MAX)
-    run(R, C, S)
+    assert (T in (0, 1))
+    run(R, C, T, S)

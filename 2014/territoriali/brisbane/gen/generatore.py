@@ -10,6 +10,7 @@ Parametri:
 * Mg (collegamenti gratuiti)
 * Mb (collegamenti col bus)
 * Mt (collegamenti col traghetto)
+* S  (seed)
 
 Constraint:
 * 2 <= N <= %d

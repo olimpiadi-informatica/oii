@@ -1,0 +1,14 @@
+# N (numero di nazioni)
+# L (numero di informazioni)
+# S (seed)
+
+#COPY: testo/esempio.txt
+20   100   1
+30   50    2
+40   41    3
+50   1000  4
+60   60    5
+70   400   6
+80   1000  7
+90   500   8
+100  1000  9
