@@ -5,6 +5,6 @@ before_install:
   - sudo apt-get install -qq python-pip gettext build-essential fpc
   - git clone https://github.com/cms-dev/cms.git
   - cd cms
-  - pip install -r REQUIREMENTS.txt
+  - pip install sqlalchemy pycrypto pyyaml psutil six gevent
   - python setup.py build
   - sudo python setup.py install
