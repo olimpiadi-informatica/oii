@@ -2,3 +2,4 @@ nome_breve: quasipal
 nome: Quasi-palindromi
 timeout: 1
 memlimit: 512
+token_mode: infinite

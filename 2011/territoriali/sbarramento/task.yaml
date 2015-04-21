@@ -2,3 +2,4 @@ nome_breve: sbarramento
 nome: Sbarramento tattico
 timeout: 1
 memlimit: 512
+token_mode: infinite
