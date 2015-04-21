@@ -30,15 +30,15 @@ void ex( const char *msg, float res );
 
 int main(int argc, char* argv[])
 {
-	if(argc < 3)
+	if(argc < 4)
 	{
-		fprintf(stderr,"Usage: %s <input> <test_output>\n", argv[0]);
+		fprintf(stderr,"Usage: %s <input> <output> <test_output>\n", argv[0]);
 		exit(1);
 	}
 	
 	ifstream input,test;
 	input.open(argv[1],ios::in);
-	test.open(argv[2],ios::in);
+	test.open(argv[3],ios::in);
 	
 
 	if(!input.is_open() || !test.is_open())
