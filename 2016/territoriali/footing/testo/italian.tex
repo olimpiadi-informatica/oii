@@ -1,0 +1,104 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+\usepackage{wrapfig}
+\usepackage[colorlinks = true,linkcolor = black,urlcolor  = blue,citecolor = black,anchorcolor = black]{hyperref}
+
+
+\newcommand{\inputfile}{\texttt{input.txt}}
+\newcommand{\outputfile}{\texttt{output.txt}}
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+	{
+	\vspace{-.95cm}\hfill\fbox{Difficoltà: 2}
+	}
+	\vspace{.5cm}
+
+	William sta pensando di trasferirsi in una nuova città e vuole selezionare, tra le varie possibilità, quella che si concilia meglio con la sua routine mattutina. Infatti, William è abituato a fare una corsetta attorno al proprio isolato tutte le mattine, e teme che traslocando debba rinunciare a questo hobby, qualora l'isolato in cui verrebbe a trovarsi fosse troppo grande.
+
+	\begin{wrapfigure}{r}{0.3\textwidth}
+	  \begin{center}
+	    \includegraphics[width=0.25\textwidth]{extra_footing/asy_footing/fig1.pdf}
+	  \end{center}
+	  \caption{\emph{La mappa della città descritta nel primo input di esempio.}}
+	\end{wrapfigure}
+
+	La mappa della città si può rappresentare come un insieme di strade e di incroci tra queste. A ogni incrocio c'è una casa e le strade possono essere percorse in entrambi i sensi. Le case sono numerate da $1$ a $N$.
+	Per evitare di annoiarsi, William non ha intenzione di fare corsette che passino due volte davanti alla stessa casa, ad eccezione della sua (infatti la corsetta deve necessariamente cominciare e terminare nella stessa casa). Questo tipo di percorso prende il nome di \emph{ciclo semplice}.
+
+	Nonostante i buoni propositi, William è molto pigro; per questo motivo ha intenzione di rendere la sua corsetta mattutina il più breve possibile: aiutalo  scrivendo un programma che prenda in input la mappa di una città e determini la lunghezza del \emph{ciclo semplice} più corto. Con questa informazione, William potrà decidere se trasferirsi nella nuova città, ovviamente solo se riuscirà poi ad andare ad abitare in una delle case  che appartengono a questo percorso.
+
+
+	Si prenda ad esempio la mappa della città in Figura 1 (dove il numero a fianco di ogni strada indica la lunghezza della strada), alcuni dei suoi cicli semplici sono i seguenti:
+
+	\begin{figure}[h!]
+	  \centering
+	  \includegraphics[width=2in]{extra_footing/asy_footing/fig2.pdf}\hfill
+	  \includegraphics[width=2in]{extra_footing/asy_footing/fig3.pdf}\hfill
+	  \includegraphics[width=2in]{extra_footing/asy_footing/fig4.pdf}
+	\end{figure}
+
+
+	Come si può vedere, i primi due cicli evidenziati hanno una lunghezza totale pari a $9$, il terzo invece ha una lunghezza pari a $8$ ed è quindi il percorso ottimale per la corsetta mattutina di William: adesso William sa quali sono le case coinvolte nel percorso più breve, e tra quelle potrà cercare la nuova casa in cui andare ad abitare.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+	\InputFile
+	Il file \inputfile{} contiene $M+1$ righe di testo. Sulla prima sono presenti due interi separati da spazio: $N$ e $M$, rispettivamente il numero di case ed il numero di tratti di strada presenti nella città. Dalla riga $2$ fino alla $M+1$ troviamo la descrizione degli $M$ tratti di strada. Ciascuna di queste righe contiene tre interi separati da spazio: $u$, $v$ e $w$, dove $u$ e $v$ sono due case (quindi sono degli indici compresi tra $1$ ed $N$) e $w$ è la lunghezza del tratto di strada che le collega.
+
+
+	\OutputFile
+	Il file \outputfile{} contiene un singolo intero: la lunghezza del \emph{ciclo semplice} più corto presente nella città in input.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $3 \le N \le 1000$.
+	\item $3 \le M \le 10\,000$.
+	\item $0 < w \le 10\,000$, dove $w$ è la lunghezza di un tratto di strada.
+	\item È garantito che nella città esiste sempre almeno un ciclo semplice.
+%	\item È garantito che una coppia di case adiacenti è collegata da \emph{un solo} tratto di strada.  % TODO
+	\item Nel 40\% dei casi di prova tutte le strade hanno lunghezza unitaria.
+	\item È garantito che una coppia di case adiacenti è collegata da \emph{un solo} tratto di strada.
+	\item Una strada non collega mai una casa a se stessa.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\Examples
+
+\begin{example}
+\exmp{\verbatiminput{footing0.txt}}{
+8
+}%
+%TODO: aggiungere altri esempi
+\end{example}
+
+\Notes
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item Per chi usa Pascal: è richiesto che si utilizzi sempre il tipo di dato \verb|longint| al posto di \verb|integer|.
+	\item Un programma che stampa lo stesso output indipendentemente dal file di input non totalizza alcun punteggio.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\newpage
+\begin{solution}
+    \input{extra_footing/soluzione}
+\end{solution}

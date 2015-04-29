@@ -1,0 +1,20 @@
+Consideriamo un arco $(u, v)$ e cerchiamo il più breve ciclo di cui esso fa parte.
+I cicli semplici contenenti l'arco $(u, v)$ nel grafo della città corrispondono evidentemente ai cammini semplici che congiungono il nodo $u$ al nodo $v$ in un grafo a cui è stato eliminato l'arco $(u, v)$.
+
+È facile trovare la lunghezza del cammino minimo tra $u$ e $v$ nel grafo ``ridotto'' utilizzando l'\href{https://it.wikipedia.org/wiki/Algoritmo\_di\_Dijkstra}{algoritmo di Dijkstra}\footnote{\url{http://it.wikipedia.org/wiki/Algoritmo_di_Dijkstra}}. La lunghezza del ciclo è quindi la distanza trovata da Dijkstra, sommata alla lunghezza dell'arco $(u, v)$.
+
+A questo punto risolvere il problema è semplice: per ogni arco troviamo il ciclo più corto che lo contiene e la risposta sarà il minimo delle lunghezze di questi cicli.
+
+La complessità computazionale di questo algoritmo è $O(M(M+N\log N))$, dato che esegue $M$ volte l'algoritmo di Dijkstra che ha complessità computazionale $O(M+N\log N)$.
+
+Approfondimento: è possibile modificare la soluzione precedente, basandosi sempre sull'algoritmo di Dijkstra, e ottenere una soluzione $O(NM + N^2\log N)$. Si ottiene comunque un notevole miglioramento in prestazioni (per quanto non in complessità computazionale) facendo in modo che l'algoritmo di Dijkstra non esplori cammini più lunghi del ciclo minimo già trovato.
+
+\createsection{\Codice}{Esempio di codice \texttt{C++11}}
+\Codice
+
+\colorbox{white}{\makebox[.99\textwidth][l]{
+    \includegraphics[trim=0 595 0 0, clip, scale=.73]{extra_footing/codice_footing.pdf}
+}}
+\colorbox{white}{\makebox[.99\textwidth][l]{
+    \includegraphics[trim=0 0 0 458, clip, scale=.73]{extra_footing/codice_footing.pdf}
+}}
