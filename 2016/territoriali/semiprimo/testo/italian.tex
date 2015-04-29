@@ -1,0 +1,94 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+\usepackage{amsthm}
+
+\newcommand{\inputfile}{\texttt{input.txt}}
+\newcommand{\outputfile}{\texttt{output.txt}}
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+	{
+	\vspace{-.95cm}\hfill\fbox{Difficoltà: 1}
+	}
+	\vspace{.5cm}
+
+	Gemma ha appena imparato che cos'è un numero semiprimo, e presa dall'euforia non riesce a smettere di parlarne. In particolare, \textbf{un numero semiprimo è un intero $\ge 2$ che si fattorizza come prodotto di due numeri primi} (non necessariamente distinti).
+
+\begin{warning}
+	I numeri primi sono tutti quegli interi $\ge 2$ divisibili solo per se stessi e per $1$. 
+\end{warning}
+
+	Sono quindi esempi di numeri semiprimi i numeri:
+	\begin{itemize}[nolistsep, itemsep=2mm]
+		\item $15$, prodotto di $3$ e $5$.
+		\item $169$, prodotto di $13$ e $13$.
+	\end{itemize}
+
+	Aiuta Gemma a scrivere un programma che verifichi se un numero $N$ è semiprimo oppure no!
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+	\InputFile
+	Il file \inputfile{} contiene l'unico intero $N$, di cui Gemma vuole verificare la semiprimalità.
+
+
+	\OutputFile
+	Il file \outputfile{} contiene:
+	\begin{itemize}[nolistsep, itemsep=2mm]
+		\item I due primi che fattorizzano $N$, stampati su un'unica riga, in ordine non-decrescente, se $N$ è semiprimo.
+		\item L'unico intero $-1$ se $N$ \textbf{non} è semiprimo.
+	\end{itemize}
+	
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $2 \le N \le 1\,000\,000$.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\Examples
+
+\begin{example}
+\exmp{\verbatiminput{semiprimo0.txt}}{
+31 31
+}%
+\exmp{
+884053}{
+101 8753
+}%
+\exmp{
+16
+}{%
+-1
+}%
+\end{example}
+
+\Notes
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item Per chi usa Pascal: è richiesto che si utilizzi sempre il tipo di dato \verb|longint| al posto di \verb|integer|.
+	\item Un programma che stampa lo stesso output indipendentemente dal file di input non totalizza alcun punteggio.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\newpage
+\begin{solution}
+    \input{extra_semiprimo/soluzione}
+\end{solution}

@@ -1,0 +1,47 @@
+\createsection{\SolSqrtN}{{\small{$\blacksquare$}} \normalsize Una soluzione ancora più efficiente}
+
+\createsection{\SolN}{{\small{$\blacksquare$}} \normalsize Una soluzione lineare}
+
+Supponiamo di conoscere il più piccolo divisore primo del numero $N$ in input. Detto $D$ questo numero, è immediato notare che  $N$ è semiprimo se e solo se $N/D$ è un numero primo.
+
+\SolN
+Forti di questa osservazione, possiamo immaginare di scandire in ordine tutti gli interi $2,3,\dots, N$ in ordine, alla ricerca del primo valore che divida $N$. Questo valore infatti coinciderà proprio con $D$, il più piccolo divisore primo di $N$ (perché?). Una volta determinato $D$, calcoliamo $N/D$.
+
+La verifica di primalità di un dato numero $Q$ (in questo caso, di $N/D$) è un'operazione semplice: infatti, come prima è sufficiente scandire in ordine tutti gli interi $2, 3, \dots$ fino a $Q-1$ compreso. Se nessuno di questi interi risulta un divisore di $Q$, allora $Q$ è primo. Vale anche il contrario: se almeno uno degli interi è un divisore di $Q$, allora $Q$ è un numero composto.
+
+La complessità di questa soluzione cresce linearmente con $N$. Infatti, per determinare $D$ è necessario, nel caso peggiore, scandire tutti i numeri da 2 fino ad $N$, per un totale di $O(N)$ controlli. Trovato il valore giusto di $D$, dobbiamo verificare se il numero $N/D$ è primo. L'algoritmo descritto sopra per determinare se un generico intero $Q$ è primo esegue $O(Q)$ controlli, perciò ha un tempo di esecuzione che cresce linearmente con $Q$. Notando che $N/D \le N$, si conclude che la complessità dell'intero algoritmo è proprio $O(N)$.
+
+Essendo in tutte le istanze di prova $N \le 1\,000\,000$, l'algoritmo appena descritto era più che sufficiente per guadagnare la totalità dei punti.
+
+\SolSqrtN
+
+Anche se non necessario per risolvere completamente il problema proposto, proponiamo un algoritmo più efficiente.
+
+L'osservazione centrale per ridurre la complessità dell'algoritmo è la seguente:
+
+\begin{mdframed}[linewidth=3pt, linecolor=black!15!white, backgroundcolor=black!8!white]
+\vspace{0mm}
+    Se un intero $Q$ non possiede alcun divisore maggiore di $1$ e minore o uguale a $\sqrt{Q}$, allora è primo.
+
+\end{mdframed}
+
+$\triangleright$ \textbf{Dimostrazione:} {la dimostrazione dell'affermazione è semplice. Supponiamo per assurdo che l'affermazione sia falsa e che esista un numero composto $Q$ che non ammetta divisori maggiori di 1 e minori o uguali di $\sqrt{Q}$. Dato che $Q$ è composto, devono esistere due suoi divisori $A$ e $B$, entrambi maggiori di $1$, tali che $Q = A\times B$. Per l'ipotesi fatta, sia $A$ che $B$ devono essere entrambi strettamente maggiori di $\sqrt{Q}$. Questo porta immediatamente ad una contraddizione: infatti, se $A, B > \sqrt{Q}$, sicuramente $A\times B > Q$, contraddicendo quello che abbiamo appena detto. \qed}
+
+Come prima conseguenza di questo lemma, possiamo interrompere la ricerca del più piccolo divisore primo $D$ di $N$ non appena $D > \sqrt{N}$. Infatti, in quel caso abbiamo la certezza che $N$ è un numero primo, quindi non è semiprimo, e stampiamo immediatamente \texttt{-1} in output.
+
+Allo stesso modo, supposto di aver trovato $D$, possiamo determinare se $N/D$ è primo con $O(\sqrt{N/D})$ controlli, interrompendo il ciclo che cerca un divisore di $N/D$ nonappena il potenziale divisore supera il valore $\sqrt{N/D}$. Essendo $N/D < N$, il controllo di primalità di $N/D$ comporta un numero di operazioni inferiore a $\sqrt{N}$.
+
+L'algoritmo risultante ha pertanto complessità $O(\sqrt{N})$.
+
+\createsection{\Codice}{Esempio di codice \texttt{C++11}}
+
+\Codice
+\SolN
+\colorbox{white}{\makebox[.99\textwidth][l]{
+    \includegraphics[scale=.73]{extra_semiprimo/codice_lineare.pdf}
+}}
+
+\SolSqrtN
+\colorbox{white}{\makebox[.99\textwidth][l]{
+    \includegraphics[scale=.73]{extra_semiprimo/codice_radice.pdf}
+}}\vspace{-20mm}
