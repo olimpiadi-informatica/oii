@@ -1,0 +1,8 @@
+memory_limit: 256
+name: footing
+time_limit: 1.0
+title: Corsa mattutina
+token_mode: infinite
+diff: 1
+infile: input.txt
+outfile: output.txt
