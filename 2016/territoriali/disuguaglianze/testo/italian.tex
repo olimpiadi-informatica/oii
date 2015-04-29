@@ -1,0 +1,103 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage[colorlinks = true,linkcolor = black,urlcolor  = blue,citecolor = black,anchorcolor = black]{hyperref}
+
+
+\newcommand{\inputfile}{\texttt{input.txt}}
+\newcommand{\outputfile}{\texttt{output.txt}}
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+	{
+	\vspace{-.95cm}\hfill\fbox{Difficoltà: 2}
+	}
+	\vspace{.5cm}
+
+	Gabriele ha un nuovo rompicapo preferito, chiamato ``Rispetta i versi''. Si tratta di un solitario giocato su una griglia formata da $N$ caselle separate da un simbolo di disuguaglianza; in figura è mostrato un esempio con $N = 6$.
+	
+	\vspace{-1mm}
+	\begin{figure}[h]
+	\centering\colorbox{black!10!white}{
+		\includegraphics[scale=.8]{extra_disuguaglianze/asy_disuguaglianze/fig0.pdf}
+	}
+	\end{figure}
+
+	L'obiettivo del gioco è quello di riempire le celle vuote con tutti i numeri da $1$ a $N$ (ogni numero deve comparire esattamente una volta), in modo da rispettare le disuguaglianze tra caselle adiacenti. Per la griglia della figura, una delle possibili soluzioni al rompicapo è la seguente:
+	
+	\vspace{-1mm}
+	\begin{figure}[h]
+	\centering\colorbox{black!10!white}{
+		\includegraphics[scale=.8]{extra_disuguaglianze/asy_disuguaglianze/fig1.pdf}
+	}
+	\end{figure}
+	\vspace{-1mm}
+	
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+	\InputFile
+	Il file \inputfile{} contiene due righe di testo. Sulla prima è presente l'intero $N$, il numero di caselle del gioco. Sulla seconda è presente una stringa di $N-1$ caratteri, ognuno dei quali può essere solo \verb|<| o \verb|>|, che descrive i vincoli tra le caselle, da sinistra a destra.
+
+
+	\OutputFile
+	Il file \outputfile{} contiene su una sola riga una qualunque permutazione dei numeri da $1$ a $N$ - separati tra loro da uno spazio - che risolve il rompicapo. I numeri corrispondono ai valori scritti nelle caselle, leggendo da sinistra verso destra.
+	
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $2 \le N \le 100\,000$.
+	\item Nel 30\% dei casi, il valore di $N$ non supera 10.
+	\item Nel 60\% dei casi, il valore di $N$ non supera 20.
+	\item Si garantisce l'esistenza di almeno una soluzione per ciascuno dei casi di test utilizzati nella verifica del funzionamento del programma.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\Examples
+
+\begin{example}
+\exmp{\verbatiminput{disuguaglianze0.txt}}{
+2 5 1 3 6 4
+}%
+\exmp{
+5
+>{}>{}<{}<}{
+5 3 1 2 4
+}%
+\exmp{
+8
+>{}>{}<{}>{}>{}<{}>
+}{%
+6 5 4 7 3 2 8 1
+}%
+\end{example}
+
+\Notes
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item Per chi usa Pascal: è richiesto che si utilizzi sempre il tipo di dato \verb|longint| al posto di \verb|integer|.
+	\item Un programma che stampa lo stesso output indipendentemente dal file di input non totalizza alcun punteggio.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\newpage
+\begin{solution}
+	\input{extra_disuguaglianze/soluzione}
+\end{solution}

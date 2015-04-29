@@ -1,0 +1,93 @@
+\createsection{\SolN}{{\small{$\blacksquare$}} \normalsize Una soluzione greedy}
+\createsection{\SolBrute}{{\small{$\blacksquare$}} \normalsize Una soluzione brute force (per il 30\% dei punti)}
+\createsection{\SolDAG}{{\small{$\blacksquare$}} \normalsize Una soluzione coi grafi di precedenza}
+
+Era possibile risolvere questo problema seguendo diversi approcci. Proponiamo qui sotto i due che riteniamo più istruttivi.
+
+\SolN
+
+Consideriamo il seguente pseudocodice:
+
+\floatname{algorithm}{Algoritmo}
+\begin{algorithm}
+    \caption{Soluzione che assegna i numeri in modo greedy}\label{greedy}
+    \begin{algorithmic}[1]
+    \Procedure{AssegnaGreedy}{\textsc{simboli}, $N$}
+        \State $\textsc{min} \gets 1$
+        \State $\textsc{max} \gets N$
+        \For{$i \gets 1, 2, \dots, N-1$}
+            \If {\textsc{simboli}$[i]$ = ``\texttt{<}''} \Comment{Caso $1$: simbolo ``\texttt{<}''}
+                \State \textbf{print} \textsc{min}
+                \State $\textsc{min} \gets \textsc{min}+1$
+            \Else \Comment{Caso $2$: simbolo ``\texttt{>}''}
+                \State \textbf{print} \textsc{max}
+                \State $\textsc{max} \gets \textsc{max}-1$
+            \EndIf
+        \EndFor
+        \State \textbf{print} \textsc{min} \Comment{Qui si avrà \textsc{min = max}, quindi è indifferente usare \textsc{min} o \textsc{max}}
+    \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+Omettiamo una dimostrazione completamente formale della correttezza dell'algoritmo: limitiamoci a notare che è facile convincersi che questo algoritmo greedy produce sempre una permutazione corretta. Infatti, da una parte ogni numero da inserire nella griglia viene utilizzato esattamente una volta, mentre dall'altra è chiaro che il numero da inserire nella casella $i$ rispetta sempre il segno di disuguaglianza tra le caselle $i-1$ e $i$, per ogni $i > 1$.
+
+In effetti, come vedremo nella prossima sezione, è possibile rileggere l'algoritmo in termini di operazioni su un particolare grafo, da cui segue direttamente la correttezza dell'approccio.
+
+Questo semplice algoritmo, di complessità lineare in $N$, era sufficiente a guadagnare la totalità del punteggio.
+
+\SolDAG
+
+È possibile adottare un approccio più teorico per risolvere il problema, che illustriamo riprendendo l'esempio proposto dal testo, etichettando per comodità le caselle della griglia con le lettere da $A$ a $F$.
+	
+	\vspace{-1mm}
+	\begin{figure}[h]
+		\centering\includegraphics[scale=.8]{extra_disuguaglianze/asy_disuguaglianze/sol_fig.pdf}
+	\end{figure}
+
+Disegniamo un grafo in cui i nodi rappresentano le caselle, e gli archi sono definiti tramite le relazioni tra le caselle adiacenti. In particolare, la relazione $X < Y$ definisce un arco che va da $X$ a $Y$, mentre la relazione $X > Y$ definisce un arco che va da $Y$ a $X$.
+
+\begin{figure}[H]
+\centering\includegraphics[scale = .65]{extra_disuguaglianze/asy_disuguaglianze/sol_grafo.pdf}
+\end{figure}
+
+Notiamo che questo grafo diretto, che esprime le relazioni di precedenza tra coppie di caselle, non può avere cicli; in gergo tecnico è denominato ``DAG'', dall'inglese \textit{Directed Acyclic Graph}.
+
+La teoria dei DAG, impiegati per modellare problemi di precedenza ben più sofisticati del nostro, assicura che è sempre possibile riordinare i nodi del grafo in modo che tutte le frecce puntino da sinistra verso destra. Questo particolare ordinamento, detto \href{https://it.wikipedia.org/wiki/Ordinamento_topologico}{ordinamento topologico}\footnote{\url{https://it.wikipedia.org/wiki/Ordinamento_topologico}}, in generale non è unico; qui sotto mostriamo, nella colonna di sinistra, due ordinamenti tra i tanti possibili per il grafo che stiamo considerando.
+
+\begin{figure}[H]
+\centering\includegraphics[scale = .66]{extra_disuguaglianze/asy_disuguaglianze/sol_dag1.pdf}\hspace{1.5cm}
+\raisebox{.2cm}{\includegraphics[scale = .8]{extra_disuguaglianze/asy_disuguaglianze/sol_perm1.pdf}}
+\end{figure}
+\begin{figure}[H]
+\centering\includegraphics[scale = .66]{extra_disuguaglianze/asy_disuguaglianze/sol_dag2.pdf}\hspace{1.5cm}
+\raisebox{.4cm}{\includegraphics[scale = .8]{extra_disuguaglianze/asy_disuguaglianze/sol_perm2.pdf}}
+\end{figure}
+
+Una volta scelto un ordinamento topologico, è immediato vedere che assegnare in ordine i valori $1, 2, \dots$ ai nodi produce una permutazione valida ai fini del problema. Le permutazioni indotte dai due ordinamenti topologici sopra sono quelli mostrati nella colonna destra.
+
+È possibile costruire un ordinamento topologico del grafo in tempo lineare nella dimensione del grafo, ovvero in questo lineare in $N$. Non entreremo nei dettagli di questo algoritmo, seppur semplice, e lasciamo alla curiosità dei lettori capirne il dettaglio del funzionamento. Ad ogni modo, ne proponiamo una implementazione in linguaggio \texttt{C++11}, all'interno delle prossime pagine.
+
+\textbf{Approfondimento.} Come già accennato, possiamo interpretare la soluzione greedy esposta alla sezione precedente, mostrando che l'assegnamento prodotto è ottenuto costruendo un ordinamento topologico ``dietro le quinte''. Supponiamo che il primo simbolo sia ``\texttt{<}'': avremo che il primo nodo (ovvero $A$) sarà una \textit{sorgente} del grafo delle precedenze, ovvero un nodo che non presenta archi \emph{entranti}. Esiste sicuramente un ordinamento topologico in cui $A$ ricopre la prima posizione, e per questo non perdiamo nulla ad assegnare ad $A$ il più basso numero disponibile.
+
+Analogamente, se il primo simbolo è ``\texttt{>}'', avremo che il nodo $A$ sarà un \textit{pozzo} del DAG, ovvero un nodo che non presenta archi \emph{uscenti}. Come prima, non perdiamo nulla ad assumere che questo pozzo ricopra l'ultima posizione dell'ordinamento, e per questo gli attribuiamo il numero più grande disponibile.
+
+Una volta allocato il nodo $A$, possiamo pensare di strapparlo dal grafo, assieme a tutti gli archi ad esso incidenti; questa operazione potenzialmente crea nuove sorgenti o nuovi pozzi. Possiamo ora reiterare il ragionamento, costruendo induttivamente un ordinamento topologico valido, che coincide con quello della soluzione greedy.
+
+\newpage
+\createsection{\Codice}{Esempio di codice \texttt{C++11}}
+\Codice
+
+\SolN
+\colorbox{white}{\makebox[.99\textwidth][l]{
+    \includegraphics[scale=.73]{extra_disuguaglianze/codice_disug_greedy.pdf}
+}}
+
+\SolBrute
+\colorbox{white}{\makebox[.99\textwidth][l]{
+    \includegraphics[scale=.73]{extra_disuguaglianze/codice_disug_brute.pdf}
+}}
+
+\SolDAG
+\colorbox{white}{\makebox[.99\textwidth][l]{
+    \includegraphics[scale=.73]{extra_disuguaglianze/codice_disug_ts.pdf}
+}}

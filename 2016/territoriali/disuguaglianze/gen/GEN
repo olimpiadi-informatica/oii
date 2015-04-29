@@ -1,0 +1,20 @@
+## N, seed
+
+## Nel 30% dei casi il valore di N non supera 10
+
+#COPY: testo/disuguaglianze0.txt
+9       1
+10      2
+
+## Nel 60% dei casi il valore di N non supera 20
+
+18      3
+19      4
+20      5
+
+## Casi piu' grandi...
+
+100     6
+1000    7
+10000   8
+100000  9
