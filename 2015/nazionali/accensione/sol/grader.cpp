@@ -1,1 +1,1 @@
-../att/grader.cpp
+grader.c
