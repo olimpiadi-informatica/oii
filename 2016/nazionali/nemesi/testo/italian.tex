@@ -1,0 +1,143 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+
+
+\createsection{\Grader}{Grader di prova}
+
+\newcommand{\inputfile}{\texttt{input.txt}}
+\newcommand{\outputfile}{\texttt{output.txt}}
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+\newcommand{\funcitem}[2]{\item[$\blacksquare$] \textbf{\large \textsf{Funzione} \texttt{#1}} \vspace{-0.3cm} \begin{center}\begin{tabularx}{\textwidth}{|c|X|} \hline #2 \hline \end{tabularx}\end{center}}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+Pochi sanno che Monica, oltre a gestire le Olimpiadi di Informatica, gestisce anche il ``laboratorio creativo di pittura'' della scuola elementare del suo quartiere. Anche quest'anno deve smistare i suoi fortunati alunni in gruppi di lavoro. Il compito è meno banale di quello che sembra: all'interno della classe, ogni bambino ha un nemico mortale (chi non lo aveva?). Inoltre, a complicare le cose, questa relazione non è necessariamente simmetrica: nonostante il nemico mortale di Luca sia Giacomo, il nemico mortale di Giacomo potrebbe non essere Luca.
+
+Aiuta Monica a dividere la classe nel \textbf{minimo} numero di gruppi, in modo che all'interno di ogni gruppo non siano presenti contemporaneamente un bambino ed il suo nemico mortale.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\Implementation
+
+Dovrai sottoporre esattamente un file con estensione \texttt{.c}, \texttt{.cpp} o \texttt{.pas}.
+
+\begin{warning}
+Tra gli allegati a questo task troverai un template (\texttt{nemesi.c}, \texttt{nemesi.cpp}, \texttt{nemesi.pas}) con un esempio di implementazione.
+\end{warning}
+\vspace{4mm}
+
+\newcommand{\titoletto}[1]{\textbf{\large \textsf{Funzione} \texttt{#1}}\\[3mm]}
+
+Dovrai \textbf{implementare} la seguente funzione:
+\begin{itemize}[nolistsep]
+	\funcitem{smista}{
+		C/C++  & \verb|void smista(int N, int nemico[]);|\\
+		\hline
+		Pascal & \verb|procedure smista(N: longint; nemico: array of longint);|\\
+	}
+	\begin{itemize}[nolistsep]
+	  \item L'intero $N$ rappresenta il numero di bambini nella classe di Monica. I bambini sono numerati con gli interi $0, 1, \ldots, N - 1$.
+	  \item L'array \texttt{nemico} contiene, alla posizione $i$, il numero del nemico mortale del bambino $i$.
+	\end{itemize}
+\end{itemize}
+
+\medskip
+Il tuo programma potrà \textbf{utilizzare} le seguenti funzioni, definite nel grader:
+\begin{itemize}[nolistsep]
+	\funcitem{nuovo\_gruppo}{
+		C/C++  & \verb|void nuovo_gruppo();|\\
+		\hline
+		Pascal & \verb|procedure nuovo_gruppo();|\\
+	}
+
+		Questa funzione crea un nuovo gruppo, al quale è possibile aggiungere bambini usando \texttt{aggiungi} (vedi sotto).\\
+
+	\funcitem{aggiungi}{
+		C/C++  & \verb|void aggiungi(int bambino);|\\
+		\hline
+		Pascal & \verb|procedure aggiungi(int bambino);|\\
+	}
+		
+		Questa funzione aggiunge il bambino numerato \texttt{bambino} all'ultimo gruppo creato.
+\end{itemize}
+
+Il grader chiamerà la funzione \texttt{smista}, la quale a sua volta assegnerà i bambini ai gruppi usando \texttt{nuovo\_gruppo} e \texttt{aggiungi}.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Grader
+Nella directory relativa a questo problema è presente una versione semplificata del grader usato durante la correzione, che potete usare per testare le vostre soluzioni in locale. Il grader di esempio legge i dati di input dal file \inputfile{}, chiama la funzione che dovete implementare e scrive il file \outputfile{}, secondo il seguente formato.
+
+Il file \inputfile{} è composto da due righe, contenenti:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: l'unico intero $N$.
+\item Riga $2$: i valori \texttt{nemico[$i$]} per $i = 0, 1, \ldots, N-1$.
+\end{itemize}
+
+Il file \outputfile{} è composto da $G$ righe, dove $G$ rappresenta il numero di gruppi creati dalla vostra soluzione. La riga $i$-esima contiene i numeri dei bambini assegnati al gruppo $i$, non necessariamente ordinati.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\Constraints
+
+
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $2 \le N \le 100\,000$.
+	\item Ogni bambino deve appartenere ad esattamente un gruppo.
+	\item Nessun bambino è nemico mortale di se stesso.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Scoring
+Il tuo programma verrà testato su diversi test case raggruppati in subtask. Per ogni test case riceverai un punteggio di:
+\[
+2^{\texttt{opt}-\texttt{eff}}
+\]
+dove \texttt{opt} è il numero ottimale di gruppi e \texttt{eff} è il numero di gruppi ottenuto dalla tua soluzione. Per ogni subtask riceverai un punteggio pari al valore del subtask moltiplicato per il peggior punteggio ottenuto su uno dei suoi test case.
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+  \item \textbf{\makebox[2cm][l]{Subtask 1} [\phantom{0}5 punti]}: Casi d'esempio.
+  \item \textbf{\makebox[2cm][l]{Subtask 2} [13 punti]}: Le relazioni sono tutte simmetriche: se $B$ è il nemico mortale di $A$, $A$ è il nemico mortale di $B$.
+  \item \textbf{\makebox[2cm][l]{Subtask 3} [29 punti]}: Ogni bambino è nemico di al più un altro bambino.
+  \item \textbf{\makebox[2cm][l]{Subtask 4} [26 punti]}: $N \le 2000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 5} [27 punti]}: Nessuna limitazione specifica.
+\end{itemize}
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Examples
+
+\begin{example}
+\exmpfile{nemesi.input0.txt}{nemesi.output0.txt}%
+\exmpfile{nemesi.input1.txt}{nemesi.output1.txt}%
+\end{example}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Explanation
+
+Nel \textbf{primo caso di esempio} è possibile dividere i bambini in due gruppi: il primo contiene $\{0,2,4\}$ e il secondo $\{1,3\}$. Per costruire la suddivisione, sono state effettuate le chiamate: \verb|nuovo_gruppo()|, \verb|aggiungi(0)|, \verb|aggiungi(4)|, \verb|aggiungi(2)|, \verb|nuovo_gruppo()|, \verb|aggiungi(3)|, \verb|aggiungi(1)|.\\[2mm]
+
+Nel \textbf{secondo caso di esempio} sono necessari tre gruppi: $\{1, 4\}$, $\{3\}$ e $\{0, 2\}$.

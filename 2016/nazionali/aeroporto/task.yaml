@@ -1,0 +1,7 @@
+infile: input.txt
+memory_limit: 256
+name: aeroporto
+outfile: output.txt
+time_limit: 0.2
+title: Torre di controllo
+token_mode: infinite

@@ -1,0 +1,159 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+
+
+\createsection{\Grader}{Grader di prova}
+
+\newcommand{\inputfile}{\texttt{input.txt}}
+\newcommand{\outputfile}{\texttt{output.txt}}
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+\newcommand{\funcitem}[2]{\item[$\blacksquare$] \textbf{\large \textsf{Funzione} \texttt{#1}} \vspace{-0.3cm} \begin{center}\begin{tabularx}{\textwidth}{|c|X|} \hline #2 \hline \end{tabularx}\end{center}}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+	Romeo ha di recente assistito ad un'avvincente performance di un cuoco acrobatico, che gestiva una imponente grigliata di braciole ribaltandole a gruppi di tre per mezzo di una apposita paletta. Questo evento gli ha ispirato l'idea del \emph{paletta-sort}, una nuova interessante procedura di ordinamento.
+
+	Dato un vettore \texttt{V} contenente gli interi da $0$ a $N-1$ (indicizzato da $0$ a $N-1$), l'unica operazione ammessa nel paletta-sort è l'operazione \emph{ribalta}. Questa operazione sostituisce tre elementi $A$, $B$, $C$  consecutivi di \texttt{V} con i corrispondenti ribaltati $C$, $B$, $A$. Aiuta Romeo a capire se è possibile ordinare il vettore \texttt{V}, e in caso affermativo quante e quali operazioni \emph{ribalta} sono sufficienti!
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\Implementation
+
+
+Dovrai sottoporre esattamente un file con estensione \texttt{.c}, \texttt{.cpp} o \texttt{.pas}.
+
+\begin{warning}
+Tra gli allegati a questo task troverai un template (\texttt{paletta.c}, \texttt{paletta.cpp}, \texttt{paletta.pas}) con un esempio di implementazione.
+\end{warning}
+
+Dovrai implementare la seguente funzione:
+
+\begin{itemize}[nolistsep]
+	\funcitem{paletta\_sort}{
+		C/C++  & \verb|long long paletta_sort(int N, int V[]);|\\
+		\hline
+		Pascal & \verb|function paletta_sort(N: longint; V: array of longint) : int64;|\\
+	}
+
+	\begin{itemize}[nolistsep]
+	  \item L'intero $N$ rappresenta il numero di elementi da ordinare.
+	  \item Il vettore \texttt{V}, indicizzato da $0$ a $N-1$, contiene la sequenza da ordinare.
+	  \item La funzione dovrà restituire il numero ribaltamenti effettuati per ordinare \texttt{V}, oppure $-1$ se non c'è modo di ordinare il vettore.
+	\end{itemize}
+\end{itemize}
+
+\medskip
+
+Il grader chiamerà la funzione \texttt{paletta\_sort} e ne stamperà il valore restituito sul file di output.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Grader
+Nella directory relativa a questo problema è presente una versione semplificata del grader usato durante la correzione, che potete usare per testare le vostre soluzioni in locale. Il grader di esempio legge i dati di input dal file \inputfile{}, chiama le funzioni che dovete implementare e scrive il file \outputfile{}, secondo il seguente formato.
+
+Il file \inputfile{} è composto da due righe, contenenti:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: l'unico intero $N$.
+\item Riga $2$: i valori \texttt{V[$i$]} per $i = 0,\ldots, N-1$.
+\end{itemize}
+
+Il file \outputfile{} è composto da una riga, contenente:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: il valore $R$ restituito dalla funzione \texttt{paletta\_sort}.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $1 \le N \le 1\,500\,000$.
+	\item $0 \le \text{\texttt{V[$i$]}} \le N-1$ per ogni $i=0,\ldots, N-1$.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Scoring
+
+Il tuo programma verrà testato su diversi test case raggruppati in subtask. Per ogni test case riceverai punteggio:
+\begin{itemize}[nolistsep,itemsep=2mm]
+  \item $1$: se riporti correttamente il numero minimo di ribaltamenti;
+  \item $0.2$: se il vettore \texttt{V} è ordinabile e restituisci un numero maggiore o uguale a 0 (anche se non corrisponde al numero minimo di ribaltamenti), cioè riesci a distinguere quando il vettore è ordinabile;
+  \item $0$: altrimenti.
+\end{itemize}
+Per ogni subtask riceverai un punteggio pari al valore del subtask moltiplicato per il peggior punteggio ottenuto su uno dei suoi test case.
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+  \item \textbf{\makebox[2cm][l]{Subtask 1} [\phantom{0}5 punti]}: Casi d'esempio.
+  \item \textbf{\makebox[2cm][l]{Subtask 2} [19 punti]}: $N \leq 100$.
+  \item \textbf{\makebox[2cm][l]{Subtask 3} [24 punti]}: $N \leq 5000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 4} [21 punti]}: $R \leq 100$ (oppure \texttt{V} non è ordinabile).
+  \item \textbf{\makebox[2cm][l]{Subtask 5} [25 punti]}: $N \le 100\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 6} [\phantom{0}6 punti]}: Nessuna limitazione specifica.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Examples
+
+\begin{example}
+\exmpfile{paletta.input0.txt}{paletta.output0.txt}%
+\exmpfile{paletta.input1.txt}{paletta.output1.txt}%
+\end{example}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Explanation
+
+Nel \textbf{primo caso di esempio}, non \`e possibile ordinare il vettore dato.\\[2mm]
+
+Nel \textbf{secondo caso di esempio}, la soluzione proposta produce la seguente sequenza di ribaltamenti:
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+2 & 3 & 0 & 5 & 4 & 1\\
+\hline
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+2 & 3 & 0 & 1 & 4 & 5\\
+\hline
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+0 & 3 & 2 & 1 & 4 & 5\\
+\hline
+\end{tabular}
+\end{center}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+0 & 1 & 2 & 3 & 4 & 5\\
+\hline
+\end{tabular}
+\end{center}

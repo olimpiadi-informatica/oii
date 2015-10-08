@@ -1,0 +1,72 @@
+# File usato per descrivere gli input. Le parti della riga dopo un # vengono
+# ignorate. Le righe non banali (ovvero contenenti qualcosa oltre a whitespace
+# prima del primo #) vengono passate al generatore e generano un input ciascuna.
+# Se una riga inizia con "#ST:" (senza le virgolette) viene usata per delimitare
+# un subtask. "#ST:" va seguito con il punteggio assegnato a quel subtask. Se
+# sono presenti i subtask, è necessario che la somma dei punti di ogni subtask
+# sia 100.
+
+# R		T		A	B	K	S
+
+# Subtask 1: Esempi
+#ST: 5
+#COPY: testo/aeroporto.input0.txt
+#COPY: testo/aeroporto.input1.txt
+
+# Subtask 2: A = B = 0
+#ST: 7
+100		1000000000	0	0	1	2
+1000		1000000		0	0	5	3
+10000		10000000	0	0	11	4
+100000		100000000	0	0	57	5
+100000		1000000000	0	0	310	6
+
+# Subtask 3: T <= 10R
+#ST: 14
+10000		100000		0	100	1	7
+30000		200000		10	90	1	8
+90000		300000		1000	2000	1	9
+100000		1000000		10	500	1	10
+100000		1000000		100	10000	1	11
+100000		1000000		5	40	1	12
+100000		1000000		0	5	1	13
+
+# Subtask 4: T <= 1000
+#ST: 17
+20		1000		6	300	1	14
+40		1000		10	100	1	15
+70		1000		1	10	1	16
+90		1000		0	3	1	17
+150		1000		2	6	1	18
+300		1000		5	200	1	19
+500		1000		0	10	1	20
+
+# Subtask 5: T <= 1000000
+#ST: 15
+100000		1000000		200	20000	1	21
+20000		1000000		1000	1000	1	22
+5000		1000000		10	10000	1	23
+1000		1000000		100	2000	1	24
+2000		1000000		10	100	1	25
+5000		1000000		5	2000	1	26
+10000		1000000		1	30	1	27
+
+# Subtask 6: B <= 100
+#ST: 20
+100000		1000000000	0	100	6000	28
+100000		70000000	1	100	650	29
+100000		1000000		2	100	3	30
+100000		300000000	5	100	400	31
+100000		1000000000	10	100	9000	32
+100000		1000000000	0	100	10000	33
+
+# Subtask 7: No limits
+#ST: 22
+100000		1000000000	400	30000	8000	34
+100000		1000000000	500	100000	200		35
+100000		1000000000	600	5000	5000	36
+100000		1000000000	700	10000	100		37
+100000		1000000000	800	20000	1000	38
+100000		1000000000	900	50000	7000	39
+100000		1000000000	200000000	1000000000		1	40
+99997		1000000000	99999956	987654321		1	41

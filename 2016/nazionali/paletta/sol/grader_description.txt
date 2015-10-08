@@ -1,0 +1,27 @@
+# Le righe che iniziano con # sono commenti.
+# La stringa ***sezione*** indica l'inizio di una nuova sezione.
+# Le sezioni devono essere sempre presenti tutte, l'ordine non conta ma è
+# meglio se sono nell'ordine: variables, functions, input, output
+
+
+***variables***
+
+int N
+int V[N]
+longint numero_ribaltamenti
+
+***functions***
+
+numero_ribaltamenti = paletta_sort(N, V)
+
+***input***
+
+N
+V[]
+
+***output***
+
+numero_ribaltamenti
+
+#***adhoc***
+#C 

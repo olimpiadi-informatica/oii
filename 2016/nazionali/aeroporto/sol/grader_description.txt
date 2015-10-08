@@ -1,0 +1,29 @@
+# Le righe che iniziano con # sono commenti.
+# La stringa ***sezione*** indica l'inizio di una nuova sezione.
+# Le sezioni devono essere sempre presenti tutte, l'ordine non conta ma è
+# meglio se sono nell'ordine: variables, functions, input, output
+
+
+***variables***
+
+int R
+int A[R]
+int B[R]
+int T[R]
+
+***functions***
+
+pianifica(R, A, B, T)
+
+***input***
+
+R
+A[] B[]
+
+***output***
+
+T[]
+
+
+#***adhoc***
+#C 

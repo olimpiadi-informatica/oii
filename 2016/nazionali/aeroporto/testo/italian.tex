@@ -1,0 +1,138 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+
+
+\createsection{\Grader}{Grader di prova}
+
+\newcommand{\inputfile}{\texttt{input.txt}}
+\newcommand{\outputfile}{\texttt{output.txt}}
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+\newcommand{\funcitem}[2]{\item[$\blacksquare$] \textbf{\large \textsf{Funzione} \texttt{#1}} \vspace{-0.3cm} \begin{center}\begin{tabularx}{\textwidth}{|c|X|} \hline #2 \hline \end{tabularx}\end{center}}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+	Nella torre di controllo dell'aeroporto di Bologna è scattato il panico. La finale nazionale delle Olimpiadi di Informatica, infatti, ha attirato una moltitudine di tifosi che stanno raggiungendo la città con voli di linea e charter. L'insolita mole di traffico sta quindi costringendo gli operatori della torre di controllo a regolare meticolosamente tutte le richieste di atterraggio, per evitare che la situazione porti a un rischio di incidente aereo troppo elevato.
+
+	In particolare, la torre di controllo ha ricevuto $R$ richieste di atterraggio. L'$i$-esima richiesta arrivata in ordine cronologico consiste in due valori \texttt{A[$i$]} e \texttt{B[$i$]}: il primo di questi due valori indica l'istante di tempo in cui l'aereo corrispondente può atterrare se manovra direttamente verso la pista, mentre il secondo indica l'istante di tempo massimo entro cui può atterrare se cerca di allungare il tragitto (ma senza rischiare di finire il carburante).
+
+	La torre di controllo deve scegliere per ogni aereo un istante di tempo \texttt{T[$i$]} compreso tra \texttt{A[$i$]} e \texttt{B[$i$]}, di modo che la distanza \emph{minima} $K$ tra due istanti scelti \emph{sia massima possibile}. Infatti, più $K$ si riduce e più aumenta il rischio di incidenti aerei. La torre di controllo deve anche considerare che un pilota vuole atterrare prima di tutti quelli che hanno fatto richiesta dopo di lui, perciò deve far sì che $\text{\texttt{T[$i$]}}< \text{\texttt{T[$i+1$]}}$, cioè che gli atterraggi avvengano nello stesso ordine delle richieste.
+	Aiuta gli operatori a pianificare gli atterraggi!
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\Implementation
+
+
+Dovrai sottoporre esattamente un file con estensione \texttt{.c}, \texttt{.cpp} o \texttt{.pas}.
+
+\begin{warning}
+Tra gli allegati a questo task troverai un template (\texttt{aeroporto.c}, \texttt{aeroporto.cpp}, \texttt{aeroporto.pas}) con un esempio di implementazione.
+\end{warning}
+
+Dovrai implementare la seguente funzione:
+
+\begin{itemize}[nolistsep]
+	\funcitem{pianifica}{
+		C/C++  & \verb|void pianifica(int R, int A[], int B[], int T[]);|\\
+		\hline
+		Pascal & \verb|procedure pianifica(R: longint; A, B, T: array of longint);|\\
+	}
+	
+	\begin{itemize}[nolistsep]
+	  \item L'intero $R$ rappresenta il numero di richieste di atterraggio.
+	  \item Gli array \texttt{A} e \texttt{B}, indicizzati da $0$ a $R-1$, contengono alla posizione $i$ rispettivamente il minimo e il massimo istante di tempo possibile per l'atterraggio dell'aereo $i$.
+	  \item L'array \texttt{T}, indicizzato da $0$ a $R-1$, dovrà essere riempito dal tuo programma con gli istanti di tempo \texttt{T[$i$]} compresi tra \texttt{A[$i$]} e \texttt{B[$i$]} tali da massimizzare la minima distanza tra due istanti scelti.
+	\end{itemize}
+\end{itemize}
+
+\medskip
+
+Il grader chiamerà la funzione \texttt{pianifica} e stamperà il valore calcolato in \texttt{T} sul file di output.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Grader
+Nella directory relativa a questo problema è presente una versione semplificata del grader usato durante la correzione, che potete usare per testare le vostre soluzioni in locale. Il grader di esempio legge i dati di input dal file \inputfile{}, chiama le funzioni che dovete implementare e scrive il file \outputfile{}, secondo il seguente formato.
+
+Il file \inputfile{} è composto da $R+1$ righe, contenenti:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: l'unico intero $R$.
+\item Righe $2,\ldots, R+1$: i due interi \texttt{A[$i$]}, \texttt{B[$i$]} per $i = 0,\ldots, R-1$.
+\end{itemize}
+
+Il file \outputfile{} è composto da un'unica riga, contenente:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: gli $R$ interi \texttt{T[$i$]} per $i = 0,\ldots, R-1$ calcolati dalla funzione \texttt{pianifica}.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $1 \le R \le 100\,000$.
+	\item $0 \le T_{\text{max}} \le 1\,000\,000\,000$.
+	\item $0 \le \text{\texttt{A[$i$]}} \le \text{\texttt{B[$i$]}} \le T_{\text{max}}$ per ogni $i=0,\ldots, R-1$.
+	\item È assicurato che in tutti i casi di prova sia possibile far atterrare gli aerei nello stesso ordine in cui sono giunte le richieste, in istanti di tempo distinti.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Scoring
+
+Il tuo programma verrà testato su diversi test case raggruppati in subtask.
+Per ottenere il punteggio relativo ad un subtask, è necessario risolvere correttamente tutti i test relativi ad esso.
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+  \item \textbf{\makebox[2cm][l]{Subtask 1} [\phantom{0}5 punti]}: Casi d'esempio.
+  \item \textbf{\makebox[2cm][l]{Subtask 2} [\phantom{0}7 punti]}: $\text{\texttt{A[$i$]}} = \text{\texttt{B[$i$]}}$ per ogni $i=0,\ldots, R-1$.
+  \item \textbf{\makebox[2cm][l]{Subtask 3} [14 punti]}: $T_{\text{max}} \leq 10 R$.
+  \item \textbf{\makebox[2cm][l]{Subtask 4} [17 punti]}: $T_{\text{max}} \leq 1000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 5} [15 punti]}: $T_{\text{max}} \leq 1\,000\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 6} [20 punti]}: $\text{\texttt{B[$i$]}} - \text{\texttt{A[$i$]}} \leq 100$.
+  \item \textbf{\makebox[2cm][l]{Subtask 7} [22 punti]}: Nessuna limitazione specifica.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Examples
+
+\begin{example}
+\exmpfile{aeroporto.input0.txt}{aeroporto.output0.txt}%
+\exmpfile{aeroporto.input1.txt}{aeroporto.output1.txt}%
+\end{example}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Explanation
+
+Nel \textbf{primo caso di esempio}, si realizza $K=2$ ed una possibile soluzione \`e:
+	\begin{figure}[H]
+	\centering\includegraphics[scale = .9]{extra_aeroporto/asy/fig1_ita_version.pdf}
+	\end{figure}\\[2mm]
+
+Nel \textbf{secondo caso di esempio}, si realizza invece $K=3$ ed una soluzione \`e:
+	\begin{figure}[H]
+	\centering\includegraphics[scale = .9]{extra_aeroporto/asy/fig2_ita_version.pdf}
+	\end{figure}

@@ -1,0 +1,7 @@
+infile: input.txt
+memory_limit: 256
+name: paletta
+outfile: output.txt
+time_limit: 0.2
+title: Ordinamento a paletta
+token_mode: infinite
