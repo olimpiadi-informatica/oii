@@ -19,6 +19,7 @@ struct info_t {
 
 int min_cycle(int start) {
     std::vector<int> dist(N, std::numeric_limits<int>::max());
+    int best = std::numeric_limits<int>::max();
     std::priority_queue<info_t> q;
     q.push({start, 0, -1});
 
@@ -35,8 +36,9 @@ int min_cycle(int start) {
             // Non ho mai visto il nodo
             dist[u] = w;
         } else {
-            // Ho chiuso un ciclo (ed e' il piu' corto quindi return)
-            return dist[u] + w;
+            // Ho chiuso un ciclo candidato ad essere l'ottimo
+            best = std::min(best, dist[u] + w);
+            continue;
         }
 
         // Visita i vicini (facendo attenzione a non tornare sul padre)
@@ -47,8 +49,7 @@ int min_cycle(int start) {
         }
     }
 
-    // Dal nodo "start" non sono visibili cicli
-    return std::numeric_limits<int>::max();
+    return best;
 }
 
 int main() {
