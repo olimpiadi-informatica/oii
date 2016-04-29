@@ -1,0 +1,54 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom,symbol]{footmisc}
+
+\createsection{\Input}{Dati di input}
+\createsection{\Output}{Dati di output}
+
+\newcommand{\inputfile}{\texttt{input.txt}}
+\newcommand{\outputfile}{\texttt{output.txt}}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+Nel film Totò Le Mokò, Totò ha un modo peculiare di dividere le gemme rubate con un suo complice:
+
+\begin{itemize}
+  \item inizia dicendo ``una a me'' (e se ne prende una),
+  \item poi dice ``una a te'' (e ne dà una al complice),
+  \item poi dice ``due a me'' (e se ne prende \textbf{due}),
+  \item poi dice ``due a te'' (ma ne dà \textbf{solo una} al complice),
+  \item poi dice ``tre a me'' (e se ne prende \textbf{tre}),
+  \item poi dice ``tre a te'' (ma ne dà \textbf{solo una} al complice),
+  \item e così via\dots
+\end{itemize}
+
+Totò inizia \emph{sempre} la spartizione prendendo una gemma per sé. Per esempio, se ci sono $11$ gemme da spartire, Totò ne prende $8$ e il suo complice $3$: la prima volta ne prendono una per uno, poi Totò due e il complice una, poi Totò tre e il complice una, infine Totò prende le due rimanenti (e nessuna gemma per il complice).
+
+La prima volta che Totò ha fatto questa spartizione il complice ha protestato, ma Totò gli ha mollato un ceffone e gli ha preso le gemme che gli aveva dato; da allora nessuno osa contraddire Totò Le Mokò in una spartizione.
+
+Le regole della spartizione sono le stesse anche se ci sono più complici con cui dividere il bottino: ad esempio, se ci sono $16$ gemme da dividere in quattro (Totò e tre complici), Totò ne prende $7$ e i tre complici ne prendono $3$ ciascuno: la prima volta ne prendono una per uno, poi Totò due e i complici una ciascuno, poi Totò tre e i complici una ciascuno, infine Totò prende la gemma rimanente.
+
+Quando ci sono tante gemme Totò ha paura di sbagliarsi nella spartizione, quindi il vostro compito è quello di scrivere un programma che, ricevuti in ingresso il numero di gemme e il numero di persone (compreso Totò) tra cui spartirle, calcoli il numero di gemme che rimangono a Totò.
+
+\Input
+Il file \inputfile{} è composto da una riga contenente $G$ e $P$, due interi positivi rappresentanti rispettivamente il numero di gemme e il numero di persone (compreso Totò) tra cui spartirle.
+
+\Output
+Il file \outputfile{} è composto da una sola riga contenente un
+intero positivo $T$: il numero di gemme che rimane a Totò dopo la spartizione.
+
+\pagebreak
+\Constraints
+\begin{itemize}[nolistsep, itemsep=2mm]
+  \item $10 \le G \le 1000$.
+  \item $2 \le P \le 10$.
+  \item Nel $50\%$ dei casi di input $P=2$.
+\end{itemize}
+
+\Examples
+\begin{example}
+\exmpfile{spartizione.input0.txt}{spartizione.output0.txt}%
+\exmpfile{spartizione.input1.txt}{spartizione.output1.txt}%
+\end{example}

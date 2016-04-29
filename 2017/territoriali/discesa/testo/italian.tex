@@ -1,0 +1,67 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom,symbol]{footmisc}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[shape=circle,draw,inner sep=2pt] (char) {$#1$};}}
+
+\createsection{\Input}{Dati di input}
+\createsection{\Output}{Dati di output}
+
+\newcommand{\inputfile}{\texttt{input.txt}}
+\newcommand{\outputfile}{\texttt{output.txt}}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+Come ben sanno gli studenti che hanno passato le selezioni scolastiche delle Olimpiadi di Informatica di quest'anno, data una piramide di numeri, definiamo una \textbf{discesa} come \emph{una sequenza di numeri ottenuti partendo dalla cima della piramide e passando per uno dei due numeri sottostanti, fino a giungere alla base della piramide}. Inoltre, il \textbf{valore} di una discesa è definito come \emph{la somma dei numeri della discesa}. La \textbf{discesa massima} di una piramide è quella che ha il massimo valore tra tutte le discese della piramide.
+
+Nell'esempio seguente è stata cerchiata la discesa ottenuta partendo dalla cima scendendo prima a sinistra e poi sempre a destra fino alla base. I numeri che compongono tale discesa sono $(1,2,7,11)$ e la loro somma vale $21$, che è il valore di questa discesa.
+
+\vspace{-5mm}
+
+{ \Huge
+$$
+\begin{array}{lllllllllll}
+ & & & \circled{1}\\
+ & & \circled{2}& &9\\
+ & 3 & & \circled{7}& & 5\\
+ 8& & 4& & \circled{11}& &6\\
+\end{array}
+$$
+}
+
+La discesa massima di questa piramide è quella che si ottiene scendendo a destra, poi a sinistra e poi di nuovo a destra: i numeri di questa discesa sono $(1,9,7,11)$ e la loro somma vale $28$, che è il valore della discesa massima.
+
+Il vostro compito è quello di scrivere un programma che, ricevuta in ingresso una piramide di numeri, stampi il valore della discesa massima, ovvero il massimo valore tra tutte le possibili discese della piramide.
+
+\Input
+Il file \inputfile{} è composto da $1+A$ righe di testo. La prima riga contiene $A$, un intero positivo rappresentante l'altezza della piramide. Le seguenti $A$ righe descrivono effettivamente la piramide: l'$i$-esima riga (con $i$ compreso tra $1$ e $A$) contiene $i$ interi positivi rappresentanti l'$i$-esimo ``livello'' della piramide.
+
+\Output
+Il file \outputfile{} è composto da una sola riga contenente un
+intero positivo: il valore della discesa massima.
+
+\Constraints
+\begin{itemize}[nolistsep, itemsep=2mm]
+  \item $1 \le A \le 10$.
+  \item Il valore di ciascun numero nella piramide è un intero positivo non superiore a $100$.
+\end{itemize}
+
+\Examples
+Il primo esempio qui sotto si riferisce all'esempio mostrato nel testo del problema.
+
+\begin{example}
+\exmpfile{discesa.input0.txt}{discesa.output0.txt}%
+\exmpfile{discesa.input1.txt}{discesa.output1.txt}%
+\end{example}
+
+%$$
+%\begin{array}{lllllllllll}
+%& & & & & \textbf{42}\\
+%& & & & \textbf{11}& &13\\
+%& & & 41 & & \textbf{37}& & 38\\
+%& & 5& & \textbf{8}& & 11& &9\\
+%& 22& & \textbf{27}& &31& &18& &32\\
+% 12 & &	\textbf{8} & & 9 & & 8 & & 10 & &11 \\
+%\end{array}
+%$$

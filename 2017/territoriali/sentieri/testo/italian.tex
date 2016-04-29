@@ -1,0 +1,50 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom,symbol]{footmisc}
+
+\createsection{\Input}{Dati di input}
+\createsection{\Output}{Dati di output}
+
+\newcommand{\inputfile}{\texttt{input.txt}}
+\newcommand{\outputfile}{\texttt{output.txt}}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+Mojito, il piccolo cane Jack Russell mascotte delle OII, ha accompagnato Monica per la supervisione della sede di gara della finale nazionale delle Olimpiadi 2016, a Catania. Dal momento che non era troppo interessato alla disposizione dei computer, Mojito è andato a farsi una passeggiata. Adesso però il sole si è alzato e, come spesso capita in Sicilia, fa molto caldo e l'asfalto che è stato esposto al sole è bollente. Per fortuna non tutti i sentieri sono esposti al sole.
+
+Ad esempio, nella figura sottostante, Mojito parte dal punto $1$ e deve arrivare al punto $8$. I sentieri bollenti sono quelli in rosso. Si può vedere che Mojito, per minimizzare il numero di sentieri bollenti può andare dal punto $1$ al punto $5$, da qui al $3$, poi al $4$ e infine al punto $8$, percorrendo solo l'ultimo sentiero bollente. Altri percorsi equivalenti sono $1 \to 5 \to 3 \to 4 \to 6 \to 8$ (un solo sentiero bollente tra $6$ e $8$) e $1 \to 5 \to 3 \to 4 \to 6 \to 7 \to 8$ (un solo sentiero bollente tra $6$ e $7$).
+
+\begin{center}
+  \includegraphics[width=\textwidth]{extra/fig-sentieri.pdf}
+\end{center}
+
+Come si vede dall'esempio, non conta il numero complessivo di sentieri percorsi, ma solo il numero di sentieri bollenti. Il vostro compito consiste nell'aiutare Mojito a trovare una strada per tornare alla sede di gara che abbia il numero minimo di tratti esposti al sole. 
+
+\Input
+Il file \inputfile{} è composto da $1+S$ righe di testo. La prima riga contiene $N$, $A$ e $B$, tre interi separati da spazio che rappresentano rispettivamente il numero di incroci (punti nella mappa), il numero di sentieri non bollenti, ed il numero di sentieri bollenti.
+
+Le $A+B$ righe successive contengono due interi positivi per ogni riga, rappresentanti i punti collegati dall'$i$-esimo sentiero. Le prime $A$ righe sono quelle che rappresentano i sentieri non bollenti, mentre le successive $B$ righe rappresentano i sentieri bollenti. 
+
+\Output
+Il file \outputfile{} è composto da una sola riga contenente un intero positivo: il minimo numero di sentieri bollenti che Mojito deve percorrere per andare dal punto $1$ al punto $N$.
+
+\Constraints
+\begin{itemize}[nolistsep, itemsep=2mm]
+  \item Mojito parte sempre dal punto $1$ e deve sempre arrivare al punto $N$.
+  \item Esiste sempre almeno un percorso che collega il punto $1$ al punto $N$.
+  \item $ 5 \le N \le 100 $.
+  \item $10 \le A+B \le 1000$.
+  \item $B$ potrebbe valere zero.
+  \item Un sentiero può essere percorso in entrambi i versi (informalmente: nessun sentiero è a senso unico).
+  \item Uno stesso sentiero viene indicato al massimo una volta nel file di input.
+\end{itemize}
+
+\Examples
+Il secondo esempio qui sotto si riferisce all'esempio mostrato nel testo del problema.
+
+\begin{example}
+\exmpfile{sentieri.input0.txt}{sentieri.output0.txt}%
+\exmpfile{sentieri.input1.txt}{sentieri.output1.txt}%
+\end{example}

@@ -1,0 +1,5 @@
+name: spartizione
+title: La spartizione di Totò
+token_mode: infinite
+infile: input.txt
+outfile: output.txt

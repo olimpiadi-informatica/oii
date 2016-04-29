@@ -1,0 +1,5 @@
+name: discesa
+title: Discesa massima
+token_mode: infinite
+infile: input.txt
+outfile: output.txt

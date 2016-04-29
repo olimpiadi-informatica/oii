@@ -1,0 +1,5 @@
+name: sentieri
+title: Sentieri bollenti
+token_mode: infinite
+infile: input.txt
+outfile: output.txt
