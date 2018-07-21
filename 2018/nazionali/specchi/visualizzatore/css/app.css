@@ -1,0 +1,29 @@
+.bordo {
+    stroke: black;
+    stroke-width: 2;
+}
+
+.cella {
+    stroke: gray;
+    stroke-dasharray: 5, 5;
+}
+
+.specchio {
+    stroke: red;
+    stroke-width: 2;
+}
+
+.raggio {
+    stroke: orange;
+    stroke-width: 5;
+}
+
+.testo {
+    font-family: Serif serif;
+    font-size: 10px;
+    text-align: center;
+}
+
+textarea {
+    font-family: monospace;
+}

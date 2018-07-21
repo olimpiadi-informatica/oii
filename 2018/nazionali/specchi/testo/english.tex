@@ -1,0 +1,262 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+\usepackage{caption}
+
+
+\createsection{\Grader}{Sample Grader}
+\createsection{\Specs}{Clarifications}
+
+\renewcommand{\inputfile}{\texttt{stdin}}
+\renewcommand{\outputfile}{\texttt{stdout}}
+\makeatletter
+\renewcommand{\this@inputfilename}{\texttt{stdin}}
+\renewcommand{\this@outputfilename}{\texttt{stdout}}
+\makeatother
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+
+\newenvironment{todoenv}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=red]%
+	\begin{list}{}{\leftmargin=1cm
+		           \labelwidth=\leftmargin}\item[\Large\ding{169}]}
+  {\end{list}\end{mdframed}\par}
+
+\newcommand{\todo}[1]{\begin{todoenv}
+	TODO: #1
+\end{todoenv}}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+Mojito wants to get ready for his visit to MUSE, the science museum in Trento, where he's going to challenge Monica in the \emph{hall of mirrors}.
+
+The floor of this room has a rectangular shape and is made of square-shaped tiles which form a grid ($R$ rows and $C$ columns).
+The surface of each tile has some grooves on it that form a ``X''. This decoration allows to insert a mirror inside one of the two grooves in order to let it stand straight. We assume that the mirrors are rectangular zero-width panels whose both faces are perfectly reflective.
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=.24\textwidth]{asy_specchi/fig6.pdf}
+        \includegraphics[width=.24\textwidth]{asy_specchi/fig7.pdf}
+        \includegraphics[width=.24\textwidth]{asy_specchi/fig8.pdf}
+    \end{center}
+    \caption{Some ways in which light can be reflected}
+\end{figure}
+
+%Along the walls you can read some numbers that tell the index of row and column: from $1$ to $R$ and from $1$ to $C$ respectively.
+There are holes on each of the four walls of the room, precisely above each row and above each column of floor tiles. These holes allow Monica to point a laser beam.
+Once the beam is in the room, it \emph{bounces} on every mirror it encounters on his trip (possibily none) and, eventually, it leaves the room from one of the other holes in the walls.
+That is where Mojito would like to be, so that he can catch the beam that is going out.
+
+The room is initially empty, and the tiles don't have any mirror on them.
+During the game, Monica can choose to add a mirror on one of the free tiles (the ones without any mirror on them), choosing also which diagonal to put the mirror on. Alternatively, she can choose to shoot a laser beam through a hole.
+Each time Mojito notices that Monica is about to shoot a laser in some hole, he tries to guess the exact exiting hole of the laser beam.
+
+Help Mojito by writing a program to find the exiting hole, keeping track of the mirrors added by Monica during the game!
+
+\begin{mdframed}[backgroundcolor=black!10,rightline=false,leftline=false]
+
+\Specs
+
+\small
+
+The tile grid is made of $R$ rows, numbered from left to right with indexes $0$ to $R-1$ and $C$ columns numbered from top to bottom with indexes $0$ to $C-1$.
+The four walls of the room are named \texttt{SOPRA} (top), \texttt{DESTRA} (right), \texttt{SOTTO} (bottom), \texttt{SINISTRA} (left).
+There are $R$ holes on the \texttt{DESTRA} and \texttt{SINISTRA} walls and $C$ holes on the \texttt{SOPRA} and \texttt{SOTTO} walls. In total there are $2R + 2C$ holes.
+The holes on each wall are identified by the row or column number on which they are located.
+
+\pagebreak
+It's \emph{not allowed} to put two mirrors on the same tile, even on different diagonals.
+The mirrors are located \emph{exactly} along the diagonals, so the laser beam keeps parallel to the room walls and goes along the direction of either the rows or the columns.
+The width of the mirrors is negligible, so even after all the bounces the laser beam line will still be inside the area of the exiting hole.
+
+\end{mdframed}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\Implementation
+
+You need to submit only one file, with extension \texttt{.cpp} o \texttt{.c}.
+
+\begin{warning}
+You can find as an attachment to this task a template \texttt{mirrors.cpp} and \texttt{mirrors.c} which is an example implementation.
+\end{warning}
+
+You will need to implement the following:
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|void inizia(int R, int C);|\\
+\hline
+\end{tabularx}\end{center}
+
+The function \texttt{inizia} is called with the following values of the parameters, at the beginning:
+\begin{itemize}[nolistsep]
+  \item the integer number $R$ that represents the number of rows in the room,
+  \item the integer number $C$ that represents the number of column in the room.
+\end{itemize}
+
+\medskip
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|void aggiungi(int r, int c, char diagonale);|\\
+\hline
+\end{tabularx}\end{center}
+
+The function \texttt{aggiungi} is called everytime Monica adds a new mirror,
+with the following values as parameters:
+\begin{itemize}[nolistsep]
+  \item an integer number \texttt{r}, in a range between $0$ and $R-1$, which indicates the index of the row in which the mirror is added,
+  \item an integer number \texttt{c}, in a range between $0$ and $C-1$, which indicates the index of the column in which the mirror is added,
+  \item a character \texttt{diagonale}, which indicates the orientation of the mirror and that can only have the following values: `\texttt{\textbackslash}' or `\texttt{/}'.
+\end{itemize}
+
+\medskip
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|foro_t calcola(foro_t ingresso);|\\
+\hline
+\end{tabularx}\end{center}
+
+The function \texttt{calcola} is called everytime Monica shoots a laser beam in a hole.
+\begin{itemize}[nolistsep]
+	\item The parameter \texttt{ingresso}, of type \texttt{foro\_t}, indicates the ``entering'' hole (the one Monica shoots the beam in).
+	\item The function returns the ``exiting'' hole (the one the laser beam exits through, stored in a data structure \texttt{struct} of type \texttt{foro\_t}.
+\end{itemize}
+The data type \texttt{foro\_t} is a \texttt{struct} that indicates a hole on a particular wall and it contains the following fields:
+\begin{itemize}
+	\item \texttt{parete}:
+      a \texttt{enum} that may have the values \texttt{SOPRA}, \texttt{DESTRA}, \texttt{SOTTO} or \texttt{SINISTRA} and defines the wall of the hole,
+	\item \texttt{posizione}:
+	    an integer number in a range from $0$ to $R-1$ (if \texttt{parete} has the value \texttt{DESTRA} or \texttt{SINISTRA}) or between $0$ and $C-1$ (if \texttt{parete} has value \texttt{SOPRA} or \texttt{SOTTO}), which indicates the row or column of the hole.
+\end{itemize}
+
+\medskip
+
+The function \texttt{inizia} is called first, exactly once.
+Later \texttt{aggiungi} or \texttt{calcola} are called, without any particular ordering.
+The functions \texttt{aggiungi} or \texttt{calcola} are called exactly $Q$ times.
+The number $Q$ isn't known in advance to the program, but it follows the assumptions of the following sections.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Grader
+You can find a simplified version of the grader used during the competition in this task's directory. You can use it to test your solutions. The sample grader reads data from \inputfile{}, calls the functions that you have to implement and writes on \outputfile{}, according to the following format.
+
+The input file consists of $Q+1$ rows:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item line $1$: the integer $R$, $C$ and $Q$.
+\item line $i$, for $i = 2, 3, \dots, Q+1$: a character $c$ followed by two integer numbers $a$ and $b$.
+\begin{itemize}
+	\item
+	    If the character $c$ is \texttt{?}, the function \texttt{calcola} is called:
+	    the first number $a$ represents the wall from $0$ to $3$, clockwise starting from \texttt{SOPRA}) and the second number $b$ represents the position of the hole.
+	\item
+	    If the character $c$ is \texttt{`\textbackslash'} or \texttt{`/'}, the function \texttt{inserisci} is called: the number $a$ represents the index of the row and $b$ represents the index of the column.
+\end{itemize}
+\end{itemize}
+
+The output file consists of a row for each call to the function \texttt{calcola}, which contains the return value of that call.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $1 \le R, C \le 10\,000$.
+	\item $1 \le Q \le 1\,000\,000$
+	\item No mirror will be inserted on a tile that already has a mirror on it.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Scoring
+
+Your code will be tested on several testcases grouped in subtasks.
+To get the score of a subtask it's necessary to solve completely all the tests the subtask is made of.
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+  \item \textbf{\makebox[2cm][l]{Subtask 1} [\phantom{0}0 points]}: Sample cases.
+  % ????
+  \item \textbf{\makebox[2cm][l]{Subtask 2} [\phantom{0}8 points]}: $R, C \leq 10$ and $Q \le 100$.
+  % simulazione O(N²Q)
+  \item \textbf{\makebox[2cm][l]{Subtask 3} [21 points]}: $R, C \leq 1000$ and $Q \le 5000$.
+  % precomputare i percorsi
+  \item \textbf{\makebox[2cm][l]{Subtask 4} [14 points]}: $R, C \leq 1000$, $Q \leq 100\,000$ and all calls to \texttt{aggiungi} preceed all the calls to \texttt{prevedi}.
+  % memorizzare i percorsi in O(N)
+  \item \textbf{\makebox[2cm][l]{Subtask 5} [24 points]}: $R, C \leq 100\,000$ and $Q \le 5000$.
+  % memorizzare i percorsi in O(sqrt Q)
+  \item \textbf{\makebox[2cm][l]{Subtask 6} [13 points]}: $R, C \leq 100\,000$, $Q \leq 250\,000$ and all calls to \texttt{aggiungi} preceed all the calls to \texttt{prevedi}.
+  % memorizzare i percorsi in O(log N)
+  \item \textbf{\makebox[2cm][l]{Subtask 7} [12 points]}: $R, C \leq 100\,000$ e $Q \le 100\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 8} [\phantom{1}8 points]}: No specific limitations.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Examples
+
+\begin{example}
+\exmpfile{specchi.input0.txt}{specchi.output0.txt}%
+\exmpfile{specchi.input1.txt}{specchi.output1.txt}%
+\end{example}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Explanation
+
+The requirements of the \textbf{first example case} may be represented this way:
+
+\begin{minipage}{.49\textwidth}
+	\begin{figure}[H]
+		\centering\includegraphics[width = .9\textwidth]{asy_specchi/fig1.pdf}
+		\caption*{\texttt{prevedi(\{ DESTRA, 2 \}) $\Rightarrow$ \{ SOPRA, 5 \}}}
+	\end{figure}
+\end{minipage}
+\begin{minipage}{.49\textwidth}
+	\begin{figure}[H]
+		\centering\includegraphics[width = .9\textwidth]{asy_specchi/fig2.pdf}
+		\caption*{\texttt{prevedi(\{ SINISTRA, 4 \}) $\Rightarrow$ \{ SOTTO, 3 \}}}
+	\end{figure}
+\end{minipage}
+
+\pagebreak
+The \textbf{second example case} is the following:
+
+\begin{minipage}{.33\textwidth}
+	\begin{figure}[H]
+		\centering\includegraphics[width = .9\textwidth]{asy_specchi/fig3.pdf}
+		\caption*{\centering\texttt{prevedi(\{ DESTRA, 2 \}) \\ \{ SINISTRA, 2 \}}}
+	\end{figure}
+\end{minipage}
+\begin{minipage}{.33\textwidth}
+	\begin{figure}[H]
+		\centering\includegraphics[width = .9\textwidth]{asy_specchi/fig4.pdf}
+		\caption*{\centering\texttt{prevedi(\{ SOPRA, 2 \}) \\ \{ DESTRA, 2 \}}}
+	\end{figure}
+\end{minipage}
+\begin{minipage}{.33\textwidth}
+	\begin{figure}[H]
+		\centering\includegraphics[width = .9\textwidth]{asy_specchi/fig5.pdf}
+		\caption*{\centering\texttt{prevedi(\{ DESTRA, 2 \}) \\ \{ SOPRA, 2 \}}}
+	\end{figure}
+\end{minipage}

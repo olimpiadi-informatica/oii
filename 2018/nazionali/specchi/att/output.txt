@@ -1,0 +1,1 @@
+../testo/specchi.output0.txt

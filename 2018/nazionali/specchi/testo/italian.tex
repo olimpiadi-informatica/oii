@@ -1,0 +1,293 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+\usepackage{caption}
+
+
+\createsection{\Grader}{Grader di prova}
+\createsection{\Specs}{Specifiche}
+\createsection{\Visualizzatore}{Visualizzatore}
+
+\renewcommand{\inputfile}{\texttt{stdin}}
+\renewcommand{\outputfile}{\texttt{stdout}}
+\makeatletter
+\renewcommand{\this@inputfilename}{\texttt{stdin}}
+\renewcommand{\this@outputfilename}{\texttt{stdout}}
+\makeatother
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+
+\newenvironment{todoenv}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=red]%
+	\begin{list}{}{\leftmargin=1cm
+		           \labelwidth=\leftmargin}\item[\Large\ding{169}]}
+  {\end{list}\end{mdframed}\par}
+
+\newcommand{\todo}[1]{\begin{todoenv}
+	TODO: #1
+\end{todoenv}}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+Mojito intende prepararsi per la sua visita al MUSE, il museo delle scienze di Trento,
+dove lo attende una sfida con Monica nella \emph{stanza degli specchi}.
+
+Il pavimento della stanza è rettangolare,
+ed è ricoperto con piastrelle quadrate
+disposte su una griglia di $R$ righe e $C$ colonne.
+Ogni piastrella presenta due scanalature diagonali a ``X'' che consentono l'eventuale inserimento di uno specchio posizionato in piedi lungo una delle due diagonali della piastrella. Gli specchi sono dei pannelli rettangolari senza spessore, con entrambe le facce perfettamente riflettenti.
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=.24\textwidth]{asy_specchi/fig6.pdf}
+        \includegraphics[width=.24\textwidth]{asy_specchi/fig7.pdf}
+        \includegraphics[width=.24\textwidth]{asy_specchi/fig8.pdf}
+    \end{center}
+    \caption{Alcuni dei possibili modi in cui la luce si può riflettere}
+\end{figure}
+
+%Lungo le pareti della stanza sono segnati dei numeri che identificano le righe e le colonne: da $1$ a $R$ per le righe e da $1$ a $C$ per le colonne.
+Su ciascuna delle quattro pareti della stanza, in corrispondenza di ogni riga o colonna, è presente un foro attraverso il quale Monica può immettere un raggio laser.
+Una volta entrato nella stanza, il raggio \emph{rimbalza} sugli specchi che incontra lungo il proprio percorso (possibilmente nessuno),
+e infine fuoriesce da uno degli altri fori.
+È lì che Mojito vorrebbe farsi trovare pronto ad accogliere ed acchiappare il raggio uscente.
+
+All'inizio la stanza è vuota, ossia tutte le piastrelle sono prive di specchi.
+Nel corso del gioco, Monica può decidere di aggiungere uno specchio su una delle piastrelle ancora libere,
+posizionandolo su una delle due diagonali a sua scelta,
+oppure può immettere il raggio laser attraverso un foro.
+Ogni volta che Mojito vede Monica avvicinarsi ad uno dei fori,
+cerca di anticipare da quale foro fuoriuscirà il laser.
+
+Aiuta Mojito scrivendo un programma che calcoli
+il foro di uscita del raggio,
+tenendo conto degli specchi man mano aggiunti da Monica!
+
+\begin{mdframed}[backgroundcolor=black!10,rightline=false,leftline=false]
+
+\Specs
+
+\small
+
+Le griglia di piastrelle è formata da $R$ righe, numerate da sinistra verso destra con i numeri da $0$ a $R-1$,
+e $C$ colonne numerate dall'alto verso il basso con i numeri da $0$ a $C-1$.
+Le quattro pareti della stanza sono chiamate
+\texttt{SOPRA}, \texttt{DESTRA}, \texttt{SOTTO}, \texttt{SINISTRA}.
+Vi sono $R$ fori sulle pareti \texttt{DESTRA} e \texttt{SINISTRA},
+e $C$ fori sulle pareti \texttt{SOPRA} e \texttt{SOTTO},
+per un totale di $2R + 2C$ fori.
+I fori su ciascuna parete sono identificati dal numero della riga o colonna su cui si affacciano.
+
+Non possono \emph{mai} trovarsi due specchi sulla stessa piastrella, nemmeno su diagonali diverse.
+Inoltre, gli specchi sono posizionati in modo molto preciso lungo le diagonali,
+perciò il raggio laser rimane parallelo alle pareti della stanza,
+e procede sempre esattamente lungo una delle righe o delle colonne.
+Lo spessore degli specchi \`e trascurabile, anche dopo tutti i rimbalzi la linea del raggio non fuoriesce dall'area dei fori.
+
+\end{mdframed}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\Implementation
+
+Dovrai sottoporre un unico file, con estensione \texttt{.cpp} o \texttt{.c}.
+
+\begin{warning}
+Tra gli allegati a questo task troverai un template \texttt{specchi.cpp} e \texttt{specchi.c} con un esempio di implementazione.
+\end{warning}
+
+Dovrai implementare le seguenti funzioni:
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|void inizia(int R, int C);|\\
+\hline
+\end{tabularx}\end{center}
+
+La funzione \texttt{inizia} viene invocata all'inizio con i seguenti parametri:
+\begin{itemize}[nolistsep]
+  \item l'intero $R$ che rappresenta il numero di righe della stanza,
+  \item l'intero $C$ che rappresenta il numero di colonne della stanza.
+\end{itemize}
+
+\medskip
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|void aggiungi(int r, int c, char diagonale);|\\
+\hline
+\end{tabularx}\end{center}
+
+La function \texttt{aggiungi} viene chiamata ogni volta che Monica aggiunge uno specchio,
+con i seguenti parametri:
+\begin{itemize}[nolistsep]
+  \item un numero intero \texttt{r}, compreso fra $0$ a $R-1$, che indica il numero della riga in cui viene aggiunto lo specchio,
+  \item un numero intero \texttt{c}, compreso fra $0$ a $C-1$, che indica il numero della colonna in cui viene aggiunto lo specchio,
+  \item un carattere \texttt{diagonale} che indica l'orientamento dello specchio e che può assumere solo i valori `\texttt{\textbackslash}' o `\texttt{/}'.
+\end{itemize}
+
+\medskip
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|foro_t calcola(foro_t ingresso);|\\
+\hline
+\end{tabularx}\end{center}
+
+La funzione \texttt{calcola} viene chiamata ogni volta che Monica introduce il raggio laser in un foro.
+\begin{itemize}[nolistsep]
+	\item Il parametro \texttt{ingresso}, di tipo \texttt{foro\_t}, indica il foro di ingresso del raggio.
+	\item La funzione deve restituire il foro di uscita del raggio, in una \texttt{struct} di tipo \texttt{foro\_t}.
+\end{itemize}
+Il tipo di dato \texttt{foro\_t} è una \texttt{struct} che specifica un foro su una parete della stanza,
+e contiene i seguenti campi:
+\begin{itemize}
+	\item \texttt{parete}:
+      un \texttt{enum} che può assumere i valori \texttt{SOPRA}, \texttt{DESTRA}, \texttt{SOTTO} o \texttt{SINISTRA}
+      e che individua la parete su cui si trova il foro,
+	\item \texttt{posizione}:
+	    un intero compreso tra $0$ e $R-1$ (se \texttt{parete} è \texttt{DESTRA} o \texttt{SINISTRA})
+	    o tra $0$ e $C-1$ (se \texttt{parete} è \texttt{SOPRA} o \texttt{SOTTO}),
+	    che indica la riga o colonna su cui si affaccia il foro.
+\end{itemize}
+
+\medskip
+
+La funzione \texttt{inizia} sarà chiamata per prima, una sola volta.
+Successivamente verranno chiamate le funzioni \texttt{aggiungi} o \texttt{calcola},
+in nessun ordine specifico.
+Le funzioni \texttt{aggiungi} o \texttt{calcola} vengono chiamate per un totale di $Q$ volte.
+Il numero $Q$ non è specificato in anticipo al programma,
+ma rispetta le assunzioni indicate nelle sezioni successive.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Grader
+Nella directory relativa a questo problema è presente una versione semplificata del grader usato durante la correzione, che potete usare per testare le vostre soluzioni in locale. Il grader di esempio legge i dati da \inputfile{}, chiama le funzioni che dovete implementare e scrive su \outputfile{}, secondo il seguente formato.
+
+Il file di input è composto $Q+1$ righe, contenenti:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: gli interi $R$, $C$ e $Q$.
+\item Righe $2, \dots, Q+1$: un carattere $c$ seguito da due numeri interi $a$ e $b$.
+\begin{itemize}
+	\item
+	    Se il carattere $c$ è \texttt{?}
+	    viene chiamata la funzione \texttt{calcola}, dove
+	    il primo numero $a$ indica la parete (da $0$ a $3$ in senso orario: \texttt{SOPRA}, \texttt{DESTRA}, \texttt{SOTTO}, \texttt{SINISTRA})
+	    e il secondo numero $b$ indica la posizione del foro.
+	\item
+	    Se il carattere $c$ è \texttt{`\textbackslash'} o \texttt{`/'},
+	    viene chiamata la funzione \texttt{aggiungi} dove
+	    il numero $a$ indica la riga e il numero $b$ la colonna.
+\end{itemize}
+\end{itemize}
+
+Il file di output contiene una riga
+per ogni chiamata alla funzione \texttt{calcola},
+contenente il valore di ritorno di tale chiamata.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $1 \le R, C \le 100\,000$.
+	\item $1 \le Q \le 250\,000$
+	\item Non viene mai inserito più di uno specchio nella stessa posizione.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Scoring
+
+Il tuo programma verrà testato su diversi test case raggruppati in subtask.
+Per ottenere il punteggio relativo ad un subtask, è necessario risolvere correttamente tutti i test che lo compongono.
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+  \item \textbf{\makebox[2cm][l]{Subtask 1} [\phantom{1}0 punti]}: Casi d'esempio.
+  % ????
+  \item \textbf{\makebox[2cm][l]{Subtask 2} [\phantom{1}8 punti]}: $R, C \leq 10$ e $Q \le 100$.
+  % simulazione O(N²Q)
+  \item \textbf{\makebox[2cm][l]{Subtask 3} [21 punti]}: $R, C \leq 1000$ e $Q \le 5000$.
+  % precomputare i percorsi
+  \item \textbf{\makebox[2cm][l]{Subtask 4} [14 punti]}: $R, C \leq 1000$, $Q \leq 100\,000$ e tutte le chiamate a \texttt{aggiungi} precedono tutte le chiamate a \texttt{calcola}.
+  % memorizzare i percorsi in O(N)
+  \item \textbf{\makebox[2cm][l]{Subtask 5} [24 punti]}: $R, C \leq 100\,000$ e $Q \le 5000$.
+  % memorizzare i percorsi in O(sqrt Q)
+  \item \textbf{\makebox[2cm][l]{Subtask 6} [13 punti]}: $R, C \leq 100\,000$, $Q \leq 250\,000$ e tutte le chiamate a \texttt{aggiungi} precedono tutte le chiamate a \texttt{calcola}.
+  % memorizzare i percorsi in O(log N)
+  \item \textbf{\makebox[2cm][l]{Subtask 7} [12 punti]}: $R, C \leq 100\,000$ e $Q \le 100\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 8} [\phantom{1}8 punti]}: Nessuna limitazione specifica.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Examples
+
+\begin{example}
+\exmpfile{specchi.input0.txt}{specchi.output0.txt}%
+\exmpfile{specchi.input1.txt}{specchi.output1.txt}%
+\end{example}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Explanation
+
+Le richieste del \textbf{primo caso d'esempio} possono essere così rappresentate:
+
+\begin{minipage}{.49\textwidth}
+	\begin{figure}[H]
+		\centering\includegraphics[width = .9\textwidth]{asy_specchi/fig1.pdf}
+		\caption*{\texttt{calcola(\{ DESTRA, 1 \}) $\Rightarrow$ \{ SOPRA, 4 \}}}
+	\end{figure}
+\end{minipage}
+\begin{minipage}{.49\textwidth}
+	\begin{figure}[H]
+		\centering\includegraphics[width = .9\textwidth]{asy_specchi/fig2.pdf}
+		\caption*{\texttt{calcola(\{ SOTTO, 2 \}) $\Rightarrow$ \{ SINISTRA, 3 \}}}
+	\end{figure}
+\end{minipage}
+
+\pagebreak
+Il \textbf{secondo caso d'esempio} è il seguente:
+
+\begin{minipage}{.33\textwidth}
+	\begin{figure}[H]
+		\centering\includegraphics[width = .9\textwidth]{asy_specchi/fig3.pdf}
+		\caption*{\centering\texttt{calcola(\{ DESTRA, 1 \}) \\ \{ SINISTRA, 1 \}}}
+	\end{figure}
+\end{minipage}
+\begin{minipage}{.33\textwidth}
+	\begin{figure}[H]
+		\centering\includegraphics[width = .9\textwidth]{asy_specchi/fig4.pdf}
+		\caption*{\centering\texttt{calcola(\{ SOPRA, 1 \}) \\ \{ DESTRA, 1 \}}}
+	\end{figure}
+\end{minipage}
+\begin{minipage}{.33\textwidth}
+	\begin{figure}[H]
+		\centering\includegraphics[width = .9\textwidth]{asy_specchi/fig5.pdf}
+		\caption*{\centering\texttt{calcola(\{ DESTRA, 1 \}) \\ \{ SOPRA, 1 \}}}
+	\end{figure}
+\end{minipage}
+
+\Visualizzatore
+
+All'indirizzo \url{https://contest.oii2017.tk/vis\_specchi/} è presente una pagina web con un visualizzatore del problema. Inserendo il file di input è possibile simulare le diverse query.

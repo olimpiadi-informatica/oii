@@ -1,0 +1,29 @@
+# Task scommessa
+
+# Limiti: 1 <= N <= 100 e N dispari
+# Parametri: N mode S
+#   N numero di carte
+#   mode modalità di generazione:
+#      0 random
+#      1 ordinato
+#      2 prima i pari poi i dispari
+#   S seed
+
+# 10 testcase privati
+5    0  1
+9    1  2
+15   2  3
+3    0  4
+7    1  5
+19   0  6
+41   0  7
+55   2  8
+81   1  9
+99   0  10
+
+# 5 testcase pubblici
+#### #COPY: testo/scommessa.input0.txt
+#### #COPY: testo/scommessa.input1.txt
+#### 11   2  13
+#### 21   0  14
+#### 91   0  15

@@ -1,0 +1,9 @@
+infile: ''
+memory_limit: 1024
+name: specchi
+outfile: ''
+public_testcases: all
+score_mode: max
+time_limit: 3.0
+title: Stanza degli specchi
+token_mode: disabled

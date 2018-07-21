@@ -1,0 +1,26 @@
+# Task lwf
+# Scrivere N come somma di numeri di fibonacci usando al più una volta
+# F_i
+# Limiti: 1 <= N <= 1.000.000
+# Parametri: N
+
+# 10 casi nascosti
+1
+63547
+2938
+109893
+229402
+# F(29)+1
+832041
+# F(21)
+17711
+948594
+837593
+123
+
+# 5 casi per il desktop
+#### #COPY: testo/lwf.input0.txt
+#### #COPY: testo/lwf.input1.txt
+#### 42
+#### 6872
+#### 502983

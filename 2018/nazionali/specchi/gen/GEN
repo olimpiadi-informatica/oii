@@ -1,0 +1,102 @@
+# usage: generatore.py [-h] [--seed SEED] [--bordi PERC_COPERTURA]
+#                      [--randomness RANDOMNESS] [--query-bias SU DX GIU SX]
+#                      [--print] [--slow] [--pre-update PRE_UPDATE]
+#                      [--post-query POST_QUERY]
+#                      [--flip-vert | --flip-oriz | --flip-diag]
+#                      (--random | --centro | --completo PERC_QUERY_BRUTTE | --cattivo --ordine-cattivo)
+#                      N M Qu Qq
+# 
+# Generatore di specchi
+# 
+# positional arguments:
+#   N                     Altezza della griglia
+#   M                     Larghezza della griglia
+#   Qu                    Numero di update
+#   Qq                    Numero di query
+# 
+# optional arguments:
+#   -h, --help            show this help message and exit
+#   --seed SEED           Seed
+#   --bordi PERC_COPERTURA
+#                         Cerca di costruire dei bordi che fanno rimbalzare su e
+#                         giù
+#   --randomness RANDOMNESS
+#                         Percentuale di specchi da mettere a caso [0.0-1.0]
+#   --query-bias SU DX GIU SX
+#                         Quattro valori che indicano la distribuzione della
+#                         direzione delle query
+#   --print               Stampa la griglia finale
+#   --pre-update PRE_UPDATE
+#                         Percentuale di update da fare all'inizio
+#   --post-query POST_QUERY
+#                         Percentuale di query da fare alla fine
+#   --flip-vert           Flippa tutto lungo un asse vericale
+#   --flip-oriz           Flippa tutto lungo un asse orizzontale
+#   --flip-diag           Flippa tutto lungo un asse diagonale, N==M!
+#   --random              Genera una configurazione completamente casuale
+#   --centro              Tende a generare più specchi vicino al centro
+#   --completo PERC_QUERY_BRUTTE
+#                         Costruisce una struttura che tende a colpire tutti i
+#                         gli specchi (da entrambi i lati)
+#   --cattivo --ordine-cattivo             Genera una griglia con percorsi abbastanza lunghi
+#
+#
+#   --slow                Stampa il file di input in formato testuale. NON USARE QUI!!
+#
+# Per rendere un file da testuale a binario: generatore.py --fastify input.txt
+
+#ST: 0
+--fastify testo/specchi.input0.txt
+--fastify testo/specchi.input1.txt
+
+#ST: 8
+# N <= 10 Q <= 100
+5	5	15	15 	--random	--seed 1
+10	10	60	40 	--random	--seed 2
+1	10	10	30	--cattivo	--seed 3  --ordine-cattivo --pre-update 0.0 --post-query 0.30
+9	9	81	19	--completo 0.8	--seed 4  --post-query 0.8
+
+#ST: 21
+# N <= 1000 Q <= 5K
+1000	1	900	4100	--random 	--seed 11
+500	500	4000	1000	--cattivo 	--seed 12 --ordine-cattivo
+1000	1000	2500	2500	--cattivo	--seed 13 --ordine-cattivo
+1000	1000	4000	1000	--centro	--seed 14 --bordi 0.9 --query-bias 1 10 1 10 --flip-diag
+999	999	3000	2000	--cattivo	--seed 15 --ordine-cattivo --pre-update 0.0
+1000	1000	4000	1000	--cattivo	--seed 16 --ordine-cattivo
+60	60	3600	1400	--completo 0.9	--seed 17 --post-query 0.9 --flip-vert
+900	900	0	5000	--zigzag	--seed 18
+
+#ST: 14
+# N <= 1k Q <= 100k query alla fine
+1000	1000	50000	50000	--cattivo	--seed 21 --post-query 1.0
+1000	1000	45000	55000	--cattivo	--seed 21 --post-query 1.0
+1000	1000	55000	45000	--cattivo	--seed 22 --post-query 1.0
+1000	1000	45000	55000	--random	--seed 23 --post-query 1.0
+1000	1000	45000	55000	--random	--seed 24 --post-query 1.0
+300	300	90000	10000	--completo 1.0	--seed 25 --post-query 1.0
+
+#ST: 24
+# N <= 100k Q <= 5k
+10000	10000	4000	1000	--cattivo	--seed 31 --ordine-cattivo
+800	100000	0	5000	--zigzag	--seed 32
+70	70	4900	100	--completo 0.9	--seed 33
+
+#ST: 13
+# N <= 100k Q <= 250k query alla fine
+10000	10000	100000	150000	--cattivo	--seed 41 --post-query 1.0
+450	450	202500	47500	--completo 0.9	--seed 42 --post-query 1.0
+100000	100000	150000	100000	--random	--seed 43 --bordi 1.0 --query-bias 1 1000 1 1000 --post-query 1.0
+
+#ST: 12
+# N <= 100k Q <= 100k
+10000	10000	60000	40000	--cattivo	--seed 51 --ordine-cattivo
+10000	10000	40000	60000	--cattivo	--seed 52 --ordine-cattivo
+16000	100000	0	100000	--zigzag	--seed 53
+300	300	90000	10000	--completo 0.9	--seed 54
+
+#ST: 8
+# N <= 100k Q <= 250k
+40000	100000	0	250000	--zigzag	--seed 61
+100000	100000	100000	150000	--random	--seed 62
+450	450	202500	47500	--completo 0.9	--seed 63

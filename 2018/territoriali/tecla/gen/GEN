@@ -1,0 +1,21 @@
+#N  M   T   S
+
+# 10 casi nascosti
+
+8   8   2   0
+14  19  3   1
+10  3   4   2
+5   22  4   3
+8   10  5   4
+16  30  5   5
+30  30  5   6
+12  29  6   7
+20  27  6   8
+24  30  6   9
+
+# 5 casi per il desktop
+#### #COPY: testo/oddcycle.input0.txt
+#### #COPY: testo/oddcycle.input1.txt
+#### 5   0   2   2
+#### 10  20  6   3
+#### 20  30  5   4

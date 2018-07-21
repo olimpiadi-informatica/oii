@@ -1,0 +1,6 @@
+name: lwf
+title: Crittografia LWF
+infile: input.txt
+outfile: output.txt
+memlimit: 64
+timeout: 1

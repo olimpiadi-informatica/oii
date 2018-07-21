@@ -1,0 +1,314 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+
+
+\createsection{\Grader}{Grader di prova}
+\createsection{\Specs}{Chiarimenti}
+
+\renewcommand{\inputfile}{\texttt{stdin}}
+\renewcommand{\outputfile}{\texttt{stdout}}
+\makeatletter
+\renewcommand{\this@inputfilename}{\texttt{stdin}}
+\renewcommand{\this@outputfilename}{\texttt{stdout}}
+\makeatother
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+\newenvironment{todoenv}
+{\par\begin{mdframed}[linewidth=2pt,linecolor=red]%
+		\begin{list}{}{\leftmargin=1cm
+				\labelwidth=\leftmargin}\item[\Large\ding{169}]}
+		{\end{list}\end{mdframed}\par}
+
+\newcommand{\todo}[1]{\begin{todoenv}
+		TODO: #1
+\end{todoenv}}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+Il 15 settembre, in occasione delle Olimpiadi di Informatica, due cortei di programmatori sfileranno per le vie e le piazze di Trento.
+Il primo corteo, quello dei sostenitori degli \emph{Spazi}, ed il secondo, quello dei sostenitori dei \emph{Tab}.
+
+La città ha $N$ piazze, collegate da $M$ strade bidirezionali.
+I due cortei partono rispettivamente dalle piazze $P_1$ e $P_2$ e devono giungere rispettivamente alle piazze $D_1$ e $D_2$.
+Ad ogni rintocco della campana di Torre Vanga, la torre cittadina di Trento,
+uno dei due cortei si sposta da una piazza ad una vicina, percorrendo una strada da un capo all'altro.
+Nel frattempo, l'altro corteo staziona nella sua piazza attuale.
+La manifestazione festosa ha termine quando entrambi i cortei sono giunti nelle rispettive piazze di destinazione.
+
+Tutti sanno che non è una buona idea mescolare \emph{Spazi} e \emph{Tab}:
+per questo motivo gli organizzatori vogliono evitare che i due cortei si avvicinino troppo.
+Aiuta gli organizzatori nel loro compito!
+Scrivi un programma che calcoli quale massima distanza
+è possibile mantenere fra i due cortei durante tutta la manifestazione,
+consentendo a ciascun corteo di giungere alla propria destinazione.
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{mdframed}[backgroundcolor=black!10,rightline=false,leftline=false]
+
+\Specs
+
+\small
+
+In ogni spostamento, uno solo dei due cortei transita da una piazza a un'altra.
+Uno spostamento indica quale dei due cortei si muove e verso quale piazza, ed è valido solo se c'è una strada che collega \emph{direttamente} la piazza dove attualmente si trova il corteo da muovere e la piazza in cui portarlo.
+
+Gli spostamenti avvengono in modo regolare, uno ad ogni rintocco, ma \textbf{non} è richiesto che gli spostamenti dei due cortei si alternino:
+è possibile che lo stesso corteo si muova per due o più spostamenti consecutivi.
+
+Un corteo \emph{può} percorrere una stessa strada più di una volta,
+come anche rivisitare una piazza più di una volta, se lo desidera.
+
+Dopo l'ultimo spostamento, ciascun corteo deve trovarsi a stazionare nella propria piazza di destinazione:
+la manifestazione può terminare solo in questo modo. Le piazze di partenza e destinazione di un corteo possono però coincidere fra loro.
+
+La sequenza di spostamenti, effettuati uno dopo l'altro durante la manifestazione,
+è chiamata \emph{pianificazione} e gli organizzatori possono scegliere la pianificazione che desiderano.
+
+Due piazze sono a \emph{distanza} $d$ se è necessario attraversare almeno $d$ strade per spostarsi da una all'altra.
+Il \emph{margine} associato a una pianificazione è definito come la minima distanza $d$
+fra due piazze \textbf{simultaneamente} occupate dai due cortei.
+Ti viene chiesto di individuare qual è il massimo margine che gli organizzatori
+possono ottenere, scegliendo opportunamente fra tutte le pianificazioni possibili.
+
+Se il tuo programma non calcola correttamente il margine massimo, potrai comunque ottenere un \textbf{punteggio parziale}
+individuando una pianificazione che ottenga un margine alto anche se non ottimo (vedi sezione di assegnazione del punteggio).
+
+\end{mdframed}
+
+\pagebreak
+
+\Implementation
+
+Dovrai sottoporre un unico file, con estensione \texttt{.cpp} o \texttt{.c}.
+
+\begin{warning}
+Tra gli allegati a questo task troverai un template \texttt{corteo.cpp} e \texttt{corteo.c} con un esempio di implementazione.
+\end{warning}
+
+Dovrai implementare la seguente funzione:
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+\hspace*{-7pt} C/C++ \hspace*{-7pt}  & \hspace*{-6pt} \verb|int pianifica(int N, int M, int P1, int D1, int P2, int D2, int A[], int B[]);|\\
+\hline
+\end{tabularx}\end{center}
+
+La funzione~\texttt{pianifica} viene chiamata una sola volta con i seguenti parametri.
+\begin{itemize}[nolistsep]
+  \item L'intero $N$ rappresenta il numero di piazze della città (le piazze sono numerate da $0$ a $N-1$),
+  \item L'intero $M$ rappresenta il numero di strade della città.
+  \item L'intero $P_1$ rappresenta la piazza di partenza del corteo degli \emph{Spazi} e $D_1$ la piazza di arrivo,
+        l'intero $P_2$ rappresenta la piazza di partenza del corteo dei \emph{Tab} e $D_2$ la piazza di arrivo
+        ($P_1$, $D_1$, $P_2$ e $D_2$ sono numeri compresi tra $0$ e $N-1$).
+  \item
+    Gli array \texttt{A} e \texttt{B}, indicizzati da $0$ a $M-1$, rappresentano le strade nella città.
+    La strada numero $i$, per $0 \leq i \leq M-1$, collega le piazze \texttt{A[$i$]} e \texttt{B[$i$]}.
+    Ricordiamo che le strade sono bidirezionali: utilizzando la strada $i$,
+    è possibile muoversi sia dalla piazza \texttt{A[$i$]} alla piazza \texttt{B[$i$]},
+    sia dalla piazza \texttt{B[$i$]} alla piazza \texttt{A[$i$]}.
+  \item La funzione deve restituire un numero intero che rappresenta il margine massimo possibile in una pianificazione.
+\end{itemize}
+
+\medskip
+
+Se desideri esibire la tua pianificazione,
+con lo scopo di ottenere quantomeno un punteggio parziale
+nel caso in cui il margine calcolato non sia ottimo,
+puoi comunicare uno ad uno gli spostamenti nella sequenza tramite la seguente funzione:
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|void sposta(int chi, int dove);|\\
+\hline
+\end{tabularx}\end{center}
+
+\begin{itemize}[nolistsep]
+	\item L'intero \texttt{chi} può essere $1$ o $2$, e indica indica quale corteo si vuole spostare.
+  \item L'intero \texttt{dove} indica il numero della piazza verso cui tale corteo deve muoversi.
+\end{itemize}
+
+La funzione \texttt{pianifica} sarà chiamata una sola volta all'inizio dell'esecuzione.
+All'interno della tua implementazione della funzione \texttt{pianifica}
+potrai chiamare la funzione \texttt{sposta} un qualunque numero di volte.
+Verranno registrate tutte le chiamate a \texttt{sposta} e il valore di ritorno di \texttt{pianifica}.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Grader
+Nella directory relativa a questo problema è presente una versione semplificata del grader usato durante la correzione, che potete usare per testare le vostre soluzioni in locale. Il grader di esempio legge i dati da \inputfile{}, chiama le funzioni che dovete implementare e scrive su \outputfile{}, secondo il seguente formato.
+
+Il file di input è composto da $M+2$ righe, contenenti i seguenti numeri interi separati da spazi:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: gli interi $N$ e $M$.
+\item Riga $2$: gli interi $P_1$, $D_1$, $P_2$ e $D_2$.
+\item Riga $3+i$ per $i = 0, \ldots, M-1$: gli interi \texttt{A[$i$]} e \texttt{B[$i$]}.
+\end{itemize}
+
+Il file di output è composto da $K+1$ righe,
+dove $K$ rappresenta il numero di volte in cui la funzione \texttt{sposta} è stata chiamata,
+contenenti i seguenti numeri interi separati da spazi:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Righe $1, \ldots, K$: i parametri con cui è stata chiamata \texttt{sposta}.
+\item Riga $K+1$: il valore di ritorno di \texttt{pianifica}.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $2 \le N \le 1000$.
+	\item $1 \le M \le 5000$.
+	\item $0 \le P_1, D_1, P_2, D_2 \le N-1$.
+	\item $0 \le \texttt{A}[i], \texttt{B}[i] \le N-1$ per ogni $i=0, \ldots, M-1$.
+	\item Non ci sono strade che collegano una piazza a se stessa e non ci sono strade che collegano la stessa coppia di piazze.
+	\item Da ogni piazza è possibile raggiungere ogni altra piazza.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Scoring
+
+Il tuo programma verrà testato su diversi casi di test, raggruppati in subtask.
+Ad un caso di test viene assegnato:
+\begin{itemize}
+\item \texttt{1} se la funzione~\texttt{pianifica} ritorna il valore ottimo di margine per quel caso, oppure se esibisce una pianificazione corretta che di fatto realizza il margine ottimo; altrimenti,
+\item \texttt{0} se non esibisce una pianificazione corretta; altrimenti,
+\item il punteggio dato dalla formula:
+        \[
+          \dfrac{\text{1}}{2} \cdot
+          \dfrac{\text{margine della pianificazione restituita}}{\text{margine delle pianificazione ottima}}
+        \]
+        e quindi un punteggio tra \texttt{0} e \texttt{0.5}.
+\end{itemize}
+
+Il punteggio assegnato a un subtask \`e il \emph{peggiore} dei punteggi ottenuti sui suoi casi di test, moltiplicato per il valore del subtask.
+Il punteggio assegnato a questo problema \`e quindi dato dalla somma dei punteggi sui vari subtask.
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+  \item \textbf{\makebox[2cm][l]{Subtask 1} [\phantom{0}0 punti]}: Casi d'esempio.
+  \item \textbf{\makebox[2cm][l]{Subtask 2} [\phantom{0}9 punti]}: I due cortei sono già a destinazione.
+  \item \textbf{\makebox[2cm][l]{Subtask 3} [10 punti]}: Il grafo è un ciclo.
+  \item \textbf{\makebox[2cm][l]{Subtask 4} [13 punti]}: $N, M \leq 10$.
+  \item \textbf{\makebox[2cm][l]{Subtask 5} [17 punti]}: Un corteo non necessita di spostarsi (in una pianificazione ottima).
+  \item \textbf{\makebox[2cm][l]{Subtask 6} [22 punti]}: $N, M \leq 100$.
+  \item \textbf{\makebox[2cm][l]{Subtask 7} [29 punti]}: Nessuna limitazione specifica.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Examples
+
+\begin{example}
+\exmpfile{corteo.input0.txt}{corteo.output0.txt}%
+\exmpfile{corteo.input1.txt}{corteo.output1.txt}%
+\end{example}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Explanation
+
+Nel \textbf{primo caso di esempio} la soluzione calcola il margine ottimo $3$.
+Infatti, i due cortei riescono sempre a mantenersi a distanza almeno $3$,
+ma non è possibile fare di meglio.
+Uno delle pianificazioni possibili è la seguente:
+
+\begin{itemize}
+ \item all'inizio la distanza è 3;
+ \item \emph{Tab} si sposta da 3 a 5 (distanza 3), poi da 5 a 8 (distanza 4), poi da 8 a 9 (distanza 3);
+ \item \emph{Spazi} si sposta da 2 a 1 (distanza 4), poi da 1 a 0 (distanza 4), poi da 0 a 3 (distanza 3);
+ \item \emph{Tab} si sposta da 9 a 7 (distanza 4);
+ \item \emph{Spazi} si sposta da 3 a 5 (distanza 3).
+\end{itemize}
+
+\pagebreak
+
+Nel \textbf{secondo caso di esempio} la soluzione calcola
+esplicitamente una pianificazione che realizza il margine ottimo $1$.
+La pianificazione è mostrata nelle figure seguenti.
+Non è possibile ottenere un margine migliore di $1$.
+
+\begin{center}
+
+\begin{tabular}{ccc}
+    \begin{minipage}{.33\textwidth}
+      \centering
+    \includegraphics{asy_corteo/fig1.pdf} \\
+  	Situazione iniziale
+  \end{minipage}
+
+  &
+
+  \begin{minipage}{.33\textwidth}
+    \centering
+  	\includegraphics{asy_corteo/fig2.pdf} \\
+  	\texttt{sposta(1, 1)}
+  \end{minipage}
+
+  &
+
+  \begin{minipage}{.33\textwidth}
+    \centering
+  	\includegraphics{asy_corteo/fig3.pdf} \\
+  	\texttt{sposta(1, 0)}
+  \end{minipage}
+
+\end{tabular}
+\end{center}
+
+\vspace*{1cm}
+
+\begin{center}
+\begin{tabular}{ccc}
+  \begin{minipage}{.33\textwidth}
+    \centering
+  	\includegraphics{asy_corteo/fig4.pdf} \\
+  	\texttt{sposta(2, 1)}
+  \end{minipage}
+
+  &
+
+  \begin{minipage}{.33\textwidth}
+    \centering
+  	\includegraphics{asy_corteo/fig5.pdf} \\
+  	\texttt{sposta(2, 2)}
+  \end{minipage}
+
+  &
+
+  \begin{minipage}{.33\textwidth}
+    \centering
+  	\includegraphics{asy_corteo/fig6.pdf} \\
+  	\texttt{sposta(1, 1)}
+  \end{minipage}
+
+\end{tabular}
+
+\end{center}
+
+Nota che entrambe le soluzioni di esempio ottengono il punteggio massimo:
+la prima in quanto calcola il margine ottimo, anche se non esibisce una pianificazione,
+la seconda in quanto esibisce una pianificazione ottimale,
+anche se restituisce un valore errato come margine ottimo.

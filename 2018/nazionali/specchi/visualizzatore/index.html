@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html ng-app="specchi-vis">
+<head>
+    <meta charset="utf-8">
+    <title>Visualizzatore di Specchi</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="css/bootstrap-theme.min.css">-->
+    <link rel="stylesheet" href="css/app.css">
+    <script src="js/angular.min.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body class="container" ng-controller="mainCtrl">
+    <h1>Visualizzatore di specchi</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2>File di input</h2>
+            <textarea ng-model="input" ng-change="update_input()" rows="10" cols="20" class="form-control"></textarea>
+            <div ng-show="error != ''" class="alert alert-danger"><strong>Errore</strong> {{error}}</div>
+        </div>
+
+        <form ng-show="error == ''" ng-submit="avvia()" class="row">
+            <h2>Imposta partenza</h2>
+            <div class="col-md-3">
+                <h3>Dal file di input</h3>
+                <ol>
+                    <li ng-repeat="q in query">
+                        <a href ng-click="avvia_query($index)">Da {{LATI[q.lato-1]}} in posizione {{q.posizione}} con {{q.num_specchi}}
+                            <span ng-if="q.num_specchi == 1">specchio</span>
+                            <span ng-if="q.num_specchi != 1">specchi</span>
+                        </a>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-md-3">
+                <h3>Manuale</h3>
+                <div class="form-group">
+                    <label>Lato</label>
+                    <select ng-model="lato" class="form-control">
+                        <option value="1">SOPRA</option>
+                        <option value="2">DESTRA</option>
+                        <option value="3">SOTTO</option>
+                        <option value="4">SINISTRA</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Posizione</label>
+                    <input ng-model="posizione" string-to-number type="number" min="0" max="{{get_max_pos()-1}}" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Numero di specchi</label>
+                    <input ng-model="num_specchi" string-to-number ng-change="update_num_specchi()" type="number" min="0" max="{{specchi_input.length}}" class="form-control">
+                </div>
+                <div>
+                    <button class="btn btn-success">Avvia</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row" ng-show="error == ''">
+        <div class="col-md-6">
+            <h2>Simulazione</h2>
+            <svg ng-height="{{scale * N}}" ng-width="{{scale * M}}">
+                <line ng-repeat="raggio in raggi"
+                      ng-x1="{{raggio.x1 * scale}}" ng-y1="{{raggio.y1 * scale}}"
+                      ng-x2="{{raggio.x2 * scale}}" ng-y2="{{raggio.y2 * scale}}"
+                      class="raggio"></line>
+
+                <line ng-repeat="specchio in specchi"
+                      ng-x1="{{specchio.c*scale+scale/10}}" ng-y1="{{(specchio.r+1)*scale-scale/10}}" ng-x2="{{(specchio.c+1)*scale-scale/10}}" ng-y2="{{specchio.r*scale+scale/10}}"
+                      ng-if="specchio.t == '/'" class="specchio"></line>
+                <line ng-repeat="specchio in specchi"
+                      ng-x1="{{specchio.c*scale+scale/10}}" ng-y1="{{specchio.r*scale+scale/10}}" ng-x2="{{(specchio.c+1)*scale-scale/10}}" ng-y2="{{(specchio.r+1)*scale-scale/10}}"
+                      ng-if="specchio.t == '\\'" class="specchio"></line>
+
+                <line ng-x1="0" ng-y1="0" ng-x2="{{M * scale}}" ng-y2="0" class="bordo"></line>
+                <line ng-x1="0" ng-y1="{{N * scale}}" ng-x2="{{M * scale}}" ng-y2="{{N * scale}}" class="bordo"></line>
+                <line ng-x1="0" ng-y1="0" ng-x2="0" ng-y2="{{N * scale}}" class="bordo"></line>
+                <line ng-x1="{{M * scale}}" ng-y1="0" ng-x2="{{M * scale}}" ng-y2="{{N * scale}}" class="bordo"></line>
+
+                <line ng-repeat="x in range(1, M-1)" ng-x1="{{x * scale}}" ng-y1="0" ng-x2="{{x * scale}}" ng-y2="{{N * scale}}" class="cella"></line>
+                <line ng-repeat="y in range(1, N-1)" ng-x1="0" ng-y1="{{y * scale}}" ng-x2="{{M * scale}}" ng-y2="{{y * scale}}" class="cella"></line>
+
+                <text ng-repeat="x in range(1, M)" ng-x="{{(x-1)*scale+scale/2-2}}" ng-y="10" class="testo">{{x-1}}</text>
+                <text ng-repeat="x in range(1, M)" ng-x="{{(x-1)*scale+scale/2-2}}" ng-y="{{N*scale-2}}" class="testo">{{x-1}}</text>
+                <text ng-repeat="y in range(1, N)" ng-x="2" ng-y="{{(y-1)*scale+scale/2+5}}" class="testo">{{y-1}}</text>
+                <text ng-repeat="y in range(1, N)" ng-x="{{M*scale-10}}" ng-y="{{(y-1)*scale+scale/2+5}}" class="testo">{{y-1}}</text>
+            </svg>
+        </div>
+    </div>
+    <div class="row" ng-show="error == ''">
+        <div class="col-md-6">
+            <h2>Risposta</h2>
+            <dl class="dl-horizontal">
+                <dt>Lato</dt>
+                <dd>{{risposta.lato}}</dd>
+                <dt>Posizione</dt>
+                <dd>{{risposta.posizione}}</dd>
+            </dl>
+        </div>
+    </div>
+</body>
+</html>

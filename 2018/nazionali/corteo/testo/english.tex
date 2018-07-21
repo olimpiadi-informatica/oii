@@ -1,0 +1,280 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+
+
+\createsection{\Grader}{Sample Grader}
+\createsection{\Specs}{Clarifications}
+
+\renewcommand{\inputfile}{\texttt{stdin}}
+\renewcommand{\outputfile}{\texttt{stdout}}
+\makeatletter
+\renewcommand{\this@inputfilename}{\texttt{stdin}}
+\renewcommand{\this@outputfilename}{\texttt{stdout}}
+\makeatother
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+\newenvironment{todoenv}
+{\par\begin{mdframed}[linewidth=2pt,linecolor=red]%
+		\begin{list}{}{\leftmargin=1cm
+				\labelwidth=\leftmargin}\item[\Large\ding{169}]}
+		{\end{list}\end{mdframed}\par}
+
+\newcommand{\todo}[1]{\begin{todoenv}
+		TODO: #1
+\end{todoenv}}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+On September 15, at the Olympics of Informatics, two programmers' marches will take to the streets and squares of Trento. The first group is made of \emph{Spaces} proponents, while the other group is made of \emph{Tabs} enthusiasts.
+
+The city has $N$ squares, linked by $M$ two-way roads. The two groups depart from the squares $P_1$ and $P_2$ respectively, and must arrive at squares $D_1$ and $D_2$ respectively. Everytime the bell on Trento's Vanga tower will ring, one of the two groups will move to a neighboring square, crossing a street from one end to the other. During the move, the other group stays in its current square. The festive event ends when both parades have reached their destination.
+
+Everyone knows it's not a good idea to mix \emph{Spaces} and \emph{Tabs}: for this reason, the organizers want to prevent the two groups from getting too close to each other. Help the organizers with this task! Write a program that calculates the distance you can keep between the two groups throughout the event, allowing each of them to reach their destination.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\begin{mdframed}[backgroundcolor=black!10,rightline=false,leftline=false]
+
+\Specs
+
+\small
+
+In each turn, only one of the two groups goes from one square to another.
+A movement indicates which of the two parades moves, and to which square. It is valid only if there is a road connecting \emph{directly} the square where the procession is currently located with the square where to take it.
+
+Movements are performed regularly, one at each bell ring, but \textbf{it isn't required} that the movements of the two groups alternate: it is possible that the same group moves for two or more consecutive turns.
+
+A group \emph{can} go the same way more than once, as well as visiting a square more than once, if the members wish to.
+
+After the last move, each group must be in its destination square: this is the only way for the event to end. The squares of departure and destination of a group may, however, be the same square.
+
+The sequence of movements carried out one after the other during the event is called a \emph{schedule}, and the organizers can choose any schedule they want.
+
+We say that two squares are at \emph{distance} $d$ if you need to cross at least $d$ roads to move from one to the other. The \emph{margin} associated with a schedule is defined as the minimum distance $d$ between two squares \textbf{simultaneously} occupied by the two parades. You are asked to find out what is the maximum margin that the organizers can obtain, choosing from every possible schedule.
+
+If your program does not correctly calculate the maximum margin, you can still get a \textbf{partial score} by explicitly listing a schedule that gets a high margin, even if not optimal (see the score assignment section).
+
+\end{mdframed}
+
+\pagebreak
+\Implementation
+
+You have to submit only one file, whose extension is \texttt{.cpp} or \texttt{.c}.
+
+\begin{warning}
+You can find a template in the attachment section \texttt{corteo.cpp} and \texttt{corteo.c}, with an implementation example.
+\end{warning}
+
+You need to implement the following function:
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+\hspace*{-7pt} C/C++ \hspace*{-7pt}  & \hspace*{-6pt} \verb|int pianifica(int N, int M, int P1, int D1, int P2, int D2, int A[], int B[]);|\\
+\hline
+\end{tabularx}\end{center}
+
+The function~\texttt{pianifica} is called only once, using the following values of the parameters.
+\begin{itemize}[nolistsep]
+  \item The integer numeber $N$ represents the number of squares of the city (the squares are indexed from $0$ to $N-1$),
+  \item The integer $M$ represents the number of streets of the city.
+  \item The integer $P_1$ represents the starting square of the \emph{Spaces} group and $D_1$ is their last square. The integer number $P_2$ represents the starting square of the \emph{Tabs} group and $D_2$ is their last square ($P_1$, $D_1$, $P_2$ and $D_2$ are integer numbers in the range from $0$ to $N-1$).
+  \item
+    The arrays \texttt{A} and \texttt{B}, indexed from $0$ to $M-1$, represent the streets in the city.
+    The street indexed by $i$, for $0 \leq i \leq M-1$, connect the squares \texttt{A[$i$]} with \texttt{B[$i$]}.
+    Keep in mind that the streets are bidirectional: walking along the street $i$ it's possible to move from square \texttt{A[$i$]} to square \texttt{B[$i$]} and also from square \texttt{B[$i$]} to square \texttt{A[$i$]}.
+  \item The function must return an integer number that represents the maximum margin possible in a schedule.
+\end{itemize}
+
+\medskip
+
+If you want to explicitly describe your schedule with the aim to obtain a partial score (in case the margin you computer isn't optimal) you can print the movements one by one in the sequence by using the following function:
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|void sposta(int chi, int dove);|\\
+\hline
+\end{tabularx}\end{center}
+
+\begin{itemize}[nolistsep]
+  \item The integer number \texttt{chi} may be $1$ or $2$ and it tells which group we want to move.
+  \item The integer number \texttt{dove} represents the square towards which the group is going to move.
+\end{itemize}
+
+The function \texttt{pianifica} is going to be called only once at the beginning of the execution.
+In your implementation of the function \texttt{pianifica} you have the chance to call the function \texttt{sposta} how many times you wish.
+Every call to \texttt{sposta} will be stored, as well as the return value of \texttt{pianifica}.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Grader
+You can find a simplified version of the grader used during the competition in this task's directory. You can use it to test your solutions. The sample grader reads data from \inputfile{}, calls the functions that you have to implement and writes on \outputfile{}, according to the following format.
+
+The input file consists of $M+2$ rows, containing the following numbers, separated from spaces:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Line $1$: the integer numbers $N$ and $M$.
+\item Line $2$: the integer numbers $P_1$, $D_1$, $P_2$ and $D_2$.
+\item Line $3+i$ for $i = 0, \ldots, M-1$: the integer numbers \texttt{A[$i$]} and \texttt{B[$i$]}.
+\end{itemize}
+
+The output file consists of $K+1$ rows, where $K$ represents the number of calls to the function \texttt{sposta}, stored in the following manner:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Lines $1, \ldots, K$: the parameters used when calling the function \texttt{sposta}.
+\item Line $K+1$: the return value of \texttt{pianifica}.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $2 \le N \le 1000$.
+	\item $1 \le M \le 5000$.
+	\item $0 \le P_1, D_1, P_2, D_2 \le N-1$.
+	\item $0 \le \texttt{A}[i], \texttt{B}[i] \le N-1$ for each $i=0, \ldots, M-1$.
+	\item There are no streets that connect a square to itself or that connect the same pair of squares twice.
+	\item From every square it's possible to reach every other square.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Scoring
+
+Your program is going to be tested on several test cases, grouped in subtasks. Each test case is assigned:
+\begin{itemize}
+\item \texttt{1} if the function~\texttt{pianifica} return the optimum value for that specific case, or if it shows a correct plan that realizes the optimum border: otherwise,
+\item \texttt{0} if it doesn't show a correct schedule; otherwise,
+\item the score obtained from the formula
+        \[
+          \dfrac{\text{1}}{2} \cdot
+          \dfrac{\text{value of your schedule}}{\text{value of the optimal schedule}}
+        \]
+        thus giving a score between \texttt{0} and \texttt{0.5}.
+\end{itemize}
+
+The score assigned to a subtask is the \emph{worst} of the scores obtained from its test cases, multiplied by the value of the subtask.
+The score assigned to this problem is given by the sum of scores in the various subtasks.
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+  \item \textbf{\makebox[2cm][l]{Subtask 1} [\phantom{1}0 points]}: Examples.
+  \item \textbf{\makebox[2cm][l]{Subtask 2} [\phantom{1}9 points]}: The two groups are already at their destination.
+  \item \textbf{\makebox[2cm][l]{Subtask 3} [10 points]}: The graph is a cycle.
+  \item \textbf{\makebox[2cm][l]{Subtask 4} [13 points]}: $N, M \leq 10$.
+  \item \textbf{\makebox[2cm][l]{Subtask 5} [17 points]}: One group does not need to move (in an optimal solution).
+  \item \textbf{\makebox[2cm][l]{Subtask 6} [22 points]}: $N, M \leq 100$.
+  \item \textbf{\makebox[2cm][l]{Subtask 7} [29 points]}: No specific limitations.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Examples
+
+\begin{example}
+\exmpfile{corteo.input0.txt}{corteo.output0.txt}%
+\exmpfile{corteo.input1.txt}{corteo.output1.txt}%
+\end{example}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Explanation
+
+In the  \textbf{first example case} the solution computes the optimal margin $3$.
+Indeed, the two groups always keep at least at a distance $3$,
+but you can not do better.
+One of the possible schedules is as follows:
+
+\begin{itemize}
+ \item at the beginning the distance is 3;
+ \item \emph{Tabs} moves from 3 to 5 (distance 3), then from 5 to 8 (distance 4), then from 8 to 9 (distance 3);
+ \item \emph{Spaces} moves from 2 to 1 (distance 4), then from 1 to 0 (distance 4), then from 0 to 3 (distance 3);
+ \item \emph{Tabs} moves from 9 to 7 (distance 4);
+ \item \emph{Spaces} moves from 3 to 5 (distance 3).
+\end{itemize}
+
+\pagebreak
+
+In the \textbf{second case example} the solution explicitly computes
+a schedule that achieves the optimal margin $1$.
+The schedule is shown in the following pictures.
+You can not get a better margin of $1$.
+
+\begin{center}
+
+\begin{tabular}{ccc}
+    \begin{minipage}{.33\textwidth}
+      \centering
+    \includegraphics{asy_corteo/fig1.pdf} \\
+  	Initial situation
+  \end{minipage}
+
+  &
+
+  \begin{minipage}{.33\textwidth}
+    \centering
+  	\includegraphics{asy_corteo/fig2.pdf} \\
+  	\texttt{sposta(1, 1)}
+  \end{minipage}
+
+  &
+
+  \begin{minipage}{.33\textwidth}
+    \centering
+  	\includegraphics{asy_corteo/fig3.pdf} \\
+  	\texttt{sposta(1, 0)}
+  \end{minipage}
+
+\end{tabular}
+\end{center}
+
+\vspace*{1cm}
+
+\begin{center}
+\begin{tabular}{ccc}
+  \begin{minipage}{.33\textwidth}
+    \centering
+  	\includegraphics{asy_corteo/fig4.pdf} \\
+  	\texttt{sposta(2, 1)}
+  \end{minipage}
+
+  &
+
+  \begin{minipage}{.33\textwidth}
+    \centering
+  	\includegraphics{asy_corteo/fig5.pdf} \\
+  	\texttt{sposta(2, 2)}
+  \end{minipage}
+
+  &
+
+  \begin{minipage}{.33\textwidth}
+    \centering
+  	\includegraphics{asy_corteo/fig6.pdf} \\
+  	\texttt{sposta(1, 1)}
+  \end{minipage}
+
+\end{tabular}
+
+\end{center}
+
+Note that both sample solutions get the maximum score:
+the first because it calculates the optimal margin, even if it does not show a schedule,
+the second because it performs an optimal scheduling,
+even if it returns an incorrect value as margin.

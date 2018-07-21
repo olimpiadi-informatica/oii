@@ -1,0 +1,71 @@
+# Parametri:
+# * N (numero di nodi)
+# * M (numero di archi)
+# * T (tipo di subtask) e' 1 per "generico", 2 per "sorgente = destinazione", 3 per "ciclo", 4 per "ruota"
+# * S (seed)
+
+#ST: 0
+# Casi d'esempio
+#COPY: testo/corteo.input0.txt
+#COPY: testo/corteo.input1.txt
+
+#ST: 9
+# Cortei già a destinazione
+1000 5000 2 2
+1000 1000 2 3
+2    1    2 4
+500  5000 2 5
+
+#ST: 10
+# Ciclo
+1000 1000 333 6
+500  500  333 7
+100  100  333 8
+1000 1000 333 9
+
+#ST: 13
+# N,M <= 10
+10   10   1 10
+10   10   1 11
+10   10   2 12
+10   10   2 13
+10   10   3 14
+10   10   3 15
+
+#ST: 17
+# Solo uno dei due si deve muovere
+100   105   5 161
+500   500   6 17
+500   3000  5 18
+1000  1000  6 19
+1000  1050  5 20
+
+#ST: 22
+# N,M <= 100
+20   80   1 21
+50   100  1 22
+80   80   3 23
+100  100  3 24
+15   100  1 25
+100  100  4 26
+100  100  4 27
+
+#ST: 29
+# Nessuna limitazione
+1000 1000 1 28
+1000 2000 1 28
+1000 3000 1 29
+1000 4000 1 30
+1000 1000 3 31
+1000 1000 3 31
+1000 1000 3 32
+1000 1000 3 33
+1000 2000 4 34
+1000 3000 4 35
+1000 4000 4 36
+1000 1000 4 37
+# evita che ci siano casi corner
+20   80   1 21
+50   100  1 22
+80   80   3 23
+100  100  3 24

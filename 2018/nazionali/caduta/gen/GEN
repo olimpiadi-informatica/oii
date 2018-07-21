@@ -1,0 +1,88 @@
+# File usato per descrivere gli input. Le parti della riga dopo un # vengono
+# ignorate. Le righe non banali (ovvero contenenti qualcosa oltre a whitespace
+# prima del primo #) vengono passate al generatore e generano un input ciascuna.
+# Se una riga inizia con "#ST:" (senza le virgolette) viene usata per delimitare
+# un subtask. "#ST:" va seguito con il punteggio assegnato a quel subtask. Se
+# sono presenti i subtask, è necessario che la somma dei punti di ogni subtask
+# sia 100.
+
+# N         T           S
+
+
+# Subtask 1: Esempi
+#ST: 0
+#COPY: testo/caduta.input0.txt
+#COPY: testo/caduta.input1.txt
+#COPY: testo/caduta.input2.txt
+
+# Subtask 2: Altezze uguali
+#ST: 4
+10          uguali      3
+100         uguali      4
+1000        uguali      5
+10000       uguali      6
+
+# Subtask 3: N <= 5000 OK/IMPOSSIBILE
+#ST: 7
+50          ok          7
+500         altro       8
+5000        ok          9
+5000        altro       10
+
+# Subtask 4: OK/IMPOSSIBILE
+#ST: 9
+10000       altro       11
+100000      ok          12
+1000000     altro       13
+1000000     ok          14
+
+# Subtask 5: N <= 50
+#ST: 13
+50          ok          15
+50          alticritici 16      # AVANTI PRESERVA
+50          rimpiazzok  17      # INDIETRO PRESERVA
+50          altro       189     # AVANTI POCO
+50          altro       19      # IMPOSSIBILE
+50          altro       202     # AVANTI POCO
+50          altro       213     # INDIETRO ALTO
+
+# Subtask 6: N <= 1000
+#ST: 19
+1000        ok          22
+1000        alticritici 230     # PRESERVA 2
+1000        rimpiazzok  24      # INDIETRO
+1000        altro       25      # INDIETRO ALTO
+1000        altro       2627    # AVANTI POCO
+1000        altro       27      # IMPOSSIBILE
+1000        avantipoco  280     # AVANTI POCO
+
+# Subtask 7: N <= 3000
+#ST: 28
+3000        ok          29
+3000        alticritici 30      # INDIETRO PRESERVA x2 ALTO x1
+3000        rimpiazzok  31      # INDIETRO/AVANTI PRESERVA
+3000        altro       32      # INDIETRO ALTO
+3000        altro       3310    # AVANTI POCO
+3000        altro       34      # IMPOSSIBILE
+3000        avantipoco  35      # AVANTI POCO
+
+
+# Subtask 8: N <= 100000
+#ST: 11
+10000       ok          36
+10000       alticritici 37      # AVANTI POCO
+10000       rimpiazzok  38      # AVANTI PRESERVA
+10000       altro       39      # IMPOSSIBILE
+10000       altro       403     # AVANTI POCO
+10000       altro       4116    # INDIETRO ALTO
+10000       avantipoco  420     # AVANTI POCO
+
+# Subtask 9: N <= 5000000
+#ST: 9
+30000       ok          43
+100000      alticritici 44      # PRESERVA 500+
+300000      rimpiazzok  45      # PRESERVA 10
+1000000     altro       46      # IMPOSSIBILE
+3000000     altro       47      # AVANTI POCO
+4000000     altro       488     # INDIETRO ALTO
+#5000000     avantipoco  49      # AVANTI POCO

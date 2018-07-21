@@ -1,0 +1,9 @@
+infile: ''
+memory_limit: 256
+name: corteo
+outfile: ''
+public_testcases: all
+score_mode: max
+time_limit: 1.0
+title: Ordine pubblico
+token_mode: disabled

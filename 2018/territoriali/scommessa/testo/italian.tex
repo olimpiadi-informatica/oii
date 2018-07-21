@@ -1,0 +1,115 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+\usepackage[normalem]{ulem}
+
+\createsection{\Grader}{Grader di prova}
+
+\renewcommand{\inputfile}{\texttt{input.txt}}
+\renewcommand{\outputfile}{\texttt{output.txt}}
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+{
+\vspace{-1.75cm}\hfill\fbox{Difficoltà: 2}
+}
+\vspace{.5cm}
+
+
+Romeo \`e un grande appassionato di sport intellettuali, e adora ritrovarsi con gli amici per seguire le competizioni internazionali pi\`u avvincenti di questo tipo. Di recente, il gruppo di amici si \`e appassionato a uno sport molto particolare. In questo gioco, un mazzo di carte numerate da $0$ a $N-1$ (dove $N$ \`e dispari) viene prima mescolato, e poi le carte vengono affiancate in linea retta sul tavolo. Ai telespettatori, per aumentare la suspence, vengono mostrati i numeri delle carte $C_0, C_1, \ldots, C_i, \ldots, C_{N-1}$ nell'ordine cos\`i ottenuto. A questo punto i giocatori\footnote{Seguendo un elaborato ordine di gioco che non rientra nei margini di questo problema.} possono scoprire due carte disposte consecutivamente sul tavolo, e prenderle nel solo caso in cui queste due carte \emph{abbiano somma dispari}. Se queste carte vengono prese, le altre vengono aggiustate quanto basta per riempire il buco lasciato libero. Il gioco prosegue quindi a questo modo finch\'e nessun giocatore pu\`o pi\`u prendere carte.
+
+Romeo e i suoi amici, per sentirsi pi\`u partecipi, hanno oggi deciso di fare un ``gioco nel gioco'': all'inizio della partita, scommettono su quali carte pensano rimarranno sul tavolo una volta finita la partita. Aiuta Romeo, determinando quali carte \emph{potrebbero} rimanere sul tavolo alla fine del gioco!
+
+\begin{warning}
+	Una carta \emph{potrebbe} rimanere sul tavolo a fine gioco, se esiste una sequenza di mosse (rimozioni di coppie di carte consecutive con somma dispari) tale per cui dopo di esse nessuna altra mossa \`e possibile (il gioco e finito) e la carta suddetta \`e ancora sul tavolo.
+\end{warning}
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\InputFile
+Il file \inputfile{} è composto da $2$ righe, contenenti:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: l'unico intero $N$.
+\item Riga $2$: gli $N$ interi $C_i$ separati da spazio, nell'ordine in cui sono disposti sul tavolo.
+\end{itemize}
+
+
+\OutputFile
+Il file \outputfile{} deve essere composto da due righe, contenenti:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: il numero di diverse carte $K$ che \emph{potrebbero} rimanere sul tavolo a fine partita.
+\item Riga $2$: i $K$ interi che identificano le carte che \emph{potrebbero} rimanere sul tavolo a fine partita.
+\end{itemize}
+	
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $1 \le N \le 100$.
+	\item $N$ \`e sempre un numero dispari.
+	\item $0 \le C_i \le N-1$ per ogni $i=0\ldots N-1$.
+	\item Ogni numero tra $0$ e $N-1$ compare esattamente una volta nella sequenza dei $C_i$.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Examples
+
+\begin{example}
+\exmpfile{scommessa.input0.txt}{scommessa.output0.txt}%
+\exmpfile{scommessa.input1.txt}{scommessa.output1.txt}%
+\end{example}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Explanation
+
+Nel \textbf{primo caso di esempio}, l'unica mossa possibile \`e eliminare le carte $1$ e $2$ per cui rimane sul tavolo necessariamente la carta $0$.\\[2mm]
+Nel \textbf{secondo caso di esempio} sono invece possibili diverse sequenze di mosse. Una delle sequenze che lasciano la carta $2$ \`e la seguente:
+\begin{center}
+\tt
+1 0 2 6 \sout{4 5} 3 9 8 10 7 \\
+\sout{1 0} 2 6 3 9 8 10 7 \\
+2 \sout{6 3} 9 8 10 7 \\
+2 9 8 \sout{10 7} \\
+2 \sout{9 8} \\
+2
+\end{center}
+Una delle sequenze di mosse che lasciano la carta $8$ \`e la seguente:
+\begin{center}
+\tt
+\sout{1 0} 2 6 4 5 3 9 8 10 7 \\
+2 6 \sout{4 5} 3 9 8 10 7 \\
+2 6 3 9 8 \sout{10 7} \\
+2 \sout{6 3} 9 8 \\
+\sout{2 9} 8 \\
+8
+\end{center}
+Non esistono invece sequenze di mosse che lasciano alcuna delle altre carte.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+%\newpage
+%\begin{solution}
+%    \input{extra_scommessa/soluzione}
+%\end{solution}

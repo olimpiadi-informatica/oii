@@ -1,0 +1,6 @@
+name: scommessa
+title: Sport intellettuali
+infile: input.txt
+outfile: output.txt
+memlimit: 64
+timeout: 1

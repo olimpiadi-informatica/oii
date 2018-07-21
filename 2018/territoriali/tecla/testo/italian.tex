@@ -1,0 +1,109 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+
+
+\createsection{\Grader}{Grader di prova}
+
+\renewcommand{\inputfile}{\texttt{input.txt}}
+\renewcommand{\outputfile}{\texttt{output.txt}}
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+{
+\vspace{-1.75cm}\hfill\fbox{Difficoltà: 2}
+}
+\vspace{.5cm}
+
+
+Ape Maya \`e rimasta intrappolata in un nodo della tela di Tecla, un ragno molto temuto tra le api dell'alveare. Tecla si affretta ad afferrarla ma, quando giunge su quel nodo, si accorge di non avere appetito, e dice ``BLEAH''. Va detto che l'appetito dei ragni \`e molto particolare: ogni volta che percorrono un filamento della loro rete, essi invertono lo stato del loro stomaco tra ``SLURP'' e ``BLEAH''. Tecla deve quindi farsi un giretto nella rete sperando di tornare da Maya in stato ``SLURP''.
+
+La tela di Tecla è composta da $N$ nodi (numerati da $0$ a $N-1$) connessi tra loro da $M$ filamenti. Tecla e Ape Maya all'inizio si trovano entrambe nel nodo $0$, e ogni filamento può essere attraversato da Tecla in entrambe le direzioni. Aiuta Tecla ad individuare una passeggiata funzionale al buon appetito!
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\InputFile
+Il file \inputfile{} è composto da $M+1$ righe, contenenti:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: gli interi $N$ ed $M$, il numero di nodi e di filamenti della tela.
+\item Riga $2..M+1$: due interi separati da spazio $u$, $v$; dove $u$ e $v$ identificano i due nodi ai capi del filamento $i$-esimo.
+\end{itemize}
+
+
+\OutputFile
+Il file \outputfile{} deve essere composto da due righe, contenenti:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: il numero di spostamenti $L$ che Tecla deve compiere nella sua passeggiata.
+\item Riga $2$: $L+1$ numeri separati da uno spazio, di cui il primo e l'ultimo devono essere $0$ (nodo di partenza e di arrivo), e gli altri sono i nodi come visitati da Tecla nell'ordine (e possono avere ripetizioni).
+\end{itemize}
+	
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+    \item $ 1 \leq M, N \leq 30 $.
+    \item In ogni filamento, $u \neq v$ e sono entrambi compresi tra $0$ e $N-1$.
+    \item Si garantisce l'esistenza di una soluzione: Ape Maya \`e spacciata!
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Examples
+
+\begin{example}
+\exmpfile{oddcycle.input0.txt}{oddcycle.output0.txt}%
+\exmpfile{oddcycle.input1.txt}{oddcycle.output1.txt}%
+\end{example}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Explanation
+
+Nel \textbf{primo caso di esempio}, la tela di Tecla \`e come nella figura seguente, dove il percorso da seguire \`e evidenziato in rosso:
+\begin{center}
+	\includegraphics{asy_tecla/fig1.pdf}
+\end{center}
+
+Nel \textbf{secondo caso di esempio}, la tela e il percorso sono:
+\begin{center}
+	\includegraphics{asy_tecla/fig2.pdf}
+\end{center}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+%\Scoring
+%
+%\begin{itemize}
+%    \item \textbf{Subtask 1 [0 punti]:} i due esempi del testo.
+%    \item \textbf{Subtask 2 [10 punti]:} esiste il collegamento tra ogni coppia di nodi.
+%    \item \textbf{Subtask 3 [20 punti]:} il nodo 1 \`e adiacente ad ogni altro nodo. Ed almeno un ulteriore collegamento \`e presente.
+%    \item \textbf{Subtask 4 [20 punti]:} ogni nodo ha grado 2.
+%    \item \textbf{Subtask 5 [50 punti]:} nessuna restrizione, $M,N \leq 30$.
+%\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+%\newpage
+%\begin{solution}
+%    \input{extra_tecla/soluzione}
+%\end{solution}
