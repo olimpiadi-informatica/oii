@@ -1,0 +1,149 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+
+\createsection{\Grader}{Grader di prova}
+
+\newcommand{\inputfile}{\texttt{stdin}}
+\newcommand{\outputfile}{\texttt{stdout}}
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+	Mojito, il Jackrussel di Monica, si è recato come tutti gli anni alla Gara Nazionale delle Olimpiadi Italiane di Informatica per svolgere la sua delicata mansione di mascotte. Ora che ha terminato il suo compito nella sede della gara, vuole tornare all'hotel dove una comoda cuccia lo aspetta! Per tornare all'hotel non deve fare altro che seguire un tratto di lungomare lungo $L$ metri, senza alcuna deviazione. Ma l'obiettivo apparentemente semplice è reso complicato dal proverbiale solleone di Catania!
+	
+	Infatti, Mojito rifugge la calura e vuole evitare di restare esposto al sole troppo a lungo. Per fortuna lungo il tragitto ci sono $N$ accessi ad altrettante spiagge, l'$i$-esimo dei quali a una distanza $D_i$ dall'inizio del percorso e collegato al bagnasciuga da una passerella di lunghezza $P_i$. A Mojito non importa quanto a lungo dovrà camminare in totale, ma solo di non restare sotto il sole per troppo tempo di seguito: come è noto, facendo un breve bagno in mare tutta la calura accumulata scompare!
+	
+	Per esempio, consideriamo il seguente possibile lungomare:
+	\begin{figure}[!h]
+	\centering
+	\includegraphics[width=\textwidth]{asy_lungomare/fig1.pdf}
+	\end{figure}
+	
+	In questo caso, se Mojito percorre tutto il lungomare senza fare bagni, camminerà per $C = L = 100$ metri continuamente sotto il sole. Se invece si ferma a fare il bagno in tutte le spiagge, il percorso assolato più lungo ce lo avrà tra le spiagge 0 e 1 e sarà pari a $C = 50+20+40 = 110$ metri. La cosa migliore è invece fermarsi nelle spiagge 2 e 4, nel qual caso le tre tappe saranno lunghe rispettivamente $60$, $60$ e $40$ metri, e quindi $C = 60$.
+	
+	Aiuta Mojito calcolando $C$, il minimo numero per cui è possibile andare dall'inizio alla fine del lungomare senza mai stare per più di $C$ metri sotto il sole senza fare un bagno!
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\pagebreak
+
+\Implementation
+
+Dovrai sottoporre un unico file, con estensione \texttt{.c}, \texttt{.cpp} o \texttt{.pas}.
+
+\begin{warning}
+Tra gli allegati a questo task troverai un template \texttt{lungomare.c}, \texttt{lungomare.cpp}, \texttt{lungomare.pas} con un esempio di implementazione.
+\end{warning}
+
+Dovrai implementare la seguente funzione:
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|long long percorri(int N, long long L, long long D[], long long P[]);|\\
+\hline
+Pascal  & \verb|function percorri(N: longint; L: int64; D, P: array of int64): int64;|\\
+\hline
+\end{tabularx}\end{center}
+
+\begin{itemize}[nolistsep]
+  \item L'intero $N$ rappresenta il numero di spiagge presenti.
+  \item L'intero $L$ rappresenta la lunghezza in metri del lungomare.
+  \item L'array \texttt{D}, indicizzato da $0$ a $N-1$, contiene le distanze degli ingressi delle spiagge dall'inizio del lungomare.
+  \item L'array \texttt{P}, indicizzato da $0$ a $N-1$, contiene le lunghezze delle passerelle.
+\end{itemize}
+
+\medskip
+
+Il grader chiamerà la funzione \texttt{percorri} e ne stamperà il valore restituito sul file di output.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Grader
+Nella directory relativa a questo problema è presente una versione semplificata del grader usato durante la correzione, che potete usare per verificare le vostre soluzioni in locale. Il grader di esempio legge i dati da \inputfile{}, chiama le funzioni che dovete implementare e scrive su \outputfile{}, secondo il seguente formato.
+
+Il file di input è composto da tre righe, contenenti:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: i due interi $N$ e $L$.
+\item Riga $2$: i valori \texttt{D[$i$]} per $i = 0\ldots N-1$.
+\item Riga $2$: i valori \texttt{P[$i$]} per $i = 0\ldots N-1$.
+\end{itemize}
+
+Il file di output è composto da un'unica riga, contenente:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: il valore restituito dalla funzione \texttt{percorri}.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $1 \le N \le 10\,000\,000$.
+	\item $1 \le L \le 10^{18}$.
+	\item $0 < $\texttt{D[$i$]}$ < $\texttt{D[$i+1$]}$ < L$ per ogni $i=0\ldots N-1$.
+	\item $\texttt{P[$i$]}$ $\le 10^{18}$ per ogni $i=0\ldots N-1$.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\pagebreak
+
+\Scoring
+
+Il tuo programma verrà verificato su diversi test case raggruppati in subtask. Per ottenere il punteggio relativo a un subtask, è necessario risolvere correttamente tutti i test che lo compongono.
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+  \item \textbf{\makebox[2cm][l]{Subtask 1} [\phantom{1}0 punti]}: Casi d'esempio.
+  \item \textbf{\makebox[2cm][l]{Subtask 2} [13 punti]}: Le passerelle $\texttt{P[$i$]}$ sono tutte lunghe uguali e la distanza tra ogni due spiagge consecutive $\texttt{D[}i+1\texttt{]} - \texttt{D[}i\texttt{]}$ è costante.
+  \item \textbf{\makebox[2cm][l]{Subtask 3} [11 punti]}: Le passerelle $\texttt{P[$i$]}$ sono tutte lunghe uguali e $N \leq 100$.
+  \item \textbf{\makebox[2cm][l]{Subtask 4} [12 punti]}: Le passerelle $\texttt{P[$i$]}$ sono tutte lunghe uguali e $N \leq 10\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 5} [20 punti]}: $N \leq 15$.
+  \item \textbf{\makebox[2cm][l]{Subtask 6} [10 punti]}: $N \leq 10\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 7} [23 punti]}: $N \leq 1\,000\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 8} [11 punti]}: Nessuna limitazione specifica.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Examples
+
+\begin{example}
+\exmpfile{lungomare.input0.txt}{lungomare.output0.txt}%
+\exmpfile{lungomare.input1.txt}{lungomare.output1.txt}%
+\end{example}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Explanation
+
+Il \textbf{primo caso di esempio} è quello descritto nel testo.\\[2mm]
+Nel \textbf{secondo caso di esempio} conviene fermarsi nelle spiagge 2, 3, 4, 6 e 7 (ma è possibile fermarsi anche nella spiaggia 1 ottenendo il medesimo risultato).
+
+\begin{solution}
+	\include{./soluzione_lungomare_ita}
+\end{solution}

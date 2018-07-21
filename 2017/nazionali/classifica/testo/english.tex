@@ -1,0 +1,205 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+
+
+\createsection{\Grader}{Grader}
+
+\newcommand{\inputfile}{\texttt{stdin}}
+\newcommand{\outputfile}{\texttt{stdout}}
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+	The web page for real-time ranking of the Italian Olympiads in Informatics has crashed, and the teachers are panicking as they are no more updated on how their favorite contestants are performing! Fortunately they know the ranking of the $N$ contestants soon before the crash, so that the $(i+1)$-ranked contestant was \texttt{ids[$i$]}. From that moment on, they can only rely on leaks from the staff, profoundly moved by the situation. More precisely, there are leaks as soon as:
+	\begin{itemize}
+		\item contestant \texttt{id} overtakes the contestant immediately preceding her or him;
+		\item contestant \texttt{id} is disqualified for having tried to hack the competition's system.\footnote{The staff \emph{always} find out quickly about every such attempt!} 
+	\end{itemize}
+	The teachers, however, are confused by the large amount of data, and just want to know which contestant \texttt{id} appears in a queried position. Help them keeping track of all the leaks, so as to answer their queries.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\Implementation
+
+You shall submit one file having extension \texttt{.c}, \texttt{.cpp} or \texttt{.pas}.
+
+\begin{warning}
+Among the attachments of this task you will find a template (\texttt{classifica.c}, \texttt{classifica.cpp}, \texttt{classifica.pas}) with a sample incomplete implementation.
+\end{warning}
+
+You need to implement the following functions:
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|void inizia(int N, int ids[]);|\\
+\hline
+Pascal  & \verb|procedure inizia(N: longint; ids: array of longint);|\\
+\hline
+\end{tabularx}\end{center}
+
+\begin{itemize}[nolistsep]
+  \item $N$ is an integer representing the number of contestants.
+  \item The array \texttt{ids} is indexed from $0$ to $N-1$ and contains the contestants ids (integers from $0$ to $N-1$) in their position before the crash.
+\end{itemize}
+
+\medskip
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|void supera(int id);|\\
+\hline
+Pascal  & \verb|procedure supera(id: longint);|\\
+\hline
+\end{tabularx}\end{center}
+
+\begin{itemize}[nolistsep]
+  \item \texttt{id} is an integer representing the id of the contestant that is currently overtaking.
+\end{itemize}
+
+\medskip
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|void squalifica(int id);|\\
+\hline
+Pascal  & \verb|procedure squalifica(id: longint);|\\
+\hline
+\end{tabularx}\end{center}
+
+\begin{itemize}[nolistsep]
+  \item \texttt{id} is an integer representing the id of the disqualified contestant.
+\end{itemize}
+
+\pagebreak
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|int partecipante(int pos);|\\
+\hline
+Pascal  & \verb|function partecipante(pos: longint): longint;|\\
+\hline
+\end{tabularx}\end{center}
+
+\begin{itemize}[nolistsep]
+  \item \texttt{pos} is an integer representing the position that a teacher would like to query.
+  \item The function must return the \texttt{id} of the contestant in that position.
+\end{itemize}
+
+\medskip
+
+The grader will first call the function \texttt{inizia}, then the functions \texttt{supera}, \texttt{squalifica}, \texttt{partecipante} for an arbitrary number of times (and in any order) and will print the returned values to the output file (in the corresponding order).
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Grader
+In the directory for this problem there is a simplified version of the grader used during evaluation, which you can use to test your solutions locally. The sample grader reads data from \inputfile{}, calls the function that you should implement and writes to \outputfile{} in the following format.
+
+The input file is made of $Q+2$ lines, containing:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Line $1$: integers $N$ and $Q$.
+\item Line $2$: values \texttt{ids[$i$]} for $i = 0\ldots N-1$.
+\item Lines $3, \ldots, Q+2$: the description of a leak or a query, so it can be:
+	\begin{itemize}
+	\item \texttt{'s' id}: if \texttt{id} overtakes;
+	\item \texttt{'x' id}: if \texttt{id} is disqualified;
+	\item \texttt{'p' pos}: if the contestant in position \texttt{pos} is queried.
+	\end{itemize}
+\end{itemize}
+
+The output file is made of a single line, containing:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Line $1$: the values returned from calls to function \texttt{partecipante} separated by a space.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $1 \le N \le 1\,000\,000$.
+	\item $1 \le Q \le 1\,000\,000$.
+	\item $0 \le \texttt{ids[}i\texttt{]} \le N-1$ for all $i=0\ldots N-1$.
+	\item $\texttt{ids[}i\texttt{]} \neq \texttt{ids[}j\texttt{]}$ for all $i \neq j$ (the numbers contained in \texttt{ids} are all distinct).
+	\item $0 \le \texttt{id} \le N-1$ in calls to functions \texttt{supera} and \texttt{squalifica}.
+	\item The contestant which is ranked first does not overtake.
+	\item Once somebody is disqualified, he or she cannot overtake nor be further disqualified anymore.
+	\item Position \texttt{pos} in calls to function \texttt{partecipante} always exists.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\pagebreak
+
+
+\Scoring
+
+Your program will be tested against several test cases grouped in subtasks.
+In order to obtain the score of a subtask, your program needs to correctly solve all of its test cases.
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+  \item \textbf{\makebox[2cm][l]{Subtask 1} [\phantom{1}0 punti]}: Examples.
+  \item \textbf{\makebox[2cm][l]{Subtask 2} [18 punti]}: $N, Q \leq 10\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 3} [16 punti]}: There are no calls to function \texttt{squalifica}. Moreover $Q \leq 100\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 4} [19 punti]}: The function \texttt{partecipante} will be called after all the calls to \texttt{supera} and \texttt{squalifica}. Moreover $Q \leq 100\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 5} [17 punti]}: There are no calls to function \texttt{supera}.
+  \item \textbf{\makebox[2cm][l]{Subtask 6} [18 punti]}: $Q \leq 100\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 7} [12 punti]}: No additional limitations.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Examples
+
+\begin{example}
+\exmpfile{classifica.input0.txt}{classifica.output0.txt}%
+\exmpfile{classifica.input1.txt}{classifica.output1.txt}%
+\end{example}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\pagebreak
+
+\Explanation
+
+In the \textbf{first example}, the ranking evolves as shown below:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.28\textwidth]{asy_classifica/fig1a.pdf}
+	\includegraphics[width=0.28\textwidth]{asy_classifica/fig1b.pdf}
+	\includegraphics[width=0.28\textwidth]{asy_classifica/fig1c.pdf}
+	\includegraphics[width=0.28\textwidth]{asy_classifica/fig1d.pdf}
+	\includegraphics[width=0.28\textwidth]{asy_classifica/fig1e.pdf}
+\end{figure}
+
+In the \textbf{second example}, the ranking evolves as shown below:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.28\textwidth]{asy_classifica/fig2a.pdf}
+	\includegraphics[width=0.28\textwidth]{asy_classifica/fig2b.pdf}
+	\includegraphics[width=0.28\textwidth]{asy_classifica/fig2c.pdf}
+	\includegraphics[width=0.28\textwidth]{asy_classifica/fig2d.pdf}
+	\includegraphics[width=0.28\textwidth]{asy_classifica/fig2e.pdf}
+	\includegraphics[width=0.28\textwidth]{asy_classifica/fig2f.pdf}
+\end{figure}
+
+\begin{solution}
+	\include{soluzione_classifica_en}
+\end{solution}

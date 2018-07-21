@@ -1,0 +1,208 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+
+
+\createsection{\Grader}{Grader di prova}
+
+\newcommand{\inputfile}{\texttt{stdin}}
+\newcommand{\outputfile}{\texttt{stdout}}
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+	La pagina web che mostra la classifica in tempo reale delle OII è andata in crash, e i referenti regionali sono ora nel panico e non capiscono come stanno procedendo i loro beniamini! Per fortuna, loro sanno che prima del crash gli $N$ concorrenti erano piazzati in un ordine ben preciso, per cui l'$(i+1)$-esimo in classifica era il concorrente \texttt{ids[$i$]}. Da quel momento, si possono basare soltanto sulle soffiate che gli arrivano dai tutor, impietositi dalla situazione. Più precisamente, i tutor fanno partire una nuova soffiata sulla gara in corso non appena:
+	\begin{itemize}
+		\item il concorrente \texttt{id} supera in classifica quello a lui immediatamente precedente;
+		\item il concorrente \texttt{id} viene squalificato per aver tentato di hackerare il sistema di gara.\footnote{I tutor si accorgono \emph{sempre} prontamente di ogni tale tentativo.}
+	\end{itemize}
+	I referenti, tuttavia, sono confusi da questa mole di dati perché vorrebbero semplicemente sapere chi si trova in alcune posizioni \texttt{pos} di loro interesse nella classifica. Aiutali tenendo traccia di tutte le soffiate, così da poter rispondere alle loro domande!
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\Implementation
+
+Dovrai sottoporre un unico file, con estensione \texttt{.c}, \texttt{.cpp} o \texttt{.pas}.
+
+\begin{warning}
+Tra gli allegati a questo task troverai un template \texttt{classifica.c}, \texttt{classifica.cpp}, \texttt{classifica.pas} con un esempio di implementazione.
+\end{warning}
+
+Dovrai implementare le seguenti funzioni:
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|void inizia(int N, int ids[]);|\\
+\hline
+Pascal  & \verb|procedure inizia(N: longint; ids: array of longint);|\\
+\hline
+\end{tabularx}\end{center}
+
+\begin{itemize}[nolistsep]
+  \item L'intero $N$ rappresenta il numero di concorrenti.
+  \item L'array \texttt{ids}, indicizzato da $0$ a $N-1$, contiene i codici identificativi dei concorrenti (numeri a loro volta da $0$ a $N-1$) nell'ordine in cui si trovavano prima del crash.
+\end{itemize}
+
+\medskip
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|void supera(int id);|\\
+\hline
+Pascal  & \verb|procedure supera(id: longint);|\\
+\hline
+\end{tabularx}\end{center}
+
+\begin{itemize}[nolistsep]
+  \item L'intero \texttt{id} rappresenta il codice identificativo del concorrente che ha effettuato il sorpasso.
+\end{itemize}
+
+\medskip
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|void squalifica(int id);|\\
+\hline
+Pascal  & \verb|procedure squalifica(id: longint);|\\
+\hline
+\end{tabularx}\end{center}
+
+\begin{itemize}[nolistsep]
+  \item L'intero \texttt{id} rappresenta il codice identificativo del concorrente che è stato squalificato.
+\end{itemize}
+
+\medskip
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|int partecipante(int pos);|\\
+\hline
+Pascal  & \verb|function partecipante(pos: longint): longint;|\\
+\hline
+\end{tabularx}\end{center}
+
+\begin{itemize}[nolistsep]
+  \item L'intero \texttt{pos} rappresenta la posizione nella classifica che un referente regionale vuole conoscere.
+  \item La funzione dovrà restituire il codice identificativo del concorrente che al momento si trova in quella posizione nella classifica.
+\end{itemize}
+
+\medskip
+
+Il grader chiamerà prima la funzione \texttt{inizia}, poi le funzioni \texttt{supera}, \texttt{squalifica}, \texttt{partecipante} un qualunque numero di volte (e in un qualunque ordine) e stamperà i valori restituiti da \texttt{partecipante} sul file di output (nello stesso ordine in cui sono stati ottenuti).
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Grader
+Nella directory relativa a questo problema è presente una versione semplificata del grader usato durante la correzione, che potete usare per verificare le vostre soluzioni in locale. Il grader di esempio legge i dati da \inputfile{}, chiama le funzioni che dovete implementare e scrive su \outputfile{}, secondo il seguente formato.
+
+Il file di input è composto da $Q+2$ righe, dove $Q$ è il numero totale di chiamate alle funzioni \texttt{supera}, \texttt{squalifica} e \texttt{partecipante}, contenenti:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: i due interi $N$ e $Q$.
+\item Riga $2$: i valori \texttt{ids[$i$]} per $i = 0\ldots N-1$.
+\item Righe $3 \ldots Q+2$: la descrizione di una soffiata o richiesta, che può quindi essere:
+	\begin{itemize}
+	\item \texttt{'s' id}: se \texttt{id} supera;
+	\item \texttt{'x' id}: se \texttt{id} viene squalificato;
+	\item \texttt{'p' pos}: se viene richiesta la posizione \texttt{pos}.
+	\end{itemize}
+\end{itemize}
+
+Il file di output è composto da un'unica riga, contenente:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: i valori restituiti dalle chiamate alla funzione \texttt{partecipante} separati da spazio.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $1 \le N \le 1\,000\,000$.
+	\item $1 \le Q \le 1\,000\,000$.
+	\item $0 \le \texttt{ids[}i\texttt{]} \le N-1$ per ogni $i=0\ldots N-1$.
+	\item $\texttt{ids[}i\texttt{]} \neq \texttt{ids[}j\texttt{]}$ per ogni $i \neq j$ (i numeri contenuti in \texttt{ids} sono tutti distinti).
+	\item $0 \le \texttt{id} \le N-1$ nelle chiamate a \texttt{supera} e \texttt{squalifica}.
+	\item Il primo in classifica non supera mai.
+	\item Una volta che un partecipante viene squalificato, non può più superare né venire ulteriormente squalificato.
+	\item La posizione \texttt{pos} nelle chiamate a \texttt{partecipante} esiste sempre.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\pagebreak
+
+
+\Scoring
+
+Il tuo programma verrà verificato su diversi test case raggruppati in subtask.
+Per ottenere il punteggio relativo a un subtask, è necessario risolvere correttamente tutti i test che lo compongono.
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+  \item \textbf{\makebox[2cm][l]{Subtask 1} [\phantom{1}0 punti]}: Casi d'esempio.
+  \item \textbf{\makebox[2cm][l]{Subtask 2} [18 punti]}: $N, Q \leq 10\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 3} [16 punti]}: La funzione \texttt{squalifica} non viene mai chiamata. Inoltre $Q \leq 100\,000$. 
+  \item \textbf{\makebox[2cm][l]{Subtask 4} [19 punti]}: La funzione \texttt{partecipante} viene chiamata solo dopo tutte le chiamate a \texttt{supera} e \texttt{squalifica}. Inoltre $Q \leq 100\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 5} [17 punti]}: La funzione \texttt{supera} non viene mai chiamata.
+  \item \textbf{\makebox[2cm][l]{Subtask 6} [18 punti]}: $Q \leq 100\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 7} [12 punti]}: Nessun limite specifico.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Examples
+
+\begin{example}
+\exmpfile{classifica.input0.txt}{classifica.output0.txt}%
+\exmpfile{classifica.input1.txt}{classifica.output1.txt}%
+\end{example}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\pagebreak
+
+\Explanation
+
+Nel \textbf{primo caso di esempio}, la classifica si evolve come in figura:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\textwidth]{asy_classifica/fig1a.pdf}
+	\includegraphics[width=0.3\textwidth]{asy_classifica/fig1b.pdf}
+	\includegraphics[width=0.3\textwidth]{asy_classifica/fig1c.pdf}
+	\includegraphics[width=0.3\textwidth]{asy_classifica/fig1d.pdf}
+	\includegraphics[width=0.3\textwidth]{asy_classifica/fig1e.pdf}
+\end{figure}
+
+
+Nel \textbf{secondo caso di esempio}, la classifica si evolve come in figura:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\textwidth]{asy_classifica/fig2a.pdf}
+	\includegraphics[width=0.3\textwidth]{asy_classifica/fig2b.pdf}
+	\includegraphics[width=0.3\textwidth]{asy_classifica/fig2c.pdf}
+	\includegraphics[width=0.3\textwidth]{asy_classifica/fig2d.pdf}
+	\includegraphics[width=0.3\textwidth]{asy_classifica/fig2e.pdf}
+	\includegraphics[width=0.3\textwidth]{asy_classifica/fig2f.pdf}
+\end{figure}
+
+\begin{solution}
+	\include{soluzione_classifica_ita}
+\end{solution}

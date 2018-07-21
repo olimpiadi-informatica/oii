@@ -1,0 +1,73 @@
+%\newpage
+\setcounter{figure}{0}
+
+\lstset{
+  numbers = left,
+  numberstyle=\tiny\color{gray},
+  backgroundcolor=\color{white},
+  commentstyle=\color{red},
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\color{blue},
+  xleftmargin=1cm,
+  language=C
+}
+
+\definecolor{backcolor}{gray}{0.95}
+\pagecolor{backcolor}
+\createsection{\Solution}{Solution}
+\createsection{\ArchiFissi}{{\small{$\blacksquare$}} \normalsize If the stairs are fixed}
+\createsection{\ScompaionoSolo}{{\small{$\blacksquare$}} \normalsize If the stairs can only disappear}
+\createsection{\DijkstraModificato}{{\small{$\blacksquare$}} \normalsize Solution $O(M\log M)$}
+\createsection{\SoluzioneLineare}{{\small{$\blacksquare$}} \normalsize Solution $O(M+T_{\max})$}
+\createsection{\CppSolution}{Sample \texttt{C++11} code}
+
+\newcommand{\inizio}{\ensuremath{\mathrm{start}}}
+\newcommand{\fine}{\ensuremath{\mathrm{end}}}
+
+
+\Solution
+
+We present two optimal solutions for the problem, but first we will also show the solutions of some subtasks which contain useful ideas for the optimal solutions. From now on we will call $T_{\max}$ the last disappearance time for a stair. 
+
+
+\ArchiFissi
+
+If all the stairs are fixed, i.e. all of them appear at time $0$ and disappear at time $T_{\max}$, the problem can be solved with a BFS (Breadth First Search) on the graph whose nodes are rooms and whose edges are stairs. The \emph{weight} of an edge is the needed time to go through the corresponding stair, thus all the edges have weight $1$. Then, through a single BFS it is possible to know if we can go from node $0$ to $N-1$ and, in positive case, the minimum time $t$ which is necessary to do it. The only additional trick needed is that if $t > T_{\max}$ the stairs disappear before reaching room $N-1$ thus the answer should be $-1$. This algorithm solves subtask 3 and has linear complexity $O(M)$.
+
+
+\ScompaionoSolo
+
+If the stairs are all present at the beginning, but can disappear at different times, we can still solve the problem by modifying the BFS. When we consider a node $x$ at distance $d$ from node $0$ and an edge connecting $x$ to $y$, we are allowed to go through it only if $d$ is strictly less than the disappearing time of the interested edge. This solution also has linear complexity $O(M)$.
+
+
+\DijkstraModificato
+
+We now present the first solution of the problem with edges that can both appear and disappear, which is based on Dijkstra's algorithm for finding shortest paths on a graph with non-negatives weights. We change Dijkstra's algorithm in this way: when we ``expand'' a node $x$ at distance $t$ from node $0$ and consider an edge $(x, y)$ which appears at time $T_{\inizio}$ and disappears at time $T_{\fine}$, first of all we need to check if $T_{\fine}$ is less or equal to $d$ (i.e. if the edge has already disappeared). In case of negative answer, we also need to verify if the edge is already present at time $t$ or not, so that the time in which $y$ can be reached will be $1$ plus the maximum between $T_{\inizio}$ and $t$. This solution has complexity $O(M\log M)$.
+
+
+\SoluzioneLineare
+
+We now present the second solution to the problem. The idea is to find, for each time $t$, which rooms can be reached \emph{exactly} at time $t$ (and not before). At time $t = 0$, the only room that can be reached is room $0$. We then keep a variable \texttt{vector<int> reached[MAXT+1]} where \texttt{reached[$t$]} contains all the nodes that can be reached exactly at time $t$, plus other nodes that can be reached before $t$ which we will see how to deal with later.
+
+When considering time $t$, we want to know which new nodes we can reach starting from nodes in \texttt{reached[$t$]} (that can be reached from time $t+1$ on, depending on when the corresponding stairs appear). To do so, we consider one by one the nodes in \texttt{reached[$t$]}. Let $x$ be such a node, then for each edge $(x, y)$ that appears at time $T_{\inizio}$ and disappears at time $T_{\fine}$ we can have four different situations:
+\begin{enumerate}
+	\item The stair $(x, y)$ is useless because $y$ can also be reached within time $t$. In this case we simply ignore the edge.
+	\item The stair $(x, y)$ is useless because the edge disappeared before $x$ was reached, that is $T_{\fine} \le t$. Also in this case we ignore the edge.
+	\item The stair $(x, y)$ is immediately useful, thus we need to record that $y$ can be reached in time $t+1$ (we still need 1 minute to go through the stair). In this case we add node $y$ to \texttt{reached[$t+1$]}.
+	\item The stair $(x, y)$ is useful but \emph{not immediately}, since it appears after time $t$. In this case we record that $y$ can be reached \emph{within} time $T_{\inizio}+1$ adding node $y$ to \texttt{reached[$T_{\inizio}+1$]}.
+\end{enumerate}
+
+It is possible to add a node $x$ more than once in \texttt{reached}. It is therefore necessary to keep a variable \texttt{bool visited[MAXN+1]} where in index $x$ we put \texttt{true} if the vertex $x$ has been already reached for the first time (i.e. the first time that, scrolling the times $t$, we encounter the vertex in \texttt{reached[$t$]}). In this way, if we meet again node $x$ we know that we can ignore it.
+
+Since we scan each edge at most once and analyze each time $t$ from $0$ to $T_{\max}$, the computational complexity of the proposed solution is $O(M + T_{\max})$.
+
+
+\newpage
+\CppSolution
+
+%\lstinputlisting{./soluzione_hogwarts.cpp}
+\colorbox{white}{\makebox[.99\textwidth][l]{
+    \includegraphics[scale=.9]{soluzione_hogwarts_en.pdf}
+}}
+
+\afterpage{\nopagecolor}

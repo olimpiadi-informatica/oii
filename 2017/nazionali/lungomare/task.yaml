@@ -1,0 +1,8 @@
+infile: ''
+memory_limit: 512
+name: lungomare
+outfile: ''
+time_limit: 0.3
+title: Solleone sul lungomare
+token_mode: disabled
+public_testcases: all

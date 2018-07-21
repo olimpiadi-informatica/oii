@@ -1,0 +1,150 @@
+\newpage
+\setcounter{figure}{0}
+
+\lstset{
+  numbers = left,
+  numberstyle=\tiny\color{gray},
+  backgroundcolor=\color{white},
+  commentstyle=\color{red},
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\color{blue},
+  xleftmargin=1cm,
+  language=C
+}
+
+\definecolor{backcolor}{gray}{0.95}
+\pagecolor{backcolor}
+\createsection{\Solution}{Soluzione}
+\createsection{\Simulazione}{{\small{$\blacksquare$}} \normalsize Simulare la classifica}
+\createsection{\Lista}{{\small{$\blacksquare$}} \normalsize Classifica salvata tramite una lista}
+\createsection{\RangeTree}{{\small{$\blacksquare$}} \normalsize Soluzione ottima}
+\createsection{\CppSolution}{Esempio di codice \texttt{C++11}}
+
+
+%\hyphenation{di-na-mi-ca}
+
+\newcommand{\cell}[2]{\mbox{$(#1,#2)$}}
+
+\newcommand{\mon}[1]{$\mathtt{#1}$}
+% \everymath{\mathtt{\xdef\tmp{\fam\the\fam\relax}\aftergroup\tmp}}
+% \everydisplay{\mathtt{\xdef\tmp{\fam\the\fam\relax}\aftergroup\tmp}}
+
+\Solution
+La soluzione che prende punteggio pieno ha complessità $O(\log N)$ per le funzioni \texttt{squalifica} e \texttt{partecipante} mentre ha complessità $O(1)$ per la funzione \texttt{supera}. Prima presentiamo due soluzioni subottimali: la prima simula nel modo più naturale possibile l'andamento della gara, mentre la seconda, usando una diversa rappresentazione della classifica, permette di eseguire le funzioni \texttt{supera} e \texttt{squalifica} in tempo costante e la funzione \texttt{partecipante} in tempo $O(N)$.
+
+\Simulazione
+Possiamo simulare l'andamento della gara utilizzando un array \texttt{classifica} contenente la classifica al momento del crash, cioè \texttt{classifica[$i$]} contiene l'\texttt{id} del concorrente in posizione $i+1$. 
+
+Implementiamo la funzione \texttt{supera} cercando la posizione \texttt{pos} del concorrente \texttt{id} nell'array \texttt{classifica} e simuliamo il sorpasso scambiando i valori \texttt{classifica[pos]} e \texttt{classifica[pos-1]}. In questo modo la complessità di questa operazione è data dalla ricerca del concorrente in classifica ed è quindi lineare nel numero di concorrenti.
+
+Per squalificare il concorrente \texttt{id} troviamo la sua posizione \texttt{pos} nell'array \texttt{classifica} e aggiorniamo la posizione dei concorrenti che stanno dietro di lui, shiftando perciò gli elementi di indice da $\texttt{pos}+1$ a $N-1$ negli elementi di indice da \texttt{pos} a $N-2$.
+%ricordandoci che squalificando un concorrente dobbiamo anche decrementare il valore di $N$.
+Anche questa operazione risulta lineare nel numero di concorrenti.
+
+A questo punto la funzione \texttt{partecipante} si può implementare in tempo costante, poiché l'id del concorrente in posizione \texttt{pos} è contenuto dentro a \texttt{classifica[pos-1]}.
+
+
+\Lista
+%In aggiunta all'array \texttt{classifica} utilizziamo una \texttt{bitmask} associata \texttt{squalificato} (ovvero un array contenente solo valori $0$ e $1$) 
+%per indicare se i concorrenti sono ancora in gara.
+
+È possibile simulare la classifica salvandosi per ogni partecipante, se è ancora in gara, l'id di quello immediatamente prima e l'id di quello immediatamente dopo di lui in classifica. Teniamo queste informazioni in due array \texttt{precedente} e \texttt{successivo}, dove convenzionalmente il primo partecipante in classifica ha come precedente $-1$ e l'ultimo ha come successivo $N$.
+%Per ogni concorrente ancora in gara vogliamo inoltre sapere il suo precedente e successivo in classifica,
+%dichiariamo dunque due array \texttt{precedente} e \texttt{successivo}.
+%Inoltre usiamo un array \texttt{id2pos} che associa l'\texttt{id} dei concorrenti alla loro posizione nell'array \texttt{classifica}.
+
+Entrambe le operazioni \texttt{supera} e \texttt{squalifica} possono essere implementate in tempo costante tramite un opportuno aggiornamento degli array \texttt{precedente} e \texttt{successivo}.
+Per esempio, per quanto riguarda la funzione squalifica, l'aggiornamento da compiere sarà \texttt{successivo[precedente[id]] = successivo[id]} e \texttt{precedente[successivo[id]] = precedente[id]}.
+%L'operazione di squalifica può essere implementata impostando a $0$ l'elemento corrispondente nella bitmask e aggiornando in modo opportuno gli elementi successivo e precedente.
+
+%Per il sorpasso ci servono gli indici in \texttt{classifica} del concorrente \texttt{id} e del suo precedente, chiamandoli \texttt{pos} e \texttt{prec} rispettivamente, i loro valori sono \texttt{posizione[id]} e \texttt{precedente[pos]}.
+%A questo punto basta scambiare i giusti valori di \texttt{posizione} e \texttt{classifica}.
+
+%Il concorrente in posizione \texttt{pos} è contenuto in \texttt{classifica[$k$]} dove $k$ è il \texttt{pos}-esimo elemento $1$ nella bitmask (che possiamo trovare con una \emph{ricerca lineare} dell'array).
+
+Per quanto riguarda la funzione \texttt{partecipante}, è sufficiente partire dal concorrente che sta primo in classifica (cioè quello tale che $\texttt{precedente[id]} = -1$) e passare al suo successivo, poi al successivo di questo, e così via fino ad arrivare alla posizione desiderata. In questo modo, la complessità di ogni chiamata alla funzione è lineare nel numero dei partecipanti.
+%Le funzioni \texttt{supera} e \texttt{squalifica} hanno complessità $O(1)$ mentre la funzione \texttt{partecipante} ha complessità $O(N)$.
+
+\RangeTree
+Presentiamo infine la soluzione ottimale del problema, che utilizza un \emph{range tree} per implementare velocemente tutte le funzioni richieste. In particolare saremo in grado di implementare il sorpasso in $O(1)$ e la squalifica e la ricerca di una posizione in $O(\log N)$.
+
+Un punto a sfavore della prima soluzione presentata è che quando si squalifica un concorrente, bisogna aggiornare tutto l'array \texttt{classifica}. Invece di eliminare effettivamente i concorrenti dall'array \texttt{classifica}, teniamo un array di booleani \texttt{pos\_valide}, in cui \texttt{pos\_valide[$i$]}$ = \texttt{false}$ se il concorrente in \texttt{classifica[$i$]} è stato squalificato. In questo modo un concorrente in \texttt{classifica[$i$]} non è più necessariamente l'$(i+1)$-esimo in classifica: quindi serve un modo per ricostruire velocemente la classifica reale.
+
+In particolare costruiamo un albero binario sopra l'array \texttt{classifica} che in ogni nodo salva il numero di posizioni ancora valide nel sottoalbero corrispondente.
+In questo modo navigando l'albero, che avrà altezza $\log N$, è possibile individuare il partecipante nell'$i$-esima posizione della classifica in tempo logaritmico.
+
+Parallelamente all'albero binario teniamo due array \texttt{precedente} e \texttt{successivo} come nella soluzione precedente, per poter attuare il sorpasso in $O(1)$, e un array \texttt{id2pos} che memorizza in che indice dell'array \texttt{classifica} si trova ogni partecipante, in modo da individuare in tempo costante le posizioni su cui agire con \texttt{supera} e \texttt{squalifica}. 
+
+
+In seguito trovate un'immagine che esemplifica l'implementazione del seguente caso di input:
+
+\begin{example}
+\exmpfile{classifica.input_sol.txt}{classifica.output_sol.txt}
+\end{example}
+
+In figura \ref{fig:inizia}, si inizializza il range tree ponendo in ogni foglia l'id del partecipante in quella posizione e in ogni nodo il numero di partecipanti in gara sotto di lui. 
+
+Per implementare la funzione \texttt{squalifica(5)}, come si può vedere in figura \ref{fig:squalifica5}, si cancella l'id 5 (in \color{red}rosso \color{black} in figura) e si aggiornano tutti i valori dei nodi suoi antenati (in \color{orange}arancione\color{black}).
+
+\begin{figure} [htbp]
+	\centering
+	  \begin{minipage}{0.49\textwidth}
+	\input{./immagini_classifica/inizializzazione}
+	\caption{\texttt{inizia}}% Inizializzo il range tree, ponendo in ogni nodo dell'albero il numero di nodi attivi sotto di lui.}
+	\label{fig:inizia}
+	\end{minipage}
+	\begin{minipage}{0.49\textwidth}
+	\input{./immagini_classifica/squalifica5}
+	\caption{\texttt{squalifica(5)}} % Squalifico il partecipante 5 e aggiorno tutti i suoi predecessori nell'albero (che corrispondono ai vertici in \emph{arancione}).}
+	\label{fig:squalifica5}
+	\end{minipage}
+\end{figure}
+
+Per conoscere invece chi sta in posizione 2, si scende nell'albero attraversando i nodi \color{orange} arancioni \color{black} in figura \ref{fig:partecipante2}, decidendo dove dirigersi in base a quanti partecipanti attivi ci sono in ogni nodo. Si giunge alla foglia che ha l'id 6 e che è effettivamente il secondo in classifica.
+
+Infine, si implementa il sorpasso del partecipante con id 0 scambiando gli id 0 e 1 nelle due foglie corrispondenti (\color{orange}arancioni \color{black} in figura \ref{fig:supera0}).
+
+
+% \begin{figure} [htbp]
+% 	\centering
+% 	\input{./immagini_classifica/squalifica5}
+% 	\caption{\texttt{squalifica(5)}. Squalifico il partecipante 5 e aggiorno tutti i suoi predecessori nell'albero (che corrispondono ai vertici in \emph{arancione}).}
+% 	\label{fig:Inizializzazione}
+% \end{figure}
+
+\begin{figure} [htbp]
+	\centering
+	\begin{minipage}{0.49\textwidth}
+	\input{./immagini_classifica/partecipante2}
+	\caption{\texttt{partecipante(2)}} %. Per trovare il secondo partecipante in classifica scendo nell'albero attraversando gli archi \emph{arancioni}.}
+	\label{fig:partecipante2}
+	\end{minipage}
+	\begin{minipage}{0.49\textwidth}
+	\input{./immagini_classifica/supera0}
+	\caption{\texttt{supera(0)}} %. Scambio 0 e 1 (in \emph{arancione} nella figura.}
+	\label{fig:supera0}
+	\end{minipage}
+\end{figure}
+
+% \begin{figure} [htbp]
+% 	\centering
+% 	\input{./immagini_classifica/supera0}
+% 	\caption{\texttt{supera(0)}. Scambio 0 e 1 (in \emph{arancione} nella figura.}
+% 	\label{fig:supera0}
+% \end{figure}
+
+% Nella soluzione precedente l'operazione più complessa consiste nella ricerca lineare sulla bitmask,
+% possiamo migliorarla utilizzando una struttura dati chiamati \texttt{Range Tree}.
+% In particolare inizializziamo il Range Tree in modo da gestire due operazioni sulla bitmask: dobbiamo poter chiedere quale indice contiene il \texttt{pos}-esimo valore 1 (per la funzione partecipante) e impostare a 0 una determinata posizione (per la squalifica).
+% 
+% In questo modo la complessità della funzione \texttt{partecipante} passa da $O(N)$ a $O(\log N)$, quella della funzione \texttt{squalifica} da $O(1)$ a $O(\log N)$ invece la funzione \texttt{supera} resta invariata.
+
+\CppSolution
+
+%\lstinputlisting{./soluzione_classifica.cpp}
+\colorbox{white}{\makebox[.99\textwidth][l]{
+    \includegraphics[scale=.9]{soluzione_classifica.pdf}
+}}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %
+\afterpage{\nopagecolor}

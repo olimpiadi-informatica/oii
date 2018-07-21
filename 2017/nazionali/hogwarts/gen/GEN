@@ -1,0 +1,54 @@
+# File usato per descrivere gli input. Le parti della riga dopo un # vengono
+# ignorate. Le righe non banali (ovvero contenenti qualcosa oltre a whitespace
+# prima del primo #) vengono passate al generatore e generano un input ciascuna.
+# Se una riga inizia con "#ST:" (senza le virgolette) viene usata per delimitare
+# un subtask. "#ST:" va seguito con il punteggio assegnato a quel subtask. Se
+# sono presenti i subtask, è necessario che la somma dei punti di ogni subtask
+# sia 100.
+
+# N			M			T			A			S
+
+# Subtask 1: Esempi
+#ST: 0
+#COPY: testo/hogwarts.input0.txt
+#COPY: testo/hogwarts.input1.txt
+
+# Subtask 2: N <= 10, M <= 15, T <= 20
+#ST: 10
+10          15          6           2           10
+10          15          3           2           11
+8           15          6           2           12
+10          15          20          2           13
+6          15          20          2           62
+6          15          20          2           1523
+
+# Subtask 3: scale fisse (A = 0)
+#ST: 21
+1000		7000		5			0			2
+50000		100000		10  		0			3
+50000		200000		5    		0			4
+500000		1000000		2000000		0			5
+500000      500000      2000000     0           32
+
+# Subtask 4: le scale scompaiono soltanto (A = 1)
+#ST: 18
+100000		200000		1   		1			6
+4000		500000		1    		1		    7
+500000		400000		1        	1			8
+500000		1000000		1   		1			9
+500000      100000      2000000     1           25
+
+# Subtask 5: N <= 1000, M <= 2000, T <= 5000
+#ST: 22
+1000		100			20			2			14
+127			2000		2000		2			15
+130			2000		200			2			16
+1000		2000		5000		2			17
+
+#Subtask 6: N <= 500000, M <= 1000000 (il no limits)
+#ST: 29
+3000        1000000     10          2           18
+20000		40000		20000		2			19
+50000		1000000		5000		2			20
+50000		1000000		50000		2			21
+500000		1000000		2000000		0			22

@@ -1,0 +1,149 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+
+
+\createsection{\Grader}{Grader}
+
+\newcommand{\inputfile}{\texttt{stdin}}
+\newcommand{\outputfile}{\texttt{stdout}}
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+	At Hogwarts, the most famous Wizardry School of the world, everyone knows that \emph{stairs like to change}! After a long train journey and the Sorting Ceremony, you are ready for your first class: \emph{Potions}. The castle has $N$ rooms, numbered from $0$ to $N-1$, which are connected with $M$ stairs. Your dormitory is located in room $0$ and the Potions class is in room $N-1$, at the basement of the castle. Luckily, before moving from your dormitory, you know the exact time when each staircase appears and disappears. It takes one minute for you to go up or down a staircase, but you can wait in the rooms for all the time you need.
+	
+	The teacher is very strict and does not tolerate delays, so you must get to the class in the least possible time. Calculate the minimum amount of time that you need to reach room $N-1$ from your dormitory, if a way to get there exists!
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\Implementation
+
+You shall submit one file having extension \texttt{.c}, \texttt{.cpp} or \texttt{.pas}.
+
+\begin{warning}
+Among the attachments of this task you will find a template (\texttt{hogwarts.c}, \texttt{hogwarts.cpp}, \texttt{hogwarts.pas}) with a sample incomplete implementation.
+\end{warning}
+
+You need to implement the following function:
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|int raggiungi(int N, int M, int A[], int B[], int inizio[], int fine[]);|\\
+\hline
+Pascal  & \verb|function raggiungi(N,M: longint; A,B,inizio,fine: array of longint): longint;|\\
+\hline
+\end{tabularx}\end{center}
+
+\begin{itemize}[nolistsep]
+  \item $N$ is an integer representing the number of rooms in the castle.
+  \item $M$ is an integer representing the number of stairs.
+  \item The arrays \texttt{A}, \texttt{B}, \texttt{inizio} and \texttt{fine} are indexed from $0$ to $M-1$ and they contain the information about the appearance and disappearance of the stairs: the $i$-th stair is between room \texttt{A[$i$]} and \texttt{B[$i$]}, appears at time \texttt{inizio[$i$]} and disappears at time \texttt{fine[$i$]}.
+  \item The function has to return the minimum amount of time required to go from room $0$ to room $N-1$ if this is possible, otherwise it should return $-1$.
+\end{itemize}
+
+\medskip
+
+The grader will call the function \texttt{raggiungi} and will print the returned value to the output file.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Grader
+In the directory for this problem there is a simplified version of the grader used during evaluation, which you can use to test your solutions locally. The sample grader reads data from \inputfile{}, calls the function that you should implement and writes to \outputfile{} in the following format.
+
+The input file is made of $M+1$ lines, containing:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Line $1$: integers $N$ and $M$.
+\item Lines $2, \ldots, M+1$: the $i$-th line contains, in order, integers \texttt{A[$i$]}, \texttt{B[$i$]}, \texttt{inizio[$i$]} and \texttt{fine[$i$]} for $i = 0, \ldots, M-1$.
+\end{itemize}
+
+The output file is made of a single line, containing:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Line $1$: the value returned by the function \texttt{raggiungi}.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $2 \le N \le 500\,000$.
+	\item $1 \le M \le 1\,000\,000$.
+	\item $0 \le \texttt{A[}i\texttt{]}, \texttt{B[}i\texttt{]} \le N-1$ for $i=0,\ldots, M-1$.
+	\item There are no stairs that connect a room to itself ($\texttt{A[}i\texttt{]} \neq \texttt{B[}i\texttt{]}$).
+	\item There cannot be any two stairs that connect the same two rooms.
+	\item Each stair can be walked upward or downward.
+	\item $0 \le \texttt{inizio[}i\texttt{]} < \texttt{fine[}i\texttt{]} \le 2\,000\,000$.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Scoring 
+
+Your program will be tested against several test cases grouped in subtasks.
+In order to obtain the score of a subtask, your program needs to correctly solve all of its test cases.
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+  \item \textbf{\makebox[2cm][l]{Subtask 1} [\phantom{1}0 punti]}: Examples.
+  \item \textbf{\makebox[2cm][l]{Subtask 2} [10 punti]}: $N \le 10, M \le 15$ and $\texttt{fine[}i\texttt{]} \le 20$ for each $i$.
+  \item \textbf{\makebox[2cm][l]{Subtask 3} [21 punti]}: All the stairs are fixed, i.e. the appearance time is $0$ for all of them and the disappearance time is the same for all.
+  \item \textbf{\makebox[2cm][l]{Subtask 4} [18 punti]}: The stairs only disappear, i.e. the appearance time is $0$ for all of them.
+  \item \textbf{\makebox[2cm][l]{Subtask 5} [22 punti]}: $N \leq 1000$, $M \le 2000$, $\texttt{fine[}i\texttt{]} \le 5000$ for each $i$. 
+  \item \textbf{\makebox[2cm][l]{Subtask 6} [29 punti]}: No additional limitations.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Examples
+
+\begin{example}
+\exmpfile{hogwarts.input0.txt}{hogwarts.output0.txt}%
+\exmpfile{hogwarts.input1.txt}{hogwarts.output1.txt}%
+\end{example}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\pagebreak
+
+\Explanation
+
+In the \textbf{first example} the fastest way to go from room $0$ to room $3$ is waiting for $1$ minute, taking the stair that connects $0$ to $1$ (it takes $1$ minute) and then taking immediately the stair that connects $1$ to $3$ (it takes $1$ minute as well), so you need $3$ minutes to get to your class.\\[2mm]
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.245\textwidth]{asy_hogwarts/fig1a.pdf}
+	\includegraphics[width=0.245\textwidth]{asy_hogwarts/fig1b.pdf}
+	\includegraphics[width=0.245\textwidth]{asy_hogwarts/fig1c.pdf}
+	\includegraphics[width=0.245\textwidth]{asy_hogwarts/fig1d.pdf}
+\end{figure}
+
+In the \textbf{second example} it is impossible to go from room $0$ to room $2$! In order to do that, you should pass through room $1$ because there is no stair connecting rooms $0$ and $2$ directly (at any time). At time $3$ a stair between rooms $0$ and $1$ appears, so you can be in room $1$ at least after $4$ minutes. However, in that moment the stair that connects rooms $1$ and $2$ disappears, so it is impossible for you to reach your destination.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.245\textwidth]{asy_hogwarts/fig2a.pdf}
+	\includegraphics[width=0.245\textwidth]{asy_hogwarts/fig2b.pdf}
+	\includegraphics[width=0.245\textwidth]{asy_hogwarts/fig2c.pdf}
+	\includegraphics[width=0.245\textwidth]{asy_hogwarts/fig2d.pdf}
+\end{figure}
+
+\begin{solution}
+	\include{soluzione_hogwarts_en}
+\end{solution}

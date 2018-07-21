@@ -1,0 +1,153 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\createsection{\Grader}{Grader}
+
+\newcommand{\inputfile}{\texttt{stdin}}
+\newcommand{\outputfile}{\texttt{stdout}}
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+	Mojito (a Jackrussel dog) attends the Italian Olympiads in Informatics as usual, being the beloved mascot.
+	After he finishes, he wants to return from the competition venue to the hotel, where a comfortable sofa is waiting for him.
+	For this reason he has to walk along the shore, which is an $L$ meters long waterfront without any deviation. However, the sunny heat in Catania summer is striking hard!
+	
+ 	Mojito wants to avoid a heat stroke for staying exposed too much under the sun. Fortunately, along the walk there are $N$ gateways leading to the sea, where he can refresh. The $i$-th gateway is $D_i$ meters far from the beginning of the walk and is connected to the sea with a footbridge of $P_i$ meters.
+	Mojito does not care much about how long he has to walk overall; along the walk his actual goal is to refresh each time as soon as possible. He does not want to remain too long under the sun without swimming in the sea, since all the accumulated heat vanishes in this way!
+	
+	For example, let us consider the scenario shown in the picture below.
+	\begin{figure}[!h]
+	\centering
+	\includegraphics[width=\textwidth]{asy_lungomare/fig1.pdf}
+	\end{figure}
+	
+	If Mojito walks without swimming in the sea, he takes $C = L = 100$ meters under the sun. Instead, if he stops for a swim through all the gateways, the longest sunny walk will be between beach points 0 and 1, taking $C = 50+20+40 = 110$ meters. The best choice is instead to stop at beach points 2 and 4, thus walking under the sun respectively for $60$, $60$ and $40$ meters before refreshing, and consequently $C = 60$.
+	
+	Help Mojito computing $C$, which minimizes the longest sunny walk he has to take without going for a swim in the sea!
+	
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\pagebreak
+
+\Implementation
+
+You shall submit one file having extension \texttt{.c}, \texttt{.cpp} or \texttt{.pas}.
+
+\begin{warning}
+Among the attachments of this task you will find a template (\texttt{lungomare.c}, \texttt{lungomare.cpp}, \texttt{lungomare.pas}) with a sample incomplete implementation.
+\end{warning}
+
+You need to implement the following function:
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|int percorri(int N, int L, int D[], int P[]);|\\
+\hline
+Pascal  & \verb|function percorri(N, L: longint; D, P: array of longint): longint;|\\
+\hline
+\end{tabularx}\end{center}
+
+\begin{itemize}[nolistsep]
+  \item The integer $N$ represents the number of beaches.
+  \item The integer $L$ represents the waterfront length in meters.
+  \item The array \texttt{D}, indexed from $0$ to $N-1$, contains the distances of the beach gateways from the beginning of the waterfront.
+  \item The array \texttt{P}, indexed from $0$ to $N-1$, contains the lengths of the footbridges.
+\end{itemize}
+
+\medskip
+
+
+The grader will call the function \texttt{percorri} and print the returned value to the output file.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Grader
+In the directory of this problem there is a simplified version of the grader used during evaluation, which you can use to test your solutions locally. The sample grader reads data from \inputfile{}, calls the function that you should implement and writes to \outputfile{} in the following format.
+
+The input file is made of three lines, containing:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Line $1$: the two integers $N$ and $L$.
+\item Line $2$: the values \texttt{D[$i$]} for $i = 0\ldots N-1$.
+\item Line $2$: the values \texttt{P[$i$]} for $i = 0\ldots N-1$.
+\end{itemize}
+
+The output file is made of a single line, containing:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Line $1$: the value returned by the function \texttt{percorri}.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $1 \le N \le 10\,000\,000$.
+	\item $1 \le L \le 10^{18}$.
+	\item $0 < $\texttt{D[$i$]}$ < $\texttt{D[$i+1$]}$ < L$ for each $i=0\ldots N-1$.
+	\item $\texttt{P[$i$]}$ $\le 10^{18}$ per ogni $i=0\ldots N-1$.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\pagebreak
+
+\Scoring
+
+Your program will be tested against several test cases grouped in subtasks.
+In order to obtain the score of a subtask, your program needs to correctly solve all of its test cases.
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+  \item \textbf{\makebox[2cm][l]{Subtask 1} [\phantom{1}0 points]}: Examples.
+  \item \textbf{\makebox[2cm][l]{Subtask 2} [13 points]}: The footbridges $\texttt{P[$i$]}$ are all equally long and the distance between every pair of consecutive beaches $\texttt{D[$i+1$]} - \texttt{D[$i$]}$ is constant.
+  \item \textbf{\makebox[2cm][l]{Subtask 3} [11 points]}: The footbridges $\texttt{P[$i$]}$ are all equally long and $N \leq 100$.
+  \item \textbf{\makebox[2cm][l]{Subtask 4} [12 points]}: The footbridges $\texttt{P[$i$]}$ are all equally long and $N \leq 10\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 5} [20 points]}: $N \leq 15$.
+  \item \textbf{\makebox[2cm][l]{Subtask 6} [10 points]}: $N \leq 10\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 7} [23 points]}: $N \leq 1\,000\,000$.
+  \item \textbf{\makebox[2cm][l]{Subtask 8} [11 points]}: No additional limitations.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Examples
+
+\begin{example}
+\exmpfile{lungomare.input0.txt}{lungomare.output0.txt}%
+\exmpfile{lungomare.input1.txt}{lungomare.output1.txt}%
+\end{example}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Explanation
+
+The \textbf{first example} is the one described in the text.\\[2mm]
+In the \textbf{second example} the best solution consists in stopping at beach points 2, 3, 4, 6 and 7 (but it is possible to stop also at beach point 1, obtaining the same result).
+
+\begin{solution}
+	\include{soluzione_lungomare_en}
+\end{solution}

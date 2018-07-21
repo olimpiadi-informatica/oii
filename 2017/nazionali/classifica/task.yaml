@@ -1,0 +1,8 @@
+infile: ''
+memory_limit: 256
+name: classifica
+outfile: ''
+public_testcases: all
+time_limit: 0.8
+title: Classifica senza fili
+token_mode: disabled

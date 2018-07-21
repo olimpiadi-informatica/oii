@@ -1,0 +1,147 @@
+%\newpage
+\setcounter{figure}{0}
+
+\lstset{
+  numbers = left,
+  numberstyle=\tiny\color{gray},
+  backgroundcolor=\color{white},
+  commentstyle=\color{red},
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\color{blue},
+  xleftmargin=1cm,
+  language=C
+}
+
+\definecolor{backcolor}{gray}{0.95}
+\pagecolor{backcolor}
+\createsection{\Solution}{Solution}
+\createsection{\Costante}{{\small{$\blacksquare$}} \normalsize If all the footbridges have the same length}
+\createsection{\RicBinaria}{{\small{$\blacksquare$}} \normalsize Solution $O(N \log L)$}
+\createsection{\Lineare}{{\small{$\blacksquare$}} \normalsize Solution $O(N)$}
+\createsection{\CppSolution}{Sample \texttt{C++11} code}
+
+
+\newcommand{\dist}{\ensuremath{\mathrm{dist}}} 
+\newcommand{\calura}{\ensuremath{\mathrm{heat}}} 
+\newtheorem*{lemma}{Lemma}
+
+\Solution
+
+First of all, observe that the distance between the beaches indexed by $u<v$ is
+\[
+\dist (u,v) \coloneqq \texttt{P[}u \texttt{]} - \texttt{D[}u\texttt{]} + \texttt{P[}v\texttt{]}+\texttt{D[}v\texttt{]}.
+\]
+Hence, if beaches $u_1 < u_2 < \ldots < u_k$ are chosen, the number of meters that Mojito has to walk consecutively under the sun is the maximum between $\texttt{P[}u_1 \texttt{]} + \texttt{D[}u_1 \texttt{]} $, $\dist(u_i,u_{i+1})$ for $i=1,\ldots, k-1$ and $\texttt{P[}u_k\texttt{]}+L-\texttt{D[}u_k\texttt{]}$.
+In order to avoid the asymmetry given by the first and last terms, we can add two dummy beach gateways at the beginning and at the end of the waterfront with 0 meters long footbridges, and solve the same problem starting in the first beach and ending in the last one.
+
+In this way, if beaches $u_1 < u_2 < \ldots < u_k$ are chosen for Mojito's stops (where $u_1$ is the dummy beach at the beginning and $u_k$ is the one at the end), the number of meters which Mojito has to walk consecutively under the sun is $\calura(u_1,\ldots,u_k) \coloneqq \max \{ \dist(u_i,u_{i+1}): \ i=1,\ldots,k\}$.
+
+We first present the key ideas of the solutions of some of the subtasks, and finally the optimal solution.
+
+
+\Costante
+
+If both the footbridges' length and the distance between consecutive gateways are constant, it can be easily proven that the optimal strategy is one of these three:
+\begin{itemize}
+ \item Mojito doesn't stop in any beach, so that the final heat is $C=L$;
+ \item he stops in every beach;
+ \item he stops exactly in one beach (the one in the more central position).
+\end{itemize}
+We can verify the result of all these strategies by simulating them in $O(N)$ time; or via some mathematical tricks even in $O(1)$ time.
+
+If only the footbridges' length are constant, we can still prove that the optimal solution consists in stopping in a (possibly empty) interval of consecutive beaches. More precisely, given that the first and the last beaches in which Mojito stops are $u_2$ and $u_{k-1}$, the beaches in which he has to stop will be exactly $u_2+1, u_2+2, \ldots, u_{k-1} - 1, u_{k-1}$.
+Therefore, we can find the solution computing the heat of all the $N^2$ intervals of beaches (in $O(N)$ time each) and choosing the optimal one in $O(N^3)$ time.
+
+Furthermore, we can speed up the algorithm by computing the intervals' heat in a specific order. In particular, if we fix the initial endpoint, we can try all the possible final endpoints in overall $O(N)$ time incrementally updating the answer. Thus we can obtain the optimal strategy in $O(N^2)$ time.
+
+
+\RicBinaria
+
+We present a first suboptimal solution of the unrestricted problem. Given a length $S$, we manage to know in linear time $O(N)$ if it is possible to choose some beaches in which to stop so that Mojito doesn't walk for more than $S$ meters consecutively under the sun. Now we will illustrate the algorithm for answering this question given $S$.
+
+When Mojito arrives at the $i$-th gateway after having already walked for $m$ meters under the sun, he should stop at the $i$-th beach if and only if both the following two conditions hold:
+\begin{itemize}
+	\item he can stop without walking for more than $S$ meters under the sun, that is $ m + \texttt{P[}i\texttt{]} \le S$;
+	\item it is convenient to stop, that is $\texttt{P[}i\texttt{]} < m$.
+\end{itemize}
+If both the conditions hold, we reduce $m$ to $\texttt{P[}i\texttt{]}$ (modeling Mojito walking to the beach and coming back). Afterwards, we add $\texttt{D[}i+1\texttt{]} - \texttt{D[}i\texttt{]}$ to $m$ in any case (Mojito walking to the next gateway). If at some point the value of $m$ exceeds $S$, it is not possible to walk less than $S$ meters consecutively under the sun.
+
+To solve the problem, we now have to find the minimum $S$ for which Mojito can walk no more than $S$ meters consecutively under the sun. This can be achieved by a binary search on numbers between $1$ and $L$ (the answer is always at most $L$), thus giving an overall computational complexity of $O(N\log L)$.
+
+
+\Lineare
+
+Remind that the distance between two beaches indexed by $u<v$ is $\dist(u,v) \coloneqq \texttt{P[}u \texttt{]} - \texttt{D[}u\texttt{]} + \texttt{P[}v\texttt{]}+\texttt{D[}v\texttt{]}$.
+This suggests that, given a beach $u$, the most relevant quantities are $\texttt{P[}u \texttt{]} - \texttt{D[}u\texttt{]}$ and $\texttt{P[}u \texttt{]} + \texttt{D[}u\texttt{]}$, the former related to the exit from the beach and the latter to the entry in it.
+
+Let us suppose to be in beach $u$; we now want to choose the next beach $v$ in which to stop. If $\texttt{P[}v \texttt{]} - \texttt{D[}v\texttt{]} \ge \texttt{P[}u \texttt{]} - \texttt{D[}u\texttt{]}$, we can avoid stopping in the beach $v$; as, given a generic beach $w > v>u$, we have that $\dist(u,w) \le \dist(v,w)$ and therefore it is convenient to go directly from $u$ to $w$ without stopping at $v$.
+
+Moreover, if Mojito stops at beach $v$, we want to minimize (in some sense) $\texttt{P[}v \texttt{]} + \texttt{D[}v\texttt{]}$, since we will ``pay'' this quantity to stop there.
+
+We formalize what has been said through the following lemmas.
+
+\begin{lemma}
+	Let $u_1,\ldots,u_k$ be the beaches in which Mojito stops in an optimal solution (where we suppose that $u_1$ is the dummy beach at the beginning and $u_k$ the one in the end). Then we can assume without loss of generality that $\texttt{P[}u_{i+1} \texttt{]} - \texttt{D[}u_{i+1}\texttt{]} < \texttt{P[}u_i \texttt{]} - \texttt{D[}u_i\texttt{]}$ and $\texttt{P[}u_{i+1} \texttt{]} + \texttt{D[}u_{i+1}\texttt{]} > \texttt{P[}u_i \texttt{]} + \texttt{D[}u_i\texttt{]}$.
+\end{lemma}
+\begin{small}
+\begin{proof}
+	Suppose that exists $1\le h < k$ such that $\texttt{P[}u_{h+1} \texttt{]} - \texttt{D[}u_{h+1}\texttt{]} \ge \texttt{P[}u_h \texttt{]} - \texttt{D[}u_h\texttt{]}$. Observe that 
+	\begin{equation*}
+		\calura(u_1,\ldots, u_h, u_{h+2}, \ldots, u_k) \le \calura(u_1, \ldots, u_k) \ .
+	\end{equation*}
+	In fact, by the definition of $\calura$, the only term which appears in the maximum that defines $\calura(u_1,\ldots, u_h, u_{h+2}, \ldots, u_k)$ and not in the one that defines $\calura(u_1, \ldots, u_k)$ is $\dist(u_h, u_{h+2})$, which is less than or equal to $\dist(u_{h+1},u_{h+2})$ (which appears in the definition of $\calura(u_1, \ldots, u_k)$).
+	
+	Therefore if $u_1,\ldots,u_k$ is a subset of beaches which leads to an optimal solution, the same is true for $u_1,\ldots,u_h,u_{h+2},\ldots, u_k$ thus proving the first assumption. The other inequality can be shown in the same way.
+\end{proof}
+\end{small}
+
+\begin{lemma}
+	Let $u_1,\ldots,u_k$ be the beaches in which Mojito stops in an optimal solution. Then we can assume that for every $1\le i < k$ the beach $u_{i+1}$ is the one which minimizes $\texttt{P}-\texttt{D}$ among all beaches indexed by $v>u$ for which $\texttt{P[}v \texttt{]} - \texttt{D[}v\texttt{]} < \texttt{P[}u_i \texttt{]} - \texttt{D[}u_i\texttt{]}$.
+\end{lemma}
+\begin{small}
+\begin{proof}
+	Suppose that beaches $u_1,\ldots,u_k$ lead to an optimal solution but the thesis is not verified for index $1\le h <k$. Let $v>u_h$ be the beach which minimizes $\texttt{P}-\texttt{D}$ among the beaches after $u_h$ that respect the sought inequality. Assume also that $u_j < v \le u_{j+1}$ for some $h \le j <k$.
+	Then we observe that
+	\begin{equation*}
+		\calura(u_1,\ldots, u_h, v, u_{j+1}, \ldots, u_k) \le \calura(u_1, \ldots, u_k),
+	\end{equation*}
+	so $u_1,\ldots, u_h, v, u_{j+1}, \ldots, u_k$ is another optimal choice of beaches.
+	
+	The previous inequality holds because the only terms which appears in the maximum that defines $\calura(u_1,\ldots, u_h, v, u_{j+1}, \ldots, u_k)$ and not in the one that defines $\calura(u_1,\ldots,u_k)$ are $\dist(u_h,v)$ and $\dist(v,u_{j+1})$. Since $\dist(u_h,v) \le \dist(u_h,u_{h+1})$ and $\dist(v,u_{j+1}) \le \dist(u_h,u_{h+1})$, the two extra terms of $\calura(u_1,\ldots, u_h, v, u_{j+1}, \ldots, u_k)$ are less than or equal to some terms in $\calura(u_1, \ldots, u_k)$, concluding the proof.
+\end{proof}
+\end{small}
+
+In particular, given any beach $u$ we call $v = \texttt{next[}u\texttt{]}$ the index of the beach which minimizes $\texttt{P[}v \texttt{]} + \texttt{D[}v\texttt{]}$ among the ones such that:
+\begin{itemize}
+	 \item $u < v$;
+	 \item $\texttt{P[}v \texttt{]} - \texttt{D[}v\texttt{]} < \texttt{P[}u \texttt{]} - \texttt{D[}u\texttt{]}$.
+\end{itemize}
+Therefore, the last lemma tell us how Mojito should choose each next stop: that is, there always exists an optimal solution in which Mojito stops at beach $\texttt{next[}u\texttt{]}$ right after $u$.
+Hence, in order to find an optimal choice of beaches, it is sufficient to start in the dummy beach $u_1$ at the beginning of the waterfront and move to beach $u_2 = \texttt{next[}u_1\texttt{]}$, then to $u_3 = \texttt{next[}u_2\texttt{]}$ and so on until the end of the waterfront.
+
+We now need a way to compute \emph{quickly} the values of \texttt{next}: we will find $\texttt{next[}u\texttt{]}$ for every beach $u$, included the dummy ones, starting from the end of the waterfront by using a \emph{stack}.
+In particular, we build a stack \texttt{stack\_next} which, when considering beach $u$, contains indexes $u_1,\ldots,u_k$ that respect the following properties:
+\begin{itemize}
+ \item $u < u_1 < \ldots < u_k$;
+ \item $u_1$ minimizes $\texttt{P}+\texttt{D}$ among the beaches after $u$;
+ \item $u_{i+1} = \texttt{next[}u_i \texttt{]}$, for all $i=1,\ldots, k-1$.
+\end{itemize}
+
+First, notice that it is not possible to have $\texttt{P[}u \texttt{]} - \texttt{D[}u\texttt{]} \le \texttt{P[}u_1 \texttt{]} - \texttt{D[}u_1\texttt{]}$ and $\texttt{P[}u \texttt{]} + \texttt{D[}u\texttt{]} \ge \texttt{P[}u_1 \texttt{]} + \texttt{D[}u_1\texttt{]}$, since summing the two inequalities we would obtain $\texttt{D[}u\texttt{]} \ge \texttt{D[}u_1\texttt{]}$, which leads to a contradiction.
+
+Consequently, if $\texttt{P[}u \texttt{]} - \texttt{D[}u\texttt{]} \le \texttt{P[}u_1 \texttt{]} - \texttt{D[}u_1 \texttt{]}$ then $u_1$ cannot be $\texttt{next[}u\texttt{]}$. Furthermore it can neither be the \texttt{next} of a beach before $u$: we have that $\texttt{P[}u \texttt{]} + \texttt{D[}u\texttt{]} < \texttt{P[}u_1 \texttt{]} + \texttt{D[}u_1\texttt{]}$ (the other inequality is impossible for what has been said before), thus $u$ would surely be a better candidate than $u_1$.
+In this case we pop $u_1$ from \texttt{stack\_next} and we repeat the \texttt{next} search with the new stack.
+
+If instead $\texttt{P[}u \texttt{]} - \texttt{D[}u\texttt{]} > \texttt{P[}u_1 \texttt{]} - \texttt{D[}u_1 \texttt{]}$, then for the previous considerations we would have $u_1 = \texttt{next[}u\texttt{]}$. In this case we add $u$ to \texttt{stack\_next} only if $\texttt{P[}u \texttt{]} + \texttt{D[}u\texttt{]} < \texttt{P[}u_1 \texttt{]} + \texttt{D[}u_1 \texttt{]}$, otherwise $u_1$ is a better candidate than $u$ and we can forget about the latter.
+
+Since every beach is inserted and removed at most once from \texttt{stack\_next} and each insertion and removal is performed from the stack's head in $O(1)$ time, the algorithm has overall complexity $O(N)$.
+
+
+\CppSolution
+
+%\lstinputlisting{./soluzione_lungomare.cpp}
+\colorbox{white}{\makebox[.99\textwidth][l]{
+    \includegraphics[scale=.9]{soluzione_lungomare_en.pdf}
+}}
+
+\afterpage{\nopagecolor}

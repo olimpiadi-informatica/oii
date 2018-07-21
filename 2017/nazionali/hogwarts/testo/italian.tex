@@ -1,0 +1,150 @@
+\usepackage{xcolor}
+\usepackage{afterpage}
+\usepackage{pifont,mdframed}
+\usepackage[bottom]{footmisc}
+
+
+\createsection{\Grader}{Grader di prova}
+
+\newcommand{\inputfile}{\texttt{stdin}}
+\newcommand{\outputfile}{\texttt{stdout}}
+
+\newenvironment{warning}
+  {\par\begin{mdframed}[linewidth=2pt,linecolor=gray]%
+    \begin{list}{}{\leftmargin=1cm
+                   \labelwidth=\leftmargin}\item[\Large\ding{43}]}
+  {\end{list}\end{mdframed}\par}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+	A Hogwarts, la più prestigiosa scuola di magia del mondo, si sa che \emph{alle scale piace cambiare}! Dopo un lungo viaggio in treno e la cerimonia di smistamento, sei pronto per la tua prima lezione: Pozioni. Il castello ha $N$ sale, numerate da $0$ a $N-1$, tra loro collegate da $M$ scale. Il tuo dormitorio si trova nella sala $0$ e la lezione di Pozioni si tiene nell'aula allestita nella stanza $N-1$, nei sotterranei del castello. Fortunatamente, prima di intraprendere il percorso attraverso le sale, conosci l'orario in cui compare e quello in cui scompare ogni scala. Per percorrere una scala impieghi esattamente 1 minuto, ma puoi sostare nelle sale per tutto il tempo che ritieni necessario. 
+	
+	Il professore di Pozioni è molto severo e non tollera ritardi, dunque devi assolutamente arrivare a lezione nel minor tempo possibile. Trova un modo per raggiungere l'aula nel minimo tempo possibile, se un modo per raggiungerla esiste!
+	%se le scale non ti consentono di raggiungere l'aula, riceverai una punizione e verranno tolti punti alla tua casa.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\Implementation
+
+Dovrai sottoporre un unico file, con estensione \texttt{.c}, \texttt{.cpp} o \texttt{.pas}.
+
+\begin{warning}
+Tra gli allegati a questo task troverai un template \texttt{hogwarts.c}, \texttt{hogwarts.cpp}, \texttt{hogwarts.pas} con un esempio di implementazione.
+\end{warning}
+
+Dovrai implementare la seguente funzione:
+
+\begin{center}\begin{tabularx}{\textwidth}{|c|X|}
+\hline
+C/C++  & \verb|int raggiungi(int N, int M, int A[], int B[], int inizio[], int fine[]);|\\
+\hline
+Pascal  & \verb|function raggiungi(N,M: longint; A,B,inizio,fine: array of longint): longint;|\\
+\hline
+\end{tabularx}\end{center}
+
+\begin{itemize}[nolistsep]
+  \item L'intero $N$ rappresenta il numero di sale del castello.
+  \item L'intero $M$ rappresenta il numero di scale.
+  \item Gli array \texttt{A}, \texttt{B}, \texttt{inizio} e \texttt{fine} sono indicizzati da $0$ a $M-1$ e contengono le informazioni sulla comparsa e sparizione delle scale: l'$i$-esima scala collega tra loro le sale \texttt{A[$i$]} e \texttt{B[$i$]}, compare al tempo \texttt{inizio[$i$]} e scompare al tempo \texttt{fine[$i$]}.
+  \item La funzione deve restituire il minimo tempo necessario per andare dalla sala $0$ alla sala $N-1$; se non è possibile raggiungere la sala $N-1$, deve restituire il valore $-1$.
+\end{itemize}
+
+\medskip
+
+Il grader chiamerà la funzione \texttt{raggiungi} e ne stamperà il valore restituito sul file di output.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Grader
+Nella directory relativa a questo problema è presente una versione semplificata del grader usato durante la correzione, che potete usare per verificare le vostre soluzioni in locale. Il grader di esempio legge i dati da \inputfile{}, chiama la funzione che dovete implementare e scrive su \outputfile{}, secondo il seguente formato.
+
+Il file di input è composto da $M+1$ righe, contenenti:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: gli interi $N$ e $M$.
+\item Righe $2, \ldots, M+1$: l'$i$-esima di queste righe contiene, nell'ordine, i valori \texttt{A[$i$]}, \texttt{B[$i$]}, \texttt{inizio[$i$]} e \texttt{fine[$i$]} per $i = 0, \ldots, M-1$.
+\end{itemize}
+
+Il file di output è composto da un'unica riga, contenente:
+\begin{itemize}[nolistsep,itemsep=2mm]
+\item Riga $1$: il valore restituito dalla funzione \texttt{raggiungi}.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Constraints 
+
+\begin{itemize}[nolistsep, itemsep=2mm]
+	\item $2 \le N \le 500\,000$.
+	\item $1 \le M \le 1\,000\,000$.
+	\item $0 \le \texttt{A[}i\texttt{]}, \texttt{B[}i\texttt{]} \le N-1$ per ogni $i=0,\ldots, M-1$.
+	\item Non ci sono scale che collegano una sala a se stessa ($\texttt{A[}i\texttt{]} \neq \texttt{B[}i\texttt{]}$).
+	\item Non ci sono due o più scale che collegano le stesse due sale.
+    \item Ogni scala è percorribile in una qualunque delle due direzioni.
+	\item $0 \le \texttt{inizio[}i\texttt{]} < \texttt{fine[}i\texttt{]} \le 2\,000\,000$.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Scoring
+
+Il tuo programma verrà verificato su diversi test case raggruppati in subtask.
+Per ottenere il punteggio relativo a un subtask, è necessario risolvere correttamente tutti i test che lo compongono.
+
+\begin{itemize}[nolistsep,itemsep=2mm]
+  \item \textbf{\makebox[2cm][l]{Subtask 1} [\phantom{1}0 punti]}: Casi d'esempio.
+  \item \textbf{\makebox[2cm][l]{Subtask 2} [10 punti]}: $N \le 10, M \le 15$ e $\texttt{fine[}i\texttt{]} \le 20$ per ogni $i$.
+  \item \textbf{\makebox[2cm][l]{Subtask 3} [21 punti]}: Tutte le scale sono fisse, cioè il tempo di inizio è $0$ per tutte e il tempo di fine è uguale per tutte.
+  \item \textbf{\makebox[2cm][l]{Subtask 4} [18 punti]}: Le scale scompaiono soltanto, cioè il tempo di inizio è $0$ per tutte.
+  \item \textbf{\makebox[2cm][l]{Subtask 5} [22 punti]}: $N \leq 1000$, $M \le 2000$, $\texttt{fine[}i\texttt{]} \le 5000$ per ogni $i$.
+  \item \textbf{\makebox[2cm][l]{Subtask 6} [29 punti]}: Nessuna limitazione specifica.
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Examples
+
+\begin{example}
+\exmpfile{hogwarts.input0.txt}{hogwarts.output0.txt}%
+\exmpfile{hogwarts.input1.txt}{hogwarts.output1.txt}%
+\end{example}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+
+\Explanation
+
+Nel \textbf{primo caso di esempio} il modo più veloce per andare dalla sala $0$ alla $3$ è aspettare $1$ minuto, poi prendere la scala che collega $0$ e $1$ (ci metti $1$ minuto) e poi prendere immediatamente la scala che collega $1$ e $3$ (anche qui ci metti $1$ minuto), impiegando in totale $3$ minuti per arrivare a lezione.\\[2mm]
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.245\textwidth]{asy_hogwarts/fig1a.pdf}
+	\includegraphics[width=0.245\textwidth]{asy_hogwarts/fig1b.pdf}
+	\includegraphics[width=0.245\textwidth]{asy_hogwarts/fig1c.pdf}
+	\includegraphics[width=0.245\textwidth]{asy_hogwarts/fig1d.pdf}
+\end{figure}
+
+Nel \textbf{secondo caso di esempio} non è possibile andare dalla sala 0 alla sala 2! Infatti dovresti necessariamente passare per la sala $1$ perché non c'è mai una scala che collega direttamente $0$ e $2$. Al tempo $3$ compare una scala per andare da $0$ a $1$, dunque puoi trovarti nella stanza $1$ al più presto dopo $4$ minuti, e in quell'istante scompare la scala che collega le sale $1$ e $2$, impedendoti di raggiungere la destinazione.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.245\textwidth]{asy_hogwarts/fig2a.pdf}
+	\includegraphics[width=0.245\textwidth]{asy_hogwarts/fig2b.pdf}
+	\includegraphics[width=0.245\textwidth]{asy_hogwarts/fig2c.pdf}
+	\includegraphics[width=0.245\textwidth]{asy_hogwarts/fig2d.pdf}
+\end{figure}
+
+\begin{solution}
+	\include{soluzione_hogwarts_ita}
+\end{solution}

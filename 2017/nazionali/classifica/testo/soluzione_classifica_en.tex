@@ -1,0 +1,118 @@
+%\newpage
+\setcounter{figure}{0}
+
+\lstset{
+  numbers = left,
+  numberstyle=\tiny\color{gray},
+  backgroundcolor=\color{white},
+  commentstyle=\color{red},
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\color{blue},
+  xleftmargin=1cm,
+  language=C
+}
+
+\definecolor{backcolor}{gray}{0.95}
+\pagecolor{backcolor}
+\createsection{\Solution}{Solution}
+\createsection{\Simulazione}{{\small{$\blacksquare$}} \normalsize Simulated ranking}
+\createsection{\Lista}{{\small{$\blacksquare$}} \normalsize Ranking saved in a list}
+\createsection{\RangeTree}{{\small{$\blacksquare$}} \normalsize Optimal solution}
+\createsection{\CppSolution}{Sample \texttt{C++11} code}
+
+
+%\hyphenation{di-na-mi-ca}
+
+\newcommand{\cell}[2]{\mbox{$(#1,#2)$}}
+
+\newcommand{\mon}[1]{$\mathtt{#1}$}
+% \everymath{\mathtt{\xdef\tmp{\fam\the\fam\relax}\aftergroup\tmp}}
+% \everydisplay{\mathtt{\xdef\tmp{\fam\the\fam\relax}\aftergroup\tmp}}
+
+
+\Solution
+The full score solution implements \texttt{squalifica} and \texttt{partecipante} in $O(\log N)$ time and \texttt{supera} in $O(1)$ time. First of all we present two suboptimal solutions: the first one simulates in the most natural way the evolution of the competition, while the second one, using a different representation for the ranking, it allows to perform functions \texttt{supera} and \texttt{squalifica} in constant time and function \texttt{partecipante} in $O(N)$ time.
+
+
+\Simulazione
+We can simulate the evolution of the competition using an array \texttt{ranking} that contains the ranking at the time of the crash. Namely, \texttt{ranking[$i$]} contains the \texttt{id} of the contestant in position $i+1$. 
+
+We implement function \texttt{supera} by first searching for the position \texttt{pos} of the contestant \texttt{id} in array \texttt{ranking}, then simulate overtaking by swapping the values \texttt{ranking[pos]} and \texttt{ranking[pos-1]}. The complexity of this operation is given by the search of the contestant in the ranking, which is linear in the number of contestants.
+
+To disqualify the contestant \texttt{id} we find his position \texttt{pos} in array \texttt{ranking} and update the position of the contestants behind him, thus shifting the elements indexed from $\texttt{pos}+1$ to $N-1$ into the elements indexed from \texttt{pos} to $N-2$. This operation is also linear in the number of contestants.
+
+Finally, function \texttt{partecipante} can be implemented in constant time since the id of the contestant in position \texttt{pos} is contained in \texttt{ranking[pos-1]}.
+
+
+\Lista
+It is also possible to simulate the ranking by saving for each participant still in the competition the ids of the ones immediately preceding and following him in the ranking. We keep this information in two arrays \texttt{prev} and \texttt{next}, where conventionally the first ranked participant has $\texttt{prev} = -1$ and the last one has $\texttt{next} = N$.
+
+Both operations \texttt{supera} and \texttt{squalifica} can be implemented in constant time through an appropriate update of arrays \texttt{prev} and \texttt{next}. For example, the update corresponding to \texttt{squalifica} will be \texttt{next[prev[id]] = next[id]} and \texttt{prev[next[id]] = prev[id]}.
+
+In order to answer to function \texttt{partecipante}, we start from the first ranked contestant (i.e. the one such that $\texttt{prev[id]} = -1$) and move via array \texttt{next} to subsequent ones until we arrive at the desired position. The complexity of each call to this function is then linear in the number of participants.
+
+
+\RangeTree
+We now present the optimal solution, which uses a \emph{range tree} to implement quickly all the required functions. In particular, we will be able to implement overtaking in $O(1)$  and disqualification and research of a position in $O(\log N)$.
+
+A drawback of the first solution presented is that when a contestant is disqualified, we need to update the whole array  \texttt{ranking}. So, instead of actually deleting the contestants from array \texttt{ranking}, we keep a boolean array \texttt{valid} in which \texttt{valid[$i$]}$ = \texttt{false}$ if the contestant in \texttt{ranking[$i$]} has been disqualified. In this way, the contestant in \texttt{ranking[$i$]} is not necessarily the $(i+1)$-th in the ranking anymore: thus we need some way to deduce quickly the real ranking.
+
+In particular, we build a binary tree above the array \texttt{ranking} that in each node saves the number of positions still valid in the corresponding subtree. By navigating the tree (of height $\log N$) it is possible to identify the participant in the $i$-th position of the ranking in logarithmic time.
+
+In parallel to the binary tree we also keep two arrays \texttt{prev} and \texttt{next} as in the previous solution to implement overtaking in $O(1)$, and an array \texttt{id2pos} that memorizes in which index of array \texttt{ranking} each participant is situated, in order to identify in constant time the positions on which to act with \texttt{supera} and \texttt{squalifica}. 
+
+
+Consider the following test case:
+\begin{example}
+\exmpfile{classifica.input_sol.txt}{classifica.output_sol.txt}
+\end{example}
+
+In figure \ref{fig:inizia}, we initialize the range tree setting in each in node the number of participants still competing in its subtree, and in every leaf the id of the contestant in that position.
+
+In order to implement function \texttt{squalifica(5)} (figure \ref{fig:squalifica5}) we delete id 5 (in \textcolor{red}{red}) and update all the values in its ancestor nodes (in \textcolor{orange}{orange}). 
+
+\begin{figure} [htbp]
+	\centering
+	  \begin{minipage}{0.49\textwidth}
+	\input{./immagini_classifica/inizializzazione}
+	\caption{\texttt{inizia}}% Inizializzo il range tree, ponendo in ogni nodo dell'albero il numero di nodi attivi sotto di lui.}
+	\label{fig:inizia}
+	\end{minipage}
+	\begin{minipage}{0.49\textwidth}
+	\input{./immagini_classifica/squalifica5}
+	\caption{\texttt{squalifica(5)}} % Squalifico il partecipante 5 e aggiorno tutti i suoi predecessori nell'albero (che corrispondono ai vertici in \emph{arancione}).}
+	\label{fig:squalifica5}
+	\end{minipage}
+\end{figure}
+
+\pagebreak
+
+To find out which participant is in position 2, we move down the tree through the \textcolor{orange}{orange} edges in figure \ref{fig:partecipante2}, deciding where to go according to how many valid participants we are keeping on our left. We then reach the leaf with id 6, which corresponds to the second one in the ranking.
+
+Finally, we implement the overtaking of participant 0 by swapping the ids 0 and 1 in the two corresponding leafs (\textcolor{orange}{orange} in figure \ref{fig:supera0}).
+
+\begin{figure} [htbp]
+	\centering
+	\begin{minipage}{0.49\textwidth}
+	\input{./immagini_classifica/partecipante2}
+	\caption{\texttt{partecipante(2)}} %. Per trovare il secondo partecipante in classifica scendo nell'albero attraversando gli archi \emph{arancioni}.}
+	\label{fig:partecipante2}
+	\end{minipage}
+	\begin{minipage}{0.49\textwidth}
+	\input{./immagini_classifica/supera0}
+	\caption{\texttt{supera(0)}} %. Scambio 0 e 1 (in \emph{arancione} nella figura.}
+	\label{fig:supera0}
+	\end{minipage}
+\end{figure}
+
+\pagebreak
+
+\CppSolution
+
+%\lstinputlisting{./soluzione_classifica.cpp}
+\colorbox{white}{\makebox[.99\textwidth][l]{
+    \includegraphics[scale=.9]{soluzione_classifica_en.pdf}
+}}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %
+\afterpage{\nopagecolor}

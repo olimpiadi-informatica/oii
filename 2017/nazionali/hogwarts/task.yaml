@@ -1,0 +1,8 @@
+infile: ''
+memory_limit: 256
+name: hogwarts
+outfile: ''
+time_limit: 1.0
+title: Scale di Hogwarts
+token_mode: disabled
+public_testcases: all

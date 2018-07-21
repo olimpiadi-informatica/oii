@@ -1,0 +1,114 @@
+\newpage
+\setcounter{figure}{0}
+
+\lstset{
+  numbers = left,
+  numberstyle=\tiny\color{gray},
+  backgroundcolor=\color{white},
+  commentstyle=\color{red},
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\color{blue},
+  xleftmargin=1cm,
+  language=C
+}
+
+\definecolor{backcolor}{gray}{0.95}
+\pagecolor{backcolor}
+\createsection{\Solution}{Soluzione}
+\createsection{\ArchiFissi}{{\small{$\blacksquare$}} \normalsize Se le scale sono fisse}
+\createsection{\ScompaionoSolo}{{\small{$\blacksquare$}} \normalsize Se le scale possono soltanto scomparire}
+\createsection{\DijkstraModificato}{{\small{$\blacksquare$}} \normalsize Soluzione $O(M\log M)$}
+\createsection{\SoluzioneLineare}{{\small{$\blacksquare$}} \normalsize Soluzione $O(M+T_{\max})$}
+\createsection{\CppSolution}{Esempio di codice \texttt{C++11}}
+
+\newcommand{\inizio}{\ensuremath{\mathrm{inizio}}}
+\newcommand{\fine}{\ensuremath{\mathrm{fine}}}
+
+\Solution
+
+Presentiamo due soluzioni complete del problema, ma prima vediamo le soluzioni di alcuni subtask che contengono idee utili per le soluzioni ottimali. Nel corso di questa nota, chiamiamo $T_{\max}$ il tempo di scomparsa dell'ultima scala. 
+
+\ArchiFissi
+
+Se tutte le scale sono fisse, cioè compaiono tutte al tempo $0$ e scompaiono tutte al tempo $T_{\max}$, il problema si risolve con una BFS (Breadth First Search o ricerca in ampiezza) sul grafo i cui vertici sono le sale e i cui archi sono le scale. Il \emph{peso} di un arco è il tempo impiegato per percorrere la scala corrispondente, dunque tutti gli archi hanno peso $1$. Quindi tramite una BFS è possibile sapere se è possibile andare dal vertice $0$ al vertice $N-1$ e, nel caso sia possibile, il minimo tempo $t$ necessario per farlo. L'unico accorgimento è che se $t > T_{\max}$ le scale scompaiono prima che si riesca ad arrivare alla stanza $N-1$ e quindi la risposta dovrà essere $-1$. Questa è la soluzione del subtask 3 e ha complessità computazionale lineare nel numero di archi.
+
+\ScompaionoSolo
+
+Se le scale sono tutte presenti all'inizio, ma possono scomparire, si può risolvere il problema modificando la BFS: quando ci troviamo in un nodo $x$ a distanza $d$ dal vertice $0$ e vogliamo percorrere un arco che va da $x$ a $y$, lo possiamo percorrere solo se $d$ è strettamente minore del momento in cui scompare l'arco in questione. Anche questa soluzione ha complessità computazionale lineare nel numero di archi.
+
+\DijkstraModificato
+
+Presentiamo ora una prima soluzione del problema con archi che possono sia comparire che scomparire. Il punto di partenza è l'algoritmo di Dijkstra per trovare il cammino di lunghezza minima su un grafo pesato con pesi non negativi. È sufficiente modificare l'algoritmo nel seguente modo: quando ci si ``espande'' da un nodo $x$ che sta a distanza $t$ dal vertice $0$ percorrendo un arco $(x, y)$ che compare al tempo $T_{\inizio}$ e scompare al tempo $T_{\fine}$, si controlla innanzitutto se $T_{\fine}$ è minore o uguale a $t$ (cioè se l'arco è già scomparso). In caso di risposta negativa, bisogna verificare se il collegamento con $y$ è già presente al tempo $t$ oppure no, dunque il tempo in cui si può raggiungere $y$ sarà $1$ più il massimo tra $T_{\inizio}$ e $t$. Questa soluzione ha complessità $O(M\log M)$.
+
+%Per scegliere il nodo con distanza minore tra quelli non ancora visitati, si può usare una ricerca lineare (in questo modo la complessità computazionale totale è $O(N^2)$) oppure una coda di priorità (in questo modo la soluzione ha complessità computazionale $O(M \log M)$).
+
+\SoluzioneLineare
+
+Presentiamo ora la seconda soluzione del problema. L'idea è di trovare, per ogni tempo $t$, quali sono le sale che possono essere raggiunte \emph{esattamente} al tempo $t$ (e non prima). Al tempo $t = 0$, l'unica sala che può essere raggiunta è la sala $0$. Teniamo una variabile \texttt{vector <int> raggiunti[MAXT+1]} in cui in \texttt{raggiunti[$t$]} metteremo i nodi che sono raggiungibili esattamente al tempo $t$, più alcuni nodi raggiungibili prima di $t$ che vedremo come trattare in seguito.
+
+Quando siamo al tempo $t$, vogliamo sapere quali nuovi vertici possiamo raggiungere a partire dai vertici in \texttt{raggiunti[$t$]} (che potranno essere raggiunti dal tempo $t+1$ in poi, a seconda di quando compaiono gli archi uscenti dai vertici di \texttt{raggiunti[$t$]}). Per farlo, consideriamo uno alla volta i vertici in \texttt{raggiunti[$t$]}. Sia $x$ un tale vertice. Per ogni arco $(x, y)$ che compare al tempo $T_{\inizio}$ e scompare al tempo $T_{\fine}$ possono verificarsi quattro situazioni differenti:
+\begin{enumerate}
+	\item la scala $(x, y)$ è inutile perché anche $y$ è raggiungibile entro il tempo $t$; in questo caso semplicemente ignoriamo l'arco;
+	\item la scala $(x, y)$ non è più utilizzabile perché l'arco è scomparso prima che $x$ fosse raggiungibile, cioè $T_{\fine} \le t$; anche in questo caso ignoriamo l'arco;
+	\item la scala $(x, y)$ è utile e percorribile immediatamente, allora dobbiamo segnare che $y$ è raggiungibile \emph{entro} il tempo $t+1$ (perché comunque ci mettiamo 1 secondo per percorrere la scala $(x, y)$, aggiungendo il nodo $y$ a \texttt{raggiunti[$t+1$]});
+	\item la scala $(x, y)$ è utile ma \emph{al momento} non è utilizzabile immediatamente perché compare dopo il tempo $t$; in questo caso, detto $T_{\inizio}$ il momento in cui compare la scala, segneremo che $y$ è raggiungibile \emph{entro} il tempo $T_{\inizio}+1$ aggiungendo il nodo $y$ a \texttt{raggiunti[$T_{\inizio}+1$]}.
+\end{enumerate}
+
+Può accadere di segnare un nodo $x$ in più di un elemento dell'array di vector \texttt{raggiunti}; è quindi indispensabile tenere  una variabile \texttt{bool fatto[MAXN+1]} in cui nella casella $x$ viene messo \texttt{true} quando un nodo è raggiungibile per la prima volta (cioè la prima volta che, scorrendo i tempi $t$, incontriamo il nodo nella variabile \texttt{raggiunti[$t$]}). In questo modo, se incontriamo di nuovo il nodo $x$ sappiamo che dobbiamo ignorarlo.
+
+Poiché guardiamo ogni arco al più una volta, e analizziamo ogni tempo $t$ da $0$ a $T_{\max}$, la complessità computazionale della soluzione proposta è $O(M + T_{\max})$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{comment}
+Teniamo una coda che chiamiamo \texttt{nuovi\_nodi} in cui al tempo $t$ ci stanno i vertici raggiungibili esattamente al tempo $t$.
+Vogliamo quindi trovare, nel modo più efficiente possibile, i vertici che sono raggiungibili \emph{esattamente} al tempo $t+1$. Questi possono provenire da due situazioni differenti:
+\begin{enumerate}
+	\item nodi $y$ tali che ci sia un arco $(x, y)$, con $x \in \texttt{nuovi\_nodi}$ e con l'arco $(x,y)$ comparso prima del tempo $t$ e che scomparirà dopo il tempo $t+1$;
+	\item nodi $y$ tali che al tempo $t$ compare un arco $(x, y)$ dove $x$ è un qualsiasi vertice raggiungibile \emph{entro} il tempo $t$.
+\end{enumerate}
+
+La prima cosa da fare dunque è ordinare gli archi per tempo di comparsa, e questo si può fare sia utilizzando il \texttt{sort} delle stl del C++ sia tramite un \emph{counting sort}: la seconda soluzione è la preferibile in quanto la complessità computazionale è lineare in $T_{max}$. Per ogni nodo non ancora raggiungibile, ci interesserà memorizzare a quale sale è connesso e il tempo di scomparsa delle scale corrispondenti in una variabile \texttt{vector< pair<int, int> > Grafo[N]} (in cui il primo elemento della coppia indica la sala di arrivo e il secondo elemento il momento in cui scompare la scala).
+
+Nella coda \texttt{nuovi\_nodi} al tempo $0$ inseriamo il nodo $0$. Per $t$ che va da $0$ a $T_{max}$:
+\begin{itemize}
+	\item Per ogni nodo presente in $\texttt{nuovi\_nodi[}t\texttt{]}$ guardo gli archi comparsi prima del tempo $t$ che escono da esso, che si trovano in \texttt{Grafo}. Sia $x$ il nuovo nodo, $y$ quello a cui è connesso dall'arco considerato. Possono verificarsi tre condizioni:
+	\begin{enumerate}
+		\item la scala $(x, y)$ è scomparsa strettamente prima del tempo $t+1$: la scala non è utilizzabile;
+		\item la scala $(x, y)$ è inutile in quanto anche $y$ è raggiungibile entro il tempo $t$;
+		\item la scala $(x, y)$ può essere percorsa: allora il nodo $y$ può essere raggiunto esattamente al tempo $t+1$.
+	\end{enumerate}
+	\item Per ogni arco che compare al tempo $t$, chiamiamo $x$ e $y$ le due sale che collega; possono verificarsi tre condizioni:
+	\begin{enumerate}
+		\item la scala $(x, y)$ è inutile perché sia $x$ sia $y$ sono raggiungibili entro il tempo $t$;
+		\item la scala $(x, y)$ è utile e utilizzabile in quanto esattamente uno tra $x$ e $y$ è raggiungibile entro il tempo $t$, quindi l'altro tra $x$ e $y$ diventa raggiungibile per la prima volta esattamente al tempo $t+1$;
+		\item la scala $(x, y)$ \emph{al momento} non è utilizzabile perché al tempo $t$ né $x$ né $y$ sono raggiungibili; in tal caso aggiungiamo la scala a \texttt{Grafo} in modo che se in futuro uno tra $x$ e $y$ diventerà raggiungibile, ci ricorderemo dell'esistenza di quella scala.
+	\end{enumerate}
+\end{itemize}
+
+Durante tutto questo, se il nodo $N-1$ diventa raggiungibile possiamo direttamente uscire dalla funzione perché abbiamo la risposta al problema; invece se arriviamo al tempo $T_{max}$ senza aver raggiunto il nodo $N-1$ vuol dire che la funzione dovrà ritornare il valore $-1$. L'algoritmo che abbiamo presentato ha complessità computazionale $O(M + T_{max})$.
+\end{comment}
+
+
+\newpage
+\CppSolution
+Di seguito trovate un'implementazione della soluzione ottimale di questo problema.
+
+%\lstinputlisting{./soluzione_hogwarts.cpp}
+\colorbox{white}{\makebox[.99\textwidth][l]{
+    \includegraphics[scale=.9]{soluzione_hogwarts.pdf}
+}}
+
+\afterpage{\nopagecolor}
