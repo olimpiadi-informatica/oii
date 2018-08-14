@@ -18,12 +18,17 @@ def run(f):
     assert(len(f) == A+B+1)
     assert(5 <= N <= MAXN)
     assert(10 <= A+B <= MAXM)
+    edges = set()
     for i in xrange(A + B):
         riga = map(int, f[i+1].split())
         assert(len(riga) == 2)
         a, b = riga
         assert(1 <= a <= MAXN)
         assert(1 <= b <= MAXN)
+        a, b = min(a, b), max(a, b)
+        assert a != b
+        assert (a, b) not in edges
+        edges.add((a, b))
     return 0 # Input corretto
 
 if __name__ == "__main__":
