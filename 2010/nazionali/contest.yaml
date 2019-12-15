@@ -1,0 +1,15 @@
+name: oii
+description: Olimpiadi Italiane di Informatica
+start: 1287126000
+stop: 1287144000
+tasks:
+- baht
+- fuga
+- salti
+- scuola
+users:
+- first_name: Name
+  last_name: Surname
+  username: user
+  password: password
+  ip: 10.0.0.1

@@ -1,0 +1,40 @@
+name: oii-2018
+description: Olimpiadi Italiane di Informatica 2018
+start: 1536908400
+stop: 1536926400
+token_mode: disabled
+location: Campobasso, Molise
+date: 14 settembre 2018
+logo: logo2018.png
+tasks:
+- cena
+- circuiti
+- incendio
+teams:
+- {code: ABR, name: ABR}
+- {code: BAS, name: BAS}
+- {code: CAL, name: CAL}
+- {code: CAM, name: CAM}
+- {code: EMI, name: EMI}
+- {code: FRI, name: FRI}
+- {code: LAZ, name: LAZ}
+- {code: LIG, name: LIG}
+- {code: LOM, name: LOM}
+- {code: MAR, name: MAR}
+- {code: MOL, name: MOL}
+- {code: PIE, name: PIE}
+- {code: PUG, name: PUG}
+- {code: SAR, name: SAR}
+- {code: SIC, name: SIC}
+- {code: TOS, name: TOS}
+- {code: TRA, name: TRA}
+- {code: UMB, name: UMB}
+- {code: VAL, name: VAL}
+- {code: VEN, name: VEN}
+users:
+- first_name: Name
+  last_name: Surname
+  username: user
+  password: password
+  ip: 10.0.0.1
+  team: FRI

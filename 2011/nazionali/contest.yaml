@@ -1,0 +1,15 @@
+name: oii
+description: OII 2011
+start: 1317366000
+stop: 1317384000
+tasks:
+- eso
+- fibstr
+- matita
+- salta
+users:
+- first_name: Name
+  last_name: Surname
+  username: user
+  password: password
+  ip: 10.0.0.1

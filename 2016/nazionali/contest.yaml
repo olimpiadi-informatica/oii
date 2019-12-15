@@ -1,0 +1,22 @@
+name: oii2016
+description: Olimpiadi Italiane di Informatica 2016
+
+start: 1442559600.0
+stop: 1442577600.0
+token_mode: infinite
+
+location: Catania
+date: 15 -- 17 settembre 2016
+logo: logo.png
+
+tasks:
+- classifica
+- hogwarts
+- lungomare
+
+users:
+- first_name: Name
+  last_name: Surname
+  username: user
+  password: password
+  ip: 10.0.0.1

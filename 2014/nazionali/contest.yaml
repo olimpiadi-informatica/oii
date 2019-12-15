@@ -1,0 +1,18 @@
+name: oii
+description: OII 2014 -- Finale nazionale
+start: 1411110000.0
+stop: 1411128000.0
+token_mode: infinite
+logo: logo.png
+location: Fisciano
+date: 19 settembre 2014
+tasks:
+- accensione
+- bottleneck
+- taglialegna
+users:
+- first_name: Name
+  last_name: Surname
+  username: user
+  password: password
+  ip: 10.0.0.1

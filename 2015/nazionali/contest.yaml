@@ -1,0 +1,18 @@
+name: oii
+description: Olimpiadi Italiane di Informatica 2015
+location: Castiglione de' Pepoli (BO)
+date: 17 -- 19 settembre 2015
+start: 1442559600.0
+stop: 1442577600.0
+token_mode: infinite
+logo: logo.png
+tasks:
+- aeroporto
+- nemesi
+- paletta
+users:
+- first_name: Name
+  last_name: Surname
+  username: user
+  password: password
+  ip: 10.0.0.1
