@@ -1,0 +1,15 @@
+name: oii
+description: OII 2012
+start: 1350025200
+stop: 1350043200
+token_mode: infinite
+tasks:
+- fermata
+- convoglio
+- fontane
+users:
+- first_name: Name
+  last_name: Surname
+  username: user
+  password: password
+  ip: 10.0.0.1

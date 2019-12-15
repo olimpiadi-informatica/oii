@@ -1,0 +1,15 @@
+name: oii
+description: Olimpiadi Italiane di Informatica 2013
+start: 1379054700
+stop: 1379072700
+token_mode: disabled
+tasks:
+- bufale
+- spiedini
+- maree
+users:
+- first_name: Name
+  last_name: Surname
+  username: user
+  password: password
+  ip: 10.0.0.1

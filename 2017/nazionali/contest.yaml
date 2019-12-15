@@ -1,0 +1,18 @@
+name: oii-2017
+description: Olimpiadi Italiane di Informatica 2017
+start: 1505458800.0
+stop: 1505476800.0
+token_mode: disabled
+logo: logo.png
+date: "14 – 16 settembre 2017"
+location: "Trento"
+tasks:
+- caduta
+- corteo
+- specchi
+users:
+- first_name: Name
+  last_name: Surname
+  username: user
+  password: password
+  ip: 10.0.0.1
