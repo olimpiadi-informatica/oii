@@ -1,0 +1,5 @@
+%YAML 1.2
+---
+name: tornello
+description: Tornello olimpico
+max_score: 12

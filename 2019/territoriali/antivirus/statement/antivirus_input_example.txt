@@ -1,0 +1,15 @@
+2
+
+8 12 10 7
+4
+ananasso
+associazione
+tassonomia
+massone
+
+6 9 11 10
+3
+simone
+ponessimo
+milionesimo
+cassonetto

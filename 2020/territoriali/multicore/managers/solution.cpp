@@ -1,0 +1,1 @@
+../solutions/ottima_ostuni.cpp

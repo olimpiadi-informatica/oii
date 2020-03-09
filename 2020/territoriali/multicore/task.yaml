@@ -1,0 +1,5 @@
+%YAML 1.2
+---
+name: multicore
+description: Processori multicore
+max_score: 27

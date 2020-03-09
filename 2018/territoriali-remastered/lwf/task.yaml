@@ -1,0 +1,5 @@
+%YAML 1.2
+---
+name: lwf
+description: Crittografia LWF
+max_score: 10
