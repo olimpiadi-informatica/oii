@@ -1,0 +1,1 @@
+../testo/orticoltura.input0.txt

@@ -1,0 +1,1 @@
+../testo/cena.input0.txt

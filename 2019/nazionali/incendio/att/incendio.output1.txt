@@ -1,0 +1,1 @@
+../testo/incendio.output1.txt

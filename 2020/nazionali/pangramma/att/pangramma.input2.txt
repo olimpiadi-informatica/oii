@@ -1,0 +1,1 @@
+../testo/pangramma.input2.txt

@@ -1,0 +1,10 @@
+somma[0] = 0 + 0
+somma[12] = in[0] + in[1]
+somma[23] = in[1] + in[2]
+mx[0] = somma[0] max in[0]
+somma[123] = somma[12] + in[2]
+mx[1] = mx[0] max in[1]
+mx[2] = mx[1] max in[2]
+mx[3] = somma[12] max mx[2]
+mx[4] = mx[3] max somma[23]
+out[0] = mx[4] max somma[123]

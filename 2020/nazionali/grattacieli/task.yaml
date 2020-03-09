@@ -1,0 +1,15 @@
+# General info
+name: grattacieli
+title: Grattacieli commemorativi
+
+# Technical info
+memory_limit: 256
+time_limit: 0.5
+infile: ""
+outfile: ""
+
+# Other stuff
+score_mode: max_subtask
+token_mode: disabled
+public_testcases: all
+feedback_level: full

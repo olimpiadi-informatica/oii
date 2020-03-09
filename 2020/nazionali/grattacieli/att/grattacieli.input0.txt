@@ -1,0 +1,1 @@
+../testo/grattacieli.input0.txt

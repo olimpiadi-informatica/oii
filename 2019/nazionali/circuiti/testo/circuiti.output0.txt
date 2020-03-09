@@ -1,0 +1,2 @@
+temp[0] = in[0] + in[1]
+out[0] = temp[0] + in[2]

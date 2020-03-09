@@ -1,0 +1,15 @@
+# General info
+name: pangramma
+title: Sfida all'ultimo pangramma
+
+# Technical info
+memory_limit: 512
+time_limit: 0.5
+infile: ""
+outfile: ""
+
+# Other stuff
+score_mode: max_subtask
+token_mode: disabled
+public_testcases: all
+feedback_level: full

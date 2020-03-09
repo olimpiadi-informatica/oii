@@ -1,0 +1,1 @@
+../sol/template.cpp
